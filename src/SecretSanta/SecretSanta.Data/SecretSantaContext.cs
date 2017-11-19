@@ -22,6 +22,8 @@ namespace SecretSanta.Data
 
         public DbSet<Group> Groups { get; set; }
 
+        public DbSet<GroupUser> GroupUsers { get; set; }
+
         public DbSet<TEntity> DbSet<TEntity>() where TEntity : class
         {
             return this.Set<TEntity>();
@@ -51,6 +53,7 @@ namespace SecretSanta.Data
 
             builder.ApplyConfiguration(new GiftMap());
             builder.ApplyConfiguration(new GroupMap());
+            builder.ApplyConfiguration(new GroupUserMap());
         }
     }
 }
