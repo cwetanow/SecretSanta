@@ -10,7 +10,7 @@ namespace SecretSanta.Models
 
         public User Owner { get; set; }
 
-        public ICollection<User> Users { get; set; }
+        public ICollection<GroupUser> Users { get; set; }
 
         public ICollection<Invite> Invites { get; set; }
     }

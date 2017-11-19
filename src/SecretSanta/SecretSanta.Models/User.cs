@@ -11,6 +11,10 @@ namespace SecretSanta.Models
 
         public ICollection<Group> Groups { get; set; }
 
-        public ICollection<Gift> Gifts { get; set; }
+        public ICollection<GroupUser> JoinedGroups { get; set; }
+
+        public ICollection<Gift> SentGifts { get; set; }
+
+        public ICollection<Gift> ReceivedGifts { get; set; }
     }
 }
