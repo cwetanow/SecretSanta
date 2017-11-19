@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SecretSanta.Data;
+using SecretSanta.Data.Contracts;
 
 namespace SecretSanta.Web
 {
@@ -17,6 +20,11 @@ namespace SecretSanta.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<SecretSantaContext>(options =>
+             options.UseSqlServer(Configuration.GetConnectionString("Default")));
+
+            services.AddScoped<IDbContext, SecretSantaContext>();
+
             services.AddMvc();
         }
 

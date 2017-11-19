@@ -9,7 +9,7 @@ using System.Text;
 
 namespace SecretSanta.Data
 {
-    public class SecretSantaContext : IdentityDbContext<User>, ISecretSantaContext
+    public class SecretSantaContext : IdentityDbContext<User>, IDbContext
     {
         public SecretSantaContext(DbContextOptions<SecretSantaContext> options)
             : base(options)

@@ -2,7 +2,7 @@
 
 namespace SecretSanta.Data.Contracts
 {
-    public interface ISecretSantaContext
+    public interface IDbContext
     {
         DbSet<TEntity> DbSet<TEntity>()
             where TEntity : class;
