@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SecretSanta.Authentication;
+using SecretSanta.Authentication.Contracts;
 using SecretSanta.Data;
 using SecretSanta.Data.Contracts;
 
@@ -24,6 +26,7 @@ namespace SecretSanta.Web
              options.UseSqlServer(Configuration.GetConnectionString("Default")));
 
             services.AddScoped<IDbContext, SecretSantaContext>();
+            services.AddSingleton<ITokenProvider, JwtTokenProvider>();
 
             services.AddMvc();
         }
