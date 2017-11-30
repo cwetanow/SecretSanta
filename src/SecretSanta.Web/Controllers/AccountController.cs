@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using SecretSanta.Authentication.Contracts;
 using SecretSanta.Web.Models.Account;
 using System.Threading.Tasks;
@@ -16,6 +17,16 @@ namespace SecretSanta.Web.Controllers
         public AccountController(IAuthenticationProvider authenticationProvider,
             IUserFactory userFactory)
         {
+            if (authenticationProvider == null)
+            {
+                throw new ArgumentNullException(nameof(authenticationProvider));
+            }
+
+            if (userFactory == null)
+            {
+                throw new ArgumentNullException(nameof(userFactory));
+            }
+
             this.authenticationProvider = authenticationProvider;
             this.userFactory = userFactory;
         }
