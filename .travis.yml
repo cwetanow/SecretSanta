@@ -9,3 +9,5 @@ script:
   - cd src
   - dotnet restore
   - dotnet build 
+  - dotnet test SecretSanta.Authentication.Tests/
+  - dotnet test SecretSanta.Web.Tests/

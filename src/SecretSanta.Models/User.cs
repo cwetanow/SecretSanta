@@ -5,6 +5,18 @@ namespace SecretSanta.Models
 {
     public class User : IdentityUser
     {
+        public User()
+        {
+
+        }
+
+        public User(string username, string email, string displayName) : this()
+        {
+            this.UserName = username;
+            this.Email = email;
+            this.DisplayName = displayName;
+        }
+
         public string DisplayName { get; set; }
 
         public ICollection<Invite> Invites { get; set; }
