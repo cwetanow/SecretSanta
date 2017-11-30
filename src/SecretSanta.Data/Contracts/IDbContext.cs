@@ -16,6 +16,6 @@ namespace SecretSanta.Data.Contracts
             where TEntry : class;
 
         void SetUpdated<TEntry>(TEntry entity)
-where TEntry : class;
+            where TEntry : class;
     }
 }
