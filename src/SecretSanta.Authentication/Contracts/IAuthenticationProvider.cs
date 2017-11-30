@@ -1,17 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using SecretSanta.Models;
 using System.Threading.Tasks;
+using SecretSanta.Models;
 
 namespace SecretSanta.Authentication.Contracts
 {
     public interface IAuthenticationProvider
     {
-        Task<User> FindByEmailAsync(string email);
-
-        Task<SignInResult> CheckPasswordSignInAsync(User user, string password);
+        Task<User> FindByUsernameAsync(string username);
 
         Task<IdentityResult> RegisterUser(User user, string password);
-
-        Task SignOutAsync();
     }
 }
