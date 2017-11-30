@@ -16,6 +16,8 @@ using SecretSanta.Authentication;
 using SecretSanta.Authentication.Contracts;
 using SecretSanta.Data;
 using SecretSanta.Data.Contracts;
+using SecretSanta.Factories;
+using SecretSanta.Models;
 using SecretSanta.Web.Infrastructure.Extensions;
 
 namespace SecretSanta.Web
@@ -60,9 +62,9 @@ namespace SecretSanta.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider provider)
         {
-            this.kernel = this.RegisterApplicationComponents(app);
+            this.kernel = this.RegisterApplicationComponents(app, provider);
 
             if (env.IsDevelopment())
             {
@@ -72,7 +74,7 @@ namespace SecretSanta.Web
             app.UseMvc();
         }
 
-        private IKernel RegisterApplicationComponents(IApplicationBuilder app)
+        private IKernel RegisterApplicationComponents(IApplicationBuilder app, IServiceProvider provider)
         {
             var kernel = new StandardKernel();
 
@@ -82,11 +84,24 @@ namespace SecretSanta.Web
             {
                 kernel.Bind(ctrlType).ToSelf().InScope(RequestScope);
             }
-            
+
+            // Factories
+            kernel.Bind<IUserFactory>().ToFactory().InSingletonScope();
+
+            // Authentication
+            kernel.Bind<IAuthenticationProvider>()
+                .ToMethod((context => this.Get<IAuthenticationProvider>(provider)))
+                .InScope(RequestScope);
+
             // Cross-wire required framework services
             kernel.BindToMethod(app.GetRequestService<IViewBufferScope>);
 
             return kernel;
+        }
+
+        private T Get<T>(IServiceProvider provider)
+        {
+            return (T)provider.GetService(typeof(T));
         }
 
         private sealed class Scope : DisposableObject { }
