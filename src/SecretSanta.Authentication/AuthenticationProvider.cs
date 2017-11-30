@@ -11,6 +11,11 @@ namespace SecretSanta.Authentication
 
         public AuthenticationProvider(UserManager<User> userManager)
         {
+            if (userManager == null)
+            {
+                throw new System.ArgumentNullException(nameof(userManager));
+            }
+
             this.userManager = userManager;
         }
 
