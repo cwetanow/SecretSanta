@@ -211,7 +211,7 @@ namespace SecretSanta.Web.Tests.Controllers.AccountControllerTests
 
             var mockedProvider = new Mock<IAuthenticationProvider>();
             mockedProvider.Setup(p => p.RegisterUser(It.IsAny<User>(), It.IsAny<string>()))
-                .ReturnsAsync(IdentityResult.Failed());
+                .ReturnsAsync(IdentityResult.Success);
 
             var controller = new AccountController(mockedProvider.Object, mockedFactory.Object);
 
