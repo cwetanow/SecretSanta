@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Ninject;
 using Ninject.Activation;
+using Ninject.Extensions.Factory;
 using Ninject.Infrastructure.Disposal;
 using SecretSanta.Authentication;
 using SecretSanta.Authentication.Contracts;
@@ -67,15 +68,15 @@ namespace SecretSanta.Web
 
         private IKernel RegisterApplicationComponents(IApplicationBuilder app)
         {
-            // IKernelConfiguration config = new KernelConfiguration();
             var kernel = new StandardKernel();
 
-            // Register application services
+            kernel.Load(new FuncModule());
+
             foreach (var ctrlType in app.GetControllerTypes())
             {
                 kernel.Bind(ctrlType).ToSelf().InScope(RequestScope);
             }
-
+            
             // Cross-wire required framework services
             kernel.BindToMethod(app.GetRequestService<IViewBufferScope>);
 
