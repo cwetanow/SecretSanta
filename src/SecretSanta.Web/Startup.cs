@@ -3,6 +3,7 @@ using System.Threading;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -40,7 +41,12 @@ namespace SecretSanta.Web
             services.AddDbContext<SecretSantaContext>(options =>
              options.UseSqlServer(Configuration.GetConnectionString("Default")));
 
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<SecretSantaContext>()
+                .AddDefaultTokenProviders();
+
             services.AddScoped<IDbContext, SecretSantaContext>();
+            services.AddScoped<IAuthenticationProvider, AuthenticationProvider>();
             services.AddSingleton<ITokenProvider, JwtTokenProvider>();
 
             services.AddMvc();
