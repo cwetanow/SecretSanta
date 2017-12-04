@@ -24,15 +24,17 @@ namespace SecretSanta.Web
 {
     public class Startup
     {
+        private readonly IServiceProvider provider;
         private readonly AsyncLocal<Scope> scopeProvider = new AsyncLocal<Scope>();
         private IKernel kernel;
 
         private object Resolve(Type type) => this.kernel.Get(type);
         private object RequestScope(IContext context) => scopeProvider.Value;
 
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IServiceProvider provider)
         {
-            Configuration = configuration;
+            this.provider = provider;
+            this.Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
@@ -62,9 +64,9 @@ namespace SecretSanta.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider provider)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            this.kernel = this.RegisterApplicationComponents(app, provider);
+            this.kernel = this.RegisterApplicationComponents(app);
 
             if (env.IsDevelopment())
             {
@@ -74,7 +76,7 @@ namespace SecretSanta.Web
             app.UseMvc();
         }
 
-        private IKernel RegisterApplicationComponents(IApplicationBuilder app, IServiceProvider provider)
+        private IKernel RegisterApplicationComponents(IApplicationBuilder app)
         {
             var kernel = new StandardKernel();
 
@@ -90,7 +92,7 @@ namespace SecretSanta.Web
 
             // Authentication
             kernel.Bind<IAuthenticationProvider>()
-                .ToMethod((context => this.Get<IAuthenticationProvider>(provider)))
+                .ToMethod((context => this.Get<IAuthenticationProvider>()))
                 .InScope(RequestScope);
 
             // Cross-wire required framework services
@@ -101,7 +103,7 @@ namespace SecretSanta.Web
 
         private T Get<T>(IServiceProvider provider)
         {
-            return (T)provider.GetService(typeof(T));
+            return (T)this.provider.GetService(typeof(T));
         }
 
         private sealed class Scope : DisposableObject { }
