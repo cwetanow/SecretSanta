@@ -18,22 +18,22 @@ using SecretSanta.Data;
 using SecretSanta.Data.Contracts;
 using SecretSanta.Factories;
 using SecretSanta.Models;
+using SecretSanta.Web.Infrastructure;
 using SecretSanta.Web.Infrastructure.Extensions;
 
 namespace SecretSanta.Web
 {
     public class Startup
     {
-        private readonly IServiceProvider provider;
         private readonly AsyncLocal<Scope> scopeProvider = new AsyncLocal<Scope>();
         private IKernel kernel;
+        private IServiceProvider provider;
 
         private object Resolve(Type type) => this.kernel.Get(type);
         private object RequestScope(IContext context) => scopeProvider.Value;
 
-        public Startup(IConfiguration configuration, IServiceProvider provider)
+        public Startup(IConfiguration configuration)
         {
-            this.provider = provider;
             this.Configuration = configuration;
         }
 
@@ -64,9 +64,10 @@ namespace SecretSanta.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider provider)
         {
             this.kernel = this.RegisterApplicationComponents(app);
+            this.provider = provider;
 
             if (env.IsDevelopment())
             {
