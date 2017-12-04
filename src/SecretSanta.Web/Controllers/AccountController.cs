@@ -4,6 +4,7 @@ using SecretSanta.Authentication.Contracts;
 using SecretSanta.Web.Models.Account;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using SecretSanta.Common;
 using SecretSanta.Factories;
 
 namespace SecretSanta.Web.Controllers
@@ -47,9 +48,11 @@ namespace SecretSanta.Web.Controllers
                 {
                     return this.Ok(user);
                 }
+
+                return this.BadRequest();
             }
 
-            return this.BadRequest();
+            return this.BadRequest(Constants.UserAlreadyExists);
         }
 
         [HttpPost]
