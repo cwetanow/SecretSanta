@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
+using SecretSanta.Authentication.Contracts;
 using SecretSanta.Models;
 
 namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
@@ -31,7 +34,21 @@ namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
                 mockedUserValidator, mockedPasswordValidator, mockedNormalizer.Object, mockedDescriber.Object,
                 mockedProvider.Object, mockedLogger.Object);
 
-            var provider = new AuthenticationProvider(mockedUserManager.Object);
+            var mockedAccessor = new HttpContextAccessor();
+            var mockedUserClaimsPrincipalFactory = new Mock<IUserClaimsPrincipalFactory<User>>();
+            var mockedIdentityOptions = new Mock<IOptions<IdentityOptions>>();
+            var mockedSignInLogger = new Mock<ILogger<SignInManager<User>>>();
+
+            var mockedSchemeProvider = new Mock<IAuthenticationSchemeProvider>();
+
+            var mockedSignInManager = new Mock<SignInManager<User>>(mockedUserManager.Object, mockedAccessor,
+                mockedUserClaimsPrincipalFactory.Object, mockedIdentityOptions.Object, mockedSignInLogger.Object,
+                mockedSchemeProvider.Object);
+
+            var mockedTokenManager = new Mock<ITokenManager>();
+
+            var provider = new AuthenticationProvider(mockedUserManager.Object, mockedSignInManager.Object,
+                mockedTokenManager.Object);
 
             // Act
             provider.FindByUsernameAsync(username);
@@ -64,7 +81,21 @@ namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
             mockedUserManager.Setup(u => u.FindByNameAsync(It.IsAny<string>()))
                 .ReturnsAsync(user);
 
-            var provider = new AuthenticationProvider(mockedUserManager.Object);
+            var mockedAccessor = new HttpContextAccessor();
+            var mockedUserClaimsPrincipalFactory = new Mock<IUserClaimsPrincipalFactory<User>>();
+            var mockedIdentityOptions = new Mock<IOptions<IdentityOptions>>();
+            var mockedSignInLogger = new Mock<ILogger<SignInManager<User>>>();
+
+            var mockedSchemeProvider = new Mock<IAuthenticationSchemeProvider>();
+
+            var mockedSignInManager = new Mock<SignInManager<User>>(mockedUserManager.Object, mockedAccessor,
+                mockedUserClaimsPrincipalFactory.Object, mockedIdentityOptions.Object, mockedSignInLogger.Object,
+                mockedSchemeProvider.Object);
+
+            var mockedTokenManager = new Mock<ITokenManager>();
+
+            var provider = new AuthenticationProvider(mockedUserManager.Object, mockedSignInManager.Object,
+                mockedTokenManager.Object);
 
             // Act
             var result = await provider.FindByUsernameAsync(username);
