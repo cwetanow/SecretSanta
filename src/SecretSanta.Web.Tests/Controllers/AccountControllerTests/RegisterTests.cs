@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 using SecretSanta.Authentication.Contracts;
+using SecretSanta.Common;
 using SecretSanta.Factories;
 using SecretSanta.Models;
 using SecretSanta.Web.Controllers;
@@ -66,7 +67,35 @@ namespace SecretSanta.Web.Tests.Controllers.AccountControllerTests
             var result = await controller.Register(model);
 
             // Assert
-            Assert.IsInstanceOf<BadRequestResult>(result);
+            Assert.IsInstanceOf<BadRequestObjectResult>(result);
+        }
+
+        [TestCase("username", "email", "name", "password")]
+        public async Task TestRegister_ThereIsUserWithUsername_ShouldReturnBadRequestWithCorrectMessage(string username,
+            string email,
+            string displayName,
+            string password)
+        {
+            // Arrange
+            var mockedFactory = new Mock<IUserFactory>();
+            var mockedProvider = new Mock<IAuthenticationProvider>();
+            mockedProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>())).ReturnsAsync(new User());
+
+            var controller = new AccountController(mockedProvider.Object, mockedFactory.Object);
+
+            var model = new RegisterViewModel
+            {
+                Username = username,
+                Email = email,
+                DisplayName = displayName,
+                Password = password
+            };
+
+            // Act
+            var result = await controller.Register(model) as BadRequestObjectResult;
+
+            // Assert
+            Assert.AreSame(Constants.UserAlreadyExists, result.Value);
         }
 
         [TestCase("username", "email", "name", "password")]
