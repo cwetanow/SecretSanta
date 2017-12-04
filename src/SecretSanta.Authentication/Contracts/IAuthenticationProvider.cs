@@ -10,7 +10,7 @@ namespace SecretSanta.Authentication.Contracts
 
         Task<IdentityResult> RegisterUser(User user, string password);
 
-        Task<SignInResult> CheckPasswordSignInAsync(User user, string modelPassword);
+        Task<SignInResult> CheckPasswordSignInAsync(User user, string password);
 
         string GenerateToken(string email);
     }
