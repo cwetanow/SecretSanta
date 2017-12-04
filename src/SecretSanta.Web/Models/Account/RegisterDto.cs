@@ -1,6 +1,6 @@
 ﻿namespace SecretSanta.Web.Models.Account
 {
-    public class RegisterViewModel
+    public class RegisterDto
     {
         public string Email { get; set; }
 

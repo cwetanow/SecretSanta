@@ -13,11 +13,10 @@ using SecretSanta.Models;
 namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
 {
     [TestFixture]
-    public class RegisterUserTests
+    public class GenerateTokenTests
     {
-        [TestCase("hashed")]
-        [TestCase("password")]
-        public void TestRegisterUser_ShouldCallUserManagerCreateAsync(string password)
+        [TestCase("email")]
+        public void TestGenerateToken_ShouldCallTokenManagerGenerateToken(string email)
         {
             // Arrange
             var mockedUserStore = new Mock<IUserStore<User>>();
@@ -50,18 +49,15 @@ namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
             var provider = new AuthenticationProvider(mockedUserManager.Object, mockedSignInManager.Object,
                 mockedTokenManager.Object);
 
-            var user = new User();
-
             // Act
-            provider.RegisterUser(user, password);
+            provider.GenerateToken(email);
 
             // Assert
-            mockedUserManager.Verify(u => u.CreateAsync(user, password), Times.Once);
+            mockedTokenManager.Verify(m => m.GenerateToken(email), Times.Once);
         }
 
-        [TestCase("hashed")]
-        [TestCase("password")]
-        public async Task TestRegisterUser_ShouldReturnCorrectly(string password)
+        [TestCase("email", "token")]
+        public void TestGenerateToken_ShouldReturnCorrectly(string email, string token)
         {
             // Arrange
             var mockedUserStore = new Mock<IUserStore<User>>();
@@ -78,12 +74,6 @@ namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
                 mockedUserValidator, mockedPasswordValidator, mockedNormalizer.Object, mockedDescriber.Object,
                 mockedProvider.Object, mockedLogger.Object);
 
-            var user = new User();
-            var expectedResult = IdentityResult.Success;
-
-            mockedUserManager.Setup(u => u.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
-                .ReturnsAsync(expectedResult);
-
             var mockedAccessor = new HttpContextAccessor();
             var mockedUserClaimsPrincipalFactory = new Mock<IUserClaimsPrincipalFactory<User>>();
             var mockedIdentityOptions = new Mock<IOptions<IdentityOptions>>();
@@ -95,16 +85,22 @@ namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
                 mockedUserClaimsPrincipalFactory.Object, mockedIdentityOptions.Object, mockedSignInLogger.Object,
                 mockedSchemeProvider.Object);
 
+            var expectedResult = SignInResult.Success;
+            mockedSignInManager.Setup(m => m.CheckPasswordSignInAsync(It.IsAny<User>(), It.IsAny<string>(),
+                    It.IsAny<bool>()))
+                .ReturnsAsync(expectedResult);
+
             var mockedTokenManager = new Mock<ITokenManager>();
+            mockedTokenManager.Setup(m => m.GenerateToken(It.IsAny<string>())).Returns(token);
 
             var provider = new AuthenticationProvider(mockedUserManager.Object, mockedSignInManager.Object,
                 mockedTokenManager.Object);
 
             // Act
-            var result = await provider.RegisterUser(user, password);
+            var result = provider.GenerateToken(email);
 
             // Assert
-            Assert.AreSame(expectedResult, result);
+            Assert.AreSame(token, result);
         }
     }
 }

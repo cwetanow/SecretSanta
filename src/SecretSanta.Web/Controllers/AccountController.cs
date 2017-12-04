@@ -4,7 +4,9 @@ using SecretSanta.Authentication.Contracts;
 using SecretSanta.Web.Models.Account;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using SecretSanta.Common;
 using SecretSanta.Factories;
+using SecretSanta.Web.Infrastructure;
 
 namespace SecretSanta.Web.Controllers
 {
@@ -13,9 +15,11 @@ namespace SecretSanta.Web.Controllers
     {
         private readonly IAuthenticationProvider authenticationProvider;
         private readonly IUserFactory userFactory;
+        private readonly IDtoFactory dtoFactory;
 
         public AccountController(IAuthenticationProvider authenticationProvider,
-            IUserFactory userFactory)
+            IUserFactory userFactory,
+            IDtoFactory dtoFactory)
         {
             if (authenticationProvider == null)
             {
@@ -27,13 +31,19 @@ namespace SecretSanta.Web.Controllers
                 throw new ArgumentNullException(nameof(userFactory));
             }
 
+            if (dtoFactory == null)
+            {
+                throw new ArgumentNullException(nameof(dtoFactory));
+            }
+
             this.authenticationProvider = authenticationProvider;
             this.userFactory = userFactory;
+            this.dtoFactory = dtoFactory;
         }
 
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
+        public async Task<IActionResult> Register([FromBody] RegisterDto model)
         {
             var user = await this.authenticationProvider.FindByUsernameAsync(model.Username);
 
@@ -47,27 +57,34 @@ namespace SecretSanta.Web.Controllers
                 {
                     return this.Ok(user);
                 }
+
+                return this.BadRequest();
             }
 
-            return this.BadRequest();
+            return this.BadRequest(Constants.UserAlreadyExists);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Login([FromBody]LoginViewModel model)
-        //{
-        //    var user = await this.authenticationProvider.FindByEmailAsync(model.Email);
+        [HttpPost]
+        [Route("token")]
+        public async Task<IActionResult> GenerateToken([FromBody]LoginDto model)
+        {
+            var user = await this.authenticationProvider.FindByUsernameAsync(model.Username);
 
-        //    if (user != null)
-        //    {
-        //        var result = await this.authenticationProvider.CheckPasswordSignInAsync(user, model.Password);
+            if (user != null)
+            {
+                var result = await this.authenticationProvider.CheckPasswordSignInAsync(user, model.Password);
 
-        //        if (result.Succeeded)
-        //        {
-        //            // Generate token
-        //        }
-        //    }
+                if (result.Succeeded)
+                {
+                    var token = this.authenticationProvider.GenerateToken(user.Email);
 
-        //    return this.BadRequest();
-        //}
+                    var dto = this.dtoFactory.CreateTokenDto(token);
+
+                    return this.Ok(dto);
+                }
+            }
+
+            return this.BadRequest(Constants.InvalidCredentials);
+        }
     }
 }

@@ -9,5 +9,9 @@ namespace SecretSanta.Authentication.Contracts
         Task<User> FindByUsernameAsync(string username);
 
         Task<IdentityResult> RegisterUser(User user, string password);
+
+        Task<SignInResult> CheckPasswordSignInAsync(User user, string password);
+
+        string GenerateToken(string email);
     }
 }
