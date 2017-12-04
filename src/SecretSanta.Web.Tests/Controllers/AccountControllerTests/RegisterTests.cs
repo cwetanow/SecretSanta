@@ -8,6 +8,7 @@ using SecretSanta.Common;
 using SecretSanta.Factories;
 using SecretSanta.Models;
 using SecretSanta.Web.Controllers;
+using SecretSanta.Web.Infrastructure;
 using SecretSanta.Web.Models.Account;
 
 namespace SecretSanta.Web.Tests.Controllers.AccountControllerTests
@@ -24,10 +25,11 @@ namespace SecretSanta.Web.Tests.Controllers.AccountControllerTests
             // Arrange
             var mockedFactory = new Mock<IUserFactory>();
             var mockedProvider = new Mock<IAuthenticationProvider>();
+            var mockedDtoFactory = new Mock<IDtoFactory>();
 
-            var controller = new AccountController(mockedProvider.Object, mockedFactory.Object);
+            var controller = new AccountController(mockedProvider.Object, mockedFactory.Object, mockedDtoFactory.Object);
 
-            var model = new RegisterViewModel
+            var model = new RegisterDto
             {
                 Username = username,
                 Email = email,
@@ -50,12 +52,13 @@ namespace SecretSanta.Web.Tests.Controllers.AccountControllerTests
         {
             // Arrange
             var mockedFactory = new Mock<IUserFactory>();
+            var mockedDtoFactory = new Mock<IDtoFactory>();
             var mockedProvider = new Mock<IAuthenticationProvider>();
             mockedProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>())).ReturnsAsync(new User());
 
-            var controller = new AccountController(mockedProvider.Object, mockedFactory.Object);
+            var controller = new AccountController(mockedProvider.Object, mockedFactory.Object, mockedDtoFactory.Object);
 
-            var model = new RegisterViewModel
+            var model = new RegisterDto
             {
                 Username = username,
                 Email = email,
@@ -78,12 +81,13 @@ namespace SecretSanta.Web.Tests.Controllers.AccountControllerTests
         {
             // Arrange
             var mockedFactory = new Mock<IUserFactory>();
+            var mockedDtoFactory = new Mock<IDtoFactory>();
             var mockedProvider = new Mock<IAuthenticationProvider>();
             mockedProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>())).ReturnsAsync(new User());
 
-            var controller = new AccountController(mockedProvider.Object, mockedFactory.Object);
+            var controller = new AccountController(mockedProvider.Object, mockedFactory.Object, mockedDtoFactory.Object);
 
-            var model = new RegisterViewModel
+            var model = new RegisterDto
             {
                 Username = username,
                 Email = email,
@@ -107,10 +111,11 @@ namespace SecretSanta.Web.Tests.Controllers.AccountControllerTests
             // Arrange
             var mockedFactory = new Mock<IUserFactory>();
             var mockedProvider = new Mock<IAuthenticationProvider>();
+            var mockedDtoFactory = new Mock<IDtoFactory>();
 
-            var controller = new AccountController(mockedProvider.Object, mockedFactory.Object);
+            var controller = new AccountController(mockedProvider.Object, mockedFactory.Object, mockedDtoFactory.Object);
 
-            var model = new RegisterViewModel
+            var model = new RegisterDto
             {
                 Username = username,
                 Email = email,
@@ -139,10 +144,11 @@ namespace SecretSanta.Web.Tests.Controllers.AccountControllerTests
                 .Returns(user);
 
             var mockedProvider = new Mock<IAuthenticationProvider>();
+            var mockedDtoFactory = new Mock<IDtoFactory>();
 
-            var controller = new AccountController(mockedProvider.Object, mockedFactory.Object);
+            var controller = new AccountController(mockedProvider.Object, mockedFactory.Object, mockedDtoFactory.Object);
 
-            var model = new RegisterViewModel
+            var model = new RegisterDto
             {
                 Username = username,
                 Email = email,
@@ -174,9 +180,11 @@ namespace SecretSanta.Web.Tests.Controllers.AccountControllerTests
             mockedProvider.Setup(p => p.RegisterUser(It.IsAny<User>(), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Failed());
 
-            var controller = new AccountController(mockedProvider.Object, mockedFactory.Object);
+            var mockedDtoFactory = new Mock<IDtoFactory>();
 
-            var model = new RegisterViewModel
+            var controller = new AccountController(mockedProvider.Object, mockedFactory.Object, mockedDtoFactory.Object);
+
+            var model = new RegisterDto
             {
                 Username = username,
                 Email = email,
@@ -208,9 +216,11 @@ namespace SecretSanta.Web.Tests.Controllers.AccountControllerTests
             mockedProvider.Setup(p => p.RegisterUser(It.IsAny<User>(), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Success);
 
-            var controller = new AccountController(mockedProvider.Object, mockedFactory.Object);
+            var mockedDtoFactory = new Mock<IDtoFactory>();
 
-            var model = new RegisterViewModel
+            var controller = new AccountController(mockedProvider.Object, mockedFactory.Object, mockedDtoFactory.Object);
+
+            var model = new RegisterDto
             {
                 Username = username,
                 Email = email,
@@ -242,9 +252,11 @@ namespace SecretSanta.Web.Tests.Controllers.AccountControllerTests
             mockedProvider.Setup(p => p.RegisterUser(It.IsAny<User>(), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Success);
 
-            var controller = new AccountController(mockedProvider.Object, mockedFactory.Object);
+            var mockedDtoFactory = new Mock<IDtoFactory>();
 
-            var model = new RegisterViewModel
+            var controller = new AccountController(mockedProvider.Object, mockedFactory.Object, mockedDtoFactory.Object);
+
+            var model = new RegisterDto
             {
                 Username = username,
                 Email = email,
