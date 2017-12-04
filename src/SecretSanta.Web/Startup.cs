@@ -101,7 +101,7 @@ namespace SecretSanta.Web
             return kernel;
         }
 
-        private T Get<T>(IServiceProvider provider)
+        private T Get<T>()
         {
             return (T)this.provider.GetService(typeof(T));
         }
