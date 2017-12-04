@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Text;
 using System.Threading;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -8,12 +10,14 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Ninject;
 using Ninject.Activation;
 using Ninject.Extensions.Factory;
 using Ninject.Infrastructure.Disposal;
 using SecretSanta.Authentication;
 using SecretSanta.Authentication.Contracts;
+using SecretSanta.Common;
 using SecretSanta.Data;
 using SecretSanta.Data.Contracts;
 using SecretSanta.Factories;
@@ -54,6 +58,29 @@ namespace SecretSanta.Web
             services.AddScoped<IDbContext, SecretSantaContext>();
             services.AddScoped<IAuthenticationProvider, AuthenticationProvider>();
             services.AddSingleton<ITokenProvider, JwtTokenProvider>();
+            services.AddSingleton<ITokenManager, TokenManager>();
+            services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
+
+            services
+                .AddAuthentication(opts =>
+                {
+                    opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer((config) =>
+                {
+                    config.RequireHttpsMetadata = false;
+                    config.SaveToken = true;
+                    config.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidIssuer = Configuration[Constants.TokenIssuer],
+                        ValidAudience = Configuration[Constants.TokenIssuer],
+                        IssuerSigningKey =
+                            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration[Constants.TokenKey]))
+                    };
+                });
+
 
             services.AddMvc();
 
@@ -75,6 +102,8 @@ namespace SecretSanta.Web
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseAuthentication();
 
             app.UseMvc();
         }
