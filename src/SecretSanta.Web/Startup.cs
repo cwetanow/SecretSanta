@@ -18,8 +18,10 @@ using SecretSanta.Data;
 using SecretSanta.Data.Contracts;
 using SecretSanta.Factories;
 using SecretSanta.Models;
+using SecretSanta.Providers;
 using SecretSanta.Web.Infrastructure;
 using SecretSanta.Web.Infrastructure.Extensions;
+using SecretSanta.Providers.Contracts;
 
 namespace SecretSanta.Web
 {
