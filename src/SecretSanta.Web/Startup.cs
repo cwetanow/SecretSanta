@@ -90,6 +90,8 @@ namespace SecretSanta.Web
             // Factories
             kernel.Bind<IUserFactory>().ToFactory().InSingletonScope();
 
+            kernel.Bind<IDtoFactory>().ToFactory().InSingletonScope();
+
             // Authentication
             kernel.Bind<IAuthenticationProvider>()
                 .ToMethod((context => this.Get<IAuthenticationProvider>()))
