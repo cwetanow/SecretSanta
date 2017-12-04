@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using SecretSanta.Common;
 using SecretSanta.Factories;
+using SecretSanta.Web.Infrastructure;
 
 namespace SecretSanta.Web.Controllers
 {
@@ -14,9 +15,11 @@ namespace SecretSanta.Web.Controllers
     {
         private readonly IAuthenticationProvider authenticationProvider;
         private readonly IUserFactory userFactory;
+        private readonly IDtoFactory dtoFactory;
 
         public AccountController(IAuthenticationProvider authenticationProvider,
-            IUserFactory userFactory)
+            IUserFactory userFactory,
+            IDtoFactory dtoFactory)
         {
             if (authenticationProvider == null)
             {
@@ -28,13 +31,19 @@ namespace SecretSanta.Web.Controllers
                 throw new ArgumentNullException(nameof(userFactory));
             }
 
+            if (dtoFactory == null)
+            {
+                throw new ArgumentNullException(nameof(dtoFactory));
+            }
+
             this.authenticationProvider = authenticationProvider;
             this.userFactory = userFactory;
+            this.dtoFactory = dtoFactory;
         }
 
         [HttpPost]
         [Route("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
+        public async Task<IActionResult> Register([FromBody] RegisterDto model)
         {
             var user = await this.authenticationProvider.FindByUsernameAsync(model.Username);
 
@@ -57,7 +66,7 @@ namespace SecretSanta.Web.Controllers
 
         [HttpPost]
         [Route("token")]
-        public async Task<IActionResult> GenerateToken([FromBody]LoginViewModel model)
+        public async Task<IActionResult> GenerateToken([FromBody]LoginDto model)
         {
             var user = await this.authenticationProvider.FindByUsernameAsync(model.Username);
 
@@ -69,11 +78,13 @@ namespace SecretSanta.Web.Controllers
                 {
                     var token = this.authenticationProvider.GenerateToken(user.Email);
 
-                    return this.Ok(new {token});
+                    var dto = this.dtoFactory.CreateTokenDto(token);
+
+                    return this.Ok(dto);
                 }
             }
 
-            return this.BadRequest();
+            return this.BadRequest(Constants.InvalidCredentials);
         }
     }
 }
