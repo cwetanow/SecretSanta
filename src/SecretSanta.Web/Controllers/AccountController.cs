@@ -52,22 +52,25 @@ namespace SecretSanta.Web.Controllers
             return this.BadRequest();
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Login([FromBody]LoginViewModel model)
-        //{
-        //    var user = await this.authenticationProvider.FindByEmailAsync(model.Email);
+        [HttpPost]
+        [Route("token")]
+        public async Task<IActionResult> GenerateToken([FromBody]LoginViewModel model)
+        {
+            var user = await this.authenticationProvider.FindByUsernameAsync(model.Username);
 
-        //    if (user != null)
-        //    {
-        //        var result = await this.authenticationProvider.CheckPasswordSignInAsync(user, model.Password);
+            if (user != null)
+            {
+                var result = await this.authenticationProvider.CheckPasswordSignInAsync(user, model.Password);
 
-        //        if (result.Succeeded)
-        //        {
-        //            // Generate token
-        //        }
-        //    }
+                if (result.Succeeded)
+                {
+                    var token = this.authenticationProvider.GenerateToken(user.Email);
 
-        //    return this.BadRequest();
-        //}
+                    return this.Ok(new {token});
+                }
+            }
+
+            return this.BadRequest();
+        }
     }
 }
