@@ -28,6 +28,11 @@ namespace SecretSanta.Authentication
                 throw new ArgumentNullException(nameof(dateTimeProvider));
             }
 
+            if (tokenProvider == null)
+            {
+                throw new ArgumentNullException(nameof(tokenProvider));
+            }
+
             this.configuration = configuration;
             this.dateTimeProvider = dateTimeProvider;
             this.tokenProvider = tokenProvider;
