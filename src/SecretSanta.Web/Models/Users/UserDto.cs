@@ -5,6 +5,11 @@ namespace SecretSanta.Web.Models.Users
 {
     public class UserDto
     {
+        public UserDto()
+        {
+
+        }
+
         public UserDto(string username, string email, string displayName)
         {
             this.UserName = username;
