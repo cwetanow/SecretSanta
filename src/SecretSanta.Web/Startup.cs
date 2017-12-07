@@ -26,6 +26,8 @@ using SecretSanta.Providers;
 using SecretSanta.Web.Infrastructure;
 using SecretSanta.Web.Infrastructure.Extensions;
 using SecretSanta.Providers.Contracts;
+using SecretSanta.Services.Contracts;
+using SecretSanta.Services;
 
 namespace SecretSanta.Web
 {
@@ -116,15 +118,18 @@ namespace SecretSanta.Web
 
             foreach (var ctrlType in app.GetControllerTypes())
             {
-                kernel.Bind(ctrlType).ToSelf()
+                kernel.Bind(ctrlType)
+                    .ToSelf()
                     .InScope(RequestScope);
             }
 
             // Factories
-            kernel.Bind<IUserFactory>().ToFactory()
+            kernel.Bind<IUserFactory>()
+                .ToFactory()
                 .InSingletonScope();
 
-            kernel.Bind<IDtoFactory>().ToFactory()
+            kernel.Bind<IDtoFactory>()
+                .ToFactory()
                 .InSingletonScope();
 
             // Authentication
@@ -133,10 +138,17 @@ namespace SecretSanta.Web
                 .InScope(RequestScope);
 
             // Data
-            kernel.Bind(typeof(IRepository<>)).To(typeof(EfRepository<>))
+            kernel.Bind(typeof(IRepository<>))
+                .To(typeof(EfRepository<>))
                 .InScope(RequestScope);
 
-            kernel.Bind<IUnitOfWork>().To<UnitOfWork>()
+            kernel.Bind<IUnitOfWork>()
+                .To<UnitOfWork>()
+                .InScope(RequestScope);
+
+            // Services
+            kernel.Bind<IUserService>()
+                .To<UserService>()
                 .InScope(RequestScope);
 
             // Cross-wire required framework services
