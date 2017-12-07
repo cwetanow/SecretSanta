@@ -11,3 +11,4 @@ script:
   - dotnet build 
   - dotnet test SecretSanta.Authentication.Tests/
   - dotnet test SecretSanta.Web.Tests/
+  - dotnet test SecretSanta.Data.Tests/
