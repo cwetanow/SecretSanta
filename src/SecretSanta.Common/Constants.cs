@@ -11,5 +11,8 @@
         public const int TokenExpireHours = 2;
         public const int TokenExpireMinutes = 0;
         public const int TokenExpireSeconds = 0;
+
+        public const string UsernameCannotBeNull = "Username cannot be null";
+        public const string UserNotFound = "User not found";
     }
 }
