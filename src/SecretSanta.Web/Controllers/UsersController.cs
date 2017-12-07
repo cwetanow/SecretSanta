@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SecretSanta.Services.Contracts;
 using SecretSanta.Web.Infrastructure;
+using SecretSanta.Common;
 
 namespace SecretSanta.Web.Controllers
 {
@@ -35,6 +36,26 @@ namespace SecretSanta.Web.Controllers
             var result = this.userService.GetUsers(offset, limit, sortAscending, searchPattern);
 
             var dto = this.dtoFactory.CreateUsersListDto(result);
+
+            return this.Ok(dto);
+        }
+
+        [Route("{username}")]
+        public IActionResult GetByUsername([FromQuery]string username)
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                return this.BadRequest(Constants.UsernameCannotBeNull);
+            }
+
+            var user = this.userService.GetByUsername(username);
+
+            if (user == null)
+            {
+                return this.NotFound(Constants.UserNotFound);
+            }
+
+            var dto = this.dtoFactory.CreateUserDto(user.UserName, user.Email, user.DisplayName);
 
             return this.Ok(dto);
         }
