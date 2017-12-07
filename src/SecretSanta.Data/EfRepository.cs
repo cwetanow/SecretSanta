@@ -9,7 +9,7 @@ namespace SecretSanta.Data
     {
         private readonly IDbContext dbContext;
 
-        public EntityFrameworkRepository(IDbContext dbContext)
+        public EfRepository(IDbContext dbContext)
         {
             if (dbContext == null)
             {
