@@ -116,17 +116,24 @@ namespace SecretSanta.Web
 
             foreach (var ctrlType in app.GetControllerTypes())
             {
-                kernel.Bind(ctrlType).ToSelf().InScope(RequestScope);
+                kernel.Bind(ctrlType).ToSelf()
+                    .InScope(RequestScope);
             }
 
             // Factories
-            kernel.Bind<IUserFactory>().ToFactory().InSingletonScope();
+            kernel.Bind<IUserFactory>().ToFactory()
+                .InSingletonScope();
 
-            kernel.Bind<IDtoFactory>().ToFactory().InSingletonScope();
+            kernel.Bind<IDtoFactory>().ToFactory()
+                .InSingletonScope();
 
             // Authentication
             kernel.Bind<IAuthenticationProvider>()
                 .ToMethod((context => this.Get<IAuthenticationProvider>()))
+                .InScope(RequestScope);
+
+            // Data
+            kernel.Bind<IUnitOfWork>().To<UnitOfWork>()
                 .InScope(RequestScope);
 
             // Cross-wire required framework services
