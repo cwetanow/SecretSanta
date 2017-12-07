@@ -12,3 +12,4 @@ script:
   - dotnet test SecretSanta.Authentication.Tests/
   - dotnet test SecretSanta.Web.Tests/
   - dotnet test SecretSanta.Data.Tests/
+  - dotnet test SecretSanta.Services.Tests/
