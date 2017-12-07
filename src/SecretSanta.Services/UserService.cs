@@ -21,6 +21,14 @@ namespace SecretSanta.Services
             this.repository = repository;
         }
 
+        public User GetByUsername(string username)
+        {
+            var user = this.repository.All
+                .FirstOrDefault(u => u.UserName.Equals(username));
+
+            return user;
+        }
+
         public IEnumerable<User> GetUsers(int offset, int limit, bool sortAscending = true, string searchPattern = null)
         {
             var result = this.repository.All;
