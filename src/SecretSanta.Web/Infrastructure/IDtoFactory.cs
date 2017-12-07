@@ -10,5 +10,7 @@ namespace SecretSanta.Web.Infrastructure
         TokenDto CreateTokenDto(string token);
 
         UsersListDto CreateUsersListDto(IEnumerable<User> users);
+
+        UserDto CreateUserDto(string username, string email, string displayName);
     }
 }
