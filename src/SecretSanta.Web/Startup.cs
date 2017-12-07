@@ -133,6 +133,9 @@ namespace SecretSanta.Web
                 .InScope(RequestScope);
 
             // Data
+            kernel.Bind(typeof(IRepository<>)).To(typeof(EfRepository<>))
+                .InScope(RequestScope);
+
             kernel.Bind<IUnitOfWork>().To<UnitOfWork>()
                 .InScope(RequestScope);
 
