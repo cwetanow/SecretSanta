@@ -3,9 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SecretSanta.Data.Contracts;
 using SecretSanta.Data.Mappings;
 using SecretSanta.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace SecretSanta.Data
 {
@@ -27,6 +25,11 @@ namespace SecretSanta.Data
         public DbSet<TEntity> DbSet<TEntity>() where TEntity : class
         {
             return this.Set<TEntity>();
+        }
+
+        public Task<int> SaveChangesAsync()
+        {
+            return base.SaveChangesAsync();
         }
 
         public void SetAdded<TEntry>(TEntry entity) where TEntry : class

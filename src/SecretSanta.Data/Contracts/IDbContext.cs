@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace SecretSanta.Data.Contracts
 {
@@ -8,6 +9,8 @@ namespace SecretSanta.Data.Contracts
             where TEntity : class;
 
         int SaveChanges();
+
+        Task<int> SaveChangesAsync();
 
         void SetAdded<TEntry>(TEntry entity)
             where TEntry : class;
