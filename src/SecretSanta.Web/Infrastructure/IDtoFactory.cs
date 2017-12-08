@@ -2,6 +2,7 @@
 using SecretSanta.Models;
 using SecretSanta.Web.Models.Account;
 using SecretSanta.Web.Models.Users;
+using SecretSanta.Web.Models.Group;
 
 namespace SecretSanta.Web.Infrastructure
 {
@@ -12,5 +13,7 @@ namespace SecretSanta.Web.Infrastructure
         UsersListDto CreateUsersListDto(IEnumerable<User> users);
 
         UserDto CreateUserDto(string username, string email, string displayName);
+
+        GroupDto CreateGroupDto(Group group);
     }
 }

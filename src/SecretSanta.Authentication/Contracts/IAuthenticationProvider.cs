@@ -13,5 +13,7 @@ namespace SecretSanta.Authentication.Contracts
         PasswordVerificationResult CheckPasswordSignIn(User user, string password);
 
         string GenerateToken(string email);
+
+        Task<User> GetCurrentUserAsync();
     }
 }

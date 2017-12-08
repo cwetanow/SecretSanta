@@ -12,10 +12,7 @@ namespace SecretSanta.Services.Tests.UserServiceTests
         [Test]
         public void TestConstructor_PassRepositoryNull_ShouldThrowArgumentNullException()
         {
-            // Arrange
-            var mockedUnitOfWork = new Mock<IUnitOfWork>();
-
-            // Act, Assert
+            // Arrange, Act, Assert
             Assert.Throws<ArgumentNullException>(() => new UserService(null));
         }
 

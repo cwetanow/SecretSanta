@@ -14,5 +14,8 @@
 
         public const string UsernameCannotBeNull = "Username cannot be null";
         public const string UserNotFound = "User not found";
+
+        public const string GroupNameCannotBeNull = "Group name cannot be null";
+        public const string GroupAlreadyExists = "Group already exists";
     }
 }

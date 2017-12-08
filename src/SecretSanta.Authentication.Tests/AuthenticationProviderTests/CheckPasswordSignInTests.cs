@@ -36,9 +36,10 @@ namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
             var mockedPasswordHasher = new Mock<IPasswordHasher<User>>();
 
             var mockedTokenManager = new Mock<ITokenManager>();
+            var mockedHttpContextAccessor = new Mock<IHttpContextAccessor>();
 
             var provider = new AuthenticationProvider(mockedUserManager.Object, mockedPasswordHasher.Object,
-                mockedTokenManager.Object);
+                mockedTokenManager.Object, mockedHttpContextAccessor.Object);
 
             var user = new User { PasswordHash = passHash };
 
@@ -75,9 +76,10 @@ namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
                 .Returns(PasswordVerificationResult.Success);
 
             var mockedTokenManager = new Mock<ITokenManager>();
+            var mockedHttpContextAccessor = new Mock<IHttpContextAccessor>();
 
             var provider = new AuthenticationProvider(mockedUserManager.Object, mockedPasswordHasher.Object,
-                mockedTokenManager.Object);
+                mockedTokenManager.Object, mockedHttpContextAccessor.Object);
 
             var user = new User();
 

@@ -36,9 +36,11 @@ namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
 
             var mockedTokenManager = new Mock<ITokenManager>();
 
+            var mockedHttpContextAccessor = new Mock<IHttpContextAccessor>();
+
             // Act
             var provider = new AuthenticationProvider(mockedUserManager.Object, mockedPasswordHasher.Object,
-                mockedTokenManager.Object);
+                mockedTokenManager.Object, mockedHttpContextAccessor.Object);
 
             // Assert
             Assert.IsNotNull(provider);
@@ -64,10 +66,11 @@ namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
             var mockedPasswordHasher = new Mock<IPasswordHasher<User>>();
 
             var mockedTokenManager = new Mock<ITokenManager>();
+            var mockedHttpContextAccessor = new Mock<IHttpContextAccessor>();
 
             // Act, Assert
             Assert.Throws<ArgumentNullException>(() => new AuthenticationProvider(null, mockedPasswordHasher.Object,
-                mockedTokenManager.Object));
+                mockedTokenManager.Object, mockedHttpContextAccessor.Object));
         }
 
         [Test]
@@ -88,14 +91,15 @@ namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
                 mockedProvider.Object, mockedLogger.Object);
 
             var mockedPasswordHasher = new Mock<IPasswordHasher<User>>();
+            var mockedHttpContextAccessor = new Mock<IHttpContextAccessor>();
 
             // Act, Assert
             Assert.Throws<ArgumentNullException>(() => new AuthenticationProvider(mockedUserManager.Object, mockedPasswordHasher.Object,
-                null));
+                null, mockedHttpContextAccessor.Object));
         }
 
         [Test]
-        public void TestConstructor_PassSignInManagerNull_ShouldThrowArgumentNullException()
+        public void TestConstructor_PassPasswordHasherNull_ShouldThrowArgumentNullException()
         {
             var mockedUserStore = new Mock<IUserStore<User>>();
             var mockedOptions = new Mock<IOptions<IdentityOptions>>();
@@ -111,19 +115,37 @@ namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
                 mockedUserValidator, mockedPasswordValidator, mockedNormalizer.Object, mockedDescriber.Object,
                 mockedProvider.Object, mockedLogger.Object);
 
-            var mockedAccessor = new HttpContextAccessor();
-            var mockedUserClaimsPrincipalFactory = new Mock<IUserClaimsPrincipalFactory<User>>();
-            var mockedIdentityOptions = new Mock<IOptions<IdentityOptions>>();
-            var mockedSignInLogger = new Mock<ILogger<SignInManager<User>>>();
-
-            var mockedSignInManager = new Mock<SignInManager<User>>(mockedUserManager.Object, mockedAccessor,
-                mockedUserClaimsPrincipalFactory.Object, mockedIdentityOptions.Object, mockedSignInLogger.Object);
-
             var mockedTokenManager = new Mock<ITokenManager>();
+            var mockedHttpContextAccessor = new Mock<IHttpContextAccessor>();
 
             // Act, Assert
             Assert.Throws<ArgumentNullException>(() => new AuthenticationProvider(mockedUserManager.Object, null,
-                mockedTokenManager.Object));
+                mockedTokenManager.Object, mockedHttpContextAccessor.Object));
+        }
+
+        [Test]
+        public void TestConstructor_PassHttpContextAccessorNull_ShouldThrowArgumentNullException()
+        {
+            var mockedUserStore = new Mock<IUserStore<User>>();
+            var mockedOptions = new Mock<IOptions<IdentityOptions>>();
+            var mockedHasher = new Mock<IPasswordHasher<User>>();
+            var mockedUserValidator = new IUserValidator<User>[0];
+            var mockedPasswordValidator = new IPasswordValidator<User>[0];
+            var mockedNormalizer = new Mock<ILookupNormalizer>();
+            var mockedDescriber = new Mock<IdentityErrorDescriber>();
+            var mockedProvider = new Mock<IServiceProvider>();
+            var mockedLogger = new Mock<ILogger<UserManager<User>>>();
+
+            var mockedUserManager = new Mock<UserManager<User>>(mockedUserStore.Object, mockedOptions.Object, mockedHasher.Object,
+                mockedUserValidator, mockedPasswordValidator, mockedNormalizer.Object, mockedDescriber.Object,
+                mockedProvider.Object, mockedLogger.Object);
+
+            var mockedPasswordHasher = new Mock<IPasswordHasher<User>>();
+            var mockedTokenManager = new Mock<ITokenManager>();
+
+            // Act, Assert
+            Assert.Throws<ArgumentNullException>(() => new AuthenticationProvider(mockedUserManager.Object, mockedPasswordHasher.Object,
+                mockedTokenManager.Object, null));
         }
     }
 }

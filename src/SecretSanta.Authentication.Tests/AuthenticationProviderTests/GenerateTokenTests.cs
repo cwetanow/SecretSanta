@@ -36,9 +36,10 @@ namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
             var mockedPasswordHasher = new Mock<IPasswordHasher<User>>();
 
             var mockedTokenManager = new Mock<ITokenManager>();
+            var mockedHttpContextAccessor = new Mock<IHttpContextAccessor>();
 
             var provider = new AuthenticationProvider(mockedUserManager.Object, mockedPasswordHasher.Object,
-                mockedTokenManager.Object);
+                mockedTokenManager.Object, mockedHttpContextAccessor.Object);
 
             // Act
             provider.GenerateToken(email);
@@ -75,8 +76,10 @@ namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
             var mockedTokenManager = new Mock<ITokenManager>();
             mockedTokenManager.Setup(m => m.GenerateToken(It.IsAny<string>())).Returns(token);
 
+            var mockedHttpContextAccessor = new Mock<IHttpContextAccessor>();
+
             var provider = new AuthenticationProvider(mockedUserManager.Object, mockedPasswordHasher.Object,
-                mockedTokenManager.Object);
+                mockedTokenManager.Object, mockedHttpContextAccessor.Object);
 
             // Act
             var result = provider.GenerateToken(email);
