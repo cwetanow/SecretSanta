@@ -75,9 +75,9 @@ namespace SecretSanta.Web.Controllers
 
             if (user != null)
             {
-                var result = await this.authenticationProvider.CheckPasswordSignInAsync(user, model.Password);
+                var result = this.authenticationProvider.CheckPasswordSignIn(user, model.Password);
 
-                if (result.Succeeded)
+                if (result == PasswordVerificationResult.Success)
                 {
                     var token = this.authenticationProvider.GenerateToken(user.Email);
 

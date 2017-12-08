@@ -32,21 +32,12 @@ namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
                 mockedUserValidator, mockedPasswordValidator, mockedNormalizer.Object, mockedDescriber.Object,
                 mockedProvider.Object, mockedLogger.Object);
 
-            var mockedAccessor = new HttpContextAccessor();
-            var mockedUserClaimsPrincipalFactory = new Mock<IUserClaimsPrincipalFactory<User>>();
-            var mockedIdentityOptions = new Mock<IOptions<IdentityOptions>>();
-            var mockedSignInLogger = new Mock<ILogger<SignInManager<User>>>();
-
-            var mockedSchemeProvider = new Mock<IAuthenticationSchemeProvider>();
-
-            var mockedSignInManager = new Mock<SignInManager<User>>(mockedUserManager.Object, mockedAccessor,
-                mockedUserClaimsPrincipalFactory.Object, mockedIdentityOptions.Object, mockedSignInLogger.Object,
-                mockedSchemeProvider.Object);
+            var mockedPasswordHasher = new Mock<IPasswordHasher<User>>();
 
             var mockedTokenManager = new Mock<ITokenManager>();
 
             // Act
-            var provider = new AuthenticationProvider(mockedUserManager.Object, mockedSignInManager.Object,
+            var provider = new AuthenticationProvider(mockedUserManager.Object, mockedPasswordHasher.Object,
                 mockedTokenManager.Object);
 
             // Assert
@@ -70,20 +61,12 @@ namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
                 mockedUserValidator, mockedPasswordValidator, mockedNormalizer.Object, mockedDescriber.Object,
                 mockedProvider.Object, mockedLogger.Object);
 
-            var mockedAccessor = new HttpContextAccessor();
-            var mockedUserClaimsPrincipalFactory = new Mock<IUserClaimsPrincipalFactory<User>>();
-            var mockedIdentityOptions = new Mock<IOptions<IdentityOptions>>();
-            var mockedSignInLogger = new Mock<ILogger<SignInManager<User>>>();
-            var mockedSchemeProvider = new Mock<IAuthenticationSchemeProvider>();
-
-            var mockedSignInManager = new Mock<SignInManager<User>>(mockedUserManager.Object, mockedAccessor,
-                mockedUserClaimsPrincipalFactory.Object, mockedIdentityOptions.Object, mockedSignInLogger.Object,
-                mockedSchemeProvider.Object);
+            var mockedPasswordHasher = new Mock<IPasswordHasher<User>>();
 
             var mockedTokenManager = new Mock<ITokenManager>();
 
             // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => new AuthenticationProvider(null, mockedSignInManager.Object,
+            Assert.Throws<ArgumentNullException>(() => new AuthenticationProvider(null, mockedPasswordHasher.Object,
                 mockedTokenManager.Object));
         }
 
@@ -104,18 +87,10 @@ namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
                 mockedUserValidator, mockedPasswordValidator, mockedNormalizer.Object, mockedDescriber.Object,
                 mockedProvider.Object, mockedLogger.Object);
 
-            var mockedAccessor = new HttpContextAccessor();
-            var mockedUserClaimsPrincipalFactory = new Mock<IUserClaimsPrincipalFactory<User>>();
-            var mockedIdentityOptions = new Mock<IOptions<IdentityOptions>>();
-            var mockedSignInLogger = new Mock<ILogger<SignInManager<User>>>();
-            var mockedSchemeProvider = new Mock<IAuthenticationSchemeProvider>();
-
-            var mockedSignInManager = new Mock<SignInManager<User>>(mockedUserManager.Object, mockedAccessor,
-                mockedUserClaimsPrincipalFactory.Object, mockedIdentityOptions.Object, mockedSignInLogger.Object,
-                mockedSchemeProvider.Object);
+            var mockedPasswordHasher = new Mock<IPasswordHasher<User>>();
 
             // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => new AuthenticationProvider(mockedUserManager.Object, mockedSignInManager.Object,
+            Assert.Throws<ArgumentNullException>(() => new AuthenticationProvider(mockedUserManager.Object, mockedPasswordHasher.Object,
                 null));
         }
 

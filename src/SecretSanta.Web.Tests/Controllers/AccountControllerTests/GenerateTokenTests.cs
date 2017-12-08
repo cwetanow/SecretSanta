@@ -10,6 +10,7 @@ using SecretSanta.Web.Controllers;
 using SecretSanta.Web.Infrastructure;
 using SecretSanta.Web.Models.Account;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
+using Microsoft.AspNetCore.Identity;
 
 namespace SecretSanta.Web.Tests.Controllers.AccountControllerTests
 {
@@ -98,8 +99,8 @@ namespace SecretSanta.Web.Tests.Controllers.AccountControllerTests
 
             var mockedProvider = new Mock<IAuthenticationProvider>();
             mockedProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>())).ReturnsAsync(user);
-            mockedProvider.Setup(p => p.CheckPasswordSignInAsync(It.IsAny<User>(), It.IsAny<string>()))
-                .ReturnsAsync(SignInResult.Success);
+            mockedProvider.Setup(p => p.CheckPasswordSignIn(It.IsAny<User>(), It.IsAny<string>()))
+                .Returns(PasswordVerificationResult.Success);
 
             var controller = new AccountController(mockedProvider.Object, mockedFactory.Object, mockedDtoFactory.Object);
 
@@ -113,7 +114,7 @@ namespace SecretSanta.Web.Tests.Controllers.AccountControllerTests
             await controller.GenerateToken(model);
 
             // Assert
-            mockedProvider.Verify(p => p.CheckPasswordSignInAsync(user, password), Times.Once);
+            mockedProvider.Verify(p => p.CheckPasswordSignIn(user, password), Times.Once);
         }
 
         [TestCase("username", "password")]
@@ -128,8 +129,8 @@ namespace SecretSanta.Web.Tests.Controllers.AccountControllerTests
 
             var mockedProvider = new Mock<IAuthenticationProvider>();
             mockedProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>())).ReturnsAsync(user);
-            mockedProvider.Setup(p => p.CheckPasswordSignInAsync(It.IsAny<User>(), It.IsAny<string>()))
-                .ReturnsAsync(SignInResult.Failed);
+            mockedProvider.Setup(p => p.CheckPasswordSignIn(It.IsAny<User>(), It.IsAny<string>()))
+                .Returns(PasswordVerificationResult.Failed);
 
             var controller = new AccountController(mockedProvider.Object, mockedFactory.Object, mockedDtoFactory.Object);
 
@@ -158,8 +159,8 @@ namespace SecretSanta.Web.Tests.Controllers.AccountControllerTests
 
             var mockedProvider = new Mock<IAuthenticationProvider>();
             mockedProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>())).ReturnsAsync(user);
-            mockedProvider.Setup(p => p.CheckPasswordSignInAsync(It.IsAny<User>(), It.IsAny<string>()))
-                .ReturnsAsync(SignInResult.Failed);
+            mockedProvider.Setup(p => p.CheckPasswordSignIn(It.IsAny<User>(), It.IsAny<string>()))
+                .Returns(PasswordVerificationResult.Failed);
 
             var controller = new AccountController(mockedProvider.Object, mockedFactory.Object, mockedDtoFactory.Object);
 
@@ -189,8 +190,8 @@ namespace SecretSanta.Web.Tests.Controllers.AccountControllerTests
 
             var mockedProvider = new Mock<IAuthenticationProvider>();
             mockedProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>())).ReturnsAsync(user);
-            mockedProvider.Setup(p => p.CheckPasswordSignInAsync(It.IsAny<User>(), It.IsAny<string>()))
-                .ReturnsAsync(SignInResult.Success);
+            mockedProvider.Setup(p => p.CheckPasswordSignIn(It.IsAny<User>(), It.IsAny<string>()))
+                .Returns(PasswordVerificationResult.Success);
 
             var controller = new AccountController(mockedProvider.Object, mockedFactory.Object, mockedDtoFactory.Object);
 
@@ -220,8 +221,8 @@ namespace SecretSanta.Web.Tests.Controllers.AccountControllerTests
 
             var mockedProvider = new Mock<IAuthenticationProvider>();
             mockedProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>())).ReturnsAsync(user);
-            mockedProvider.Setup(p => p.CheckPasswordSignInAsync(It.IsAny<User>(), It.IsAny<string>()))
-                .ReturnsAsync(SignInResult.Success);
+            mockedProvider.Setup(p => p.CheckPasswordSignIn(It.IsAny<User>(), It.IsAny<string>()))
+                .Returns(PasswordVerificationResult.Success);
             mockedProvider.Setup(p => p.GenerateToken(It.IsAny<string>())).Returns(token);
 
             var controller = new AccountController(mockedProvider.Object, mockedFactory.Object, mockedDtoFactory.Object);
@@ -252,8 +253,8 @@ namespace SecretSanta.Web.Tests.Controllers.AccountControllerTests
 
             var mockedProvider = new Mock<IAuthenticationProvider>();
             mockedProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>())).ReturnsAsync(user);
-            mockedProvider.Setup(p => p.CheckPasswordSignInAsync(It.IsAny<User>(), It.IsAny<string>()))
-                .ReturnsAsync(SignInResult.Success);
+            mockedProvider.Setup(p => p.CheckPasswordSignIn(It.IsAny<User>(), It.IsAny<string>()))
+                .Returns(PasswordVerificationResult.Success);
 
             var controller = new AccountController(mockedProvider.Object, mockedFactory.Object, mockedDtoFactory.Object);
 
@@ -285,8 +286,8 @@ namespace SecretSanta.Web.Tests.Controllers.AccountControllerTests
 
             var mockedProvider = new Mock<IAuthenticationProvider>();
             mockedProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>())).ReturnsAsync(user);
-            mockedProvider.Setup(p => p.CheckPasswordSignInAsync(It.IsAny<User>(), It.IsAny<string>()))
-                .ReturnsAsync(SignInResult.Success);
+            mockedProvider.Setup(p => p.CheckPasswordSignIn(It.IsAny<User>(), It.IsAny<string>()))
+                .Returns(PasswordVerificationResult.Success);
 
             var controller = new AccountController(mockedProvider.Object, mockedFactory.Object, mockedDtoFactory.Object);
 

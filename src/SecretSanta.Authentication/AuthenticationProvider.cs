@@ -8,19 +8,19 @@ namespace SecretSanta.Authentication
     public class AuthenticationProvider : IAuthenticationProvider
     {
         private readonly UserManager<User> userManager;
-        private readonly SignInManager<User> signInManager;
+        private readonly IPasswordHasher<User> passwordHasher;
         private readonly ITokenManager tokenManager;
 
-        public AuthenticationProvider(UserManager<User> userManager, SignInManager<User> signInManager, ITokenManager tokenManager)
+        public AuthenticationProvider(UserManager<User> userManager, IPasswordHasher<User> passwordHasher, ITokenManager tokenManager)
         {
             if (userManager == null)
             {
                 throw new System.ArgumentNullException(nameof(userManager));
             }
 
-            if (signInManager == null)
+            if (passwordHasher == null)
             {
-                throw new System.ArgumentNullException(nameof(signInManager));
+                throw new System.ArgumentNullException(nameof(passwordHasher));
             }
 
             if (tokenManager == null)
@@ -29,7 +29,7 @@ namespace SecretSanta.Authentication
             }
 
             this.userManager = userManager;
-            this.signInManager = signInManager;
+            this.passwordHasher = passwordHasher;
             this.tokenManager = tokenManager;
         }
 
@@ -43,9 +43,11 @@ namespace SecretSanta.Authentication
             return this.userManager.CreateAsync(user, password);
         }
 
-        public Task<SignInResult> CheckPasswordSignInAsync(User user, string password)
+        public PasswordVerificationResult CheckPasswordSignIn(User user, string password)
         {
-            return this.signInManager.CheckPasswordSignInAsync(user, password, false);
+            var result = this.passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
+
+            return result;
         }
 
         public string GenerateToken(string email)

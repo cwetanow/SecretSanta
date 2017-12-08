@@ -15,8 +15,8 @@ namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
     [TestFixture]
     public class CheckPasswordSignInAsyncTests
     {
-        [TestCase("password")]
-        public async Task TestCheckPasswordSignInAsync_ShouldCallSignInManagerCheckPasswordSignInAsync(string password)
+        [TestCase("password", "hash")]
+        public void TestCheckPasswordSignIn_ShouldCallSignInManagerCheckPasswordSignInAsync(string password, string passHash)
         {
             // Arrange
             var mockedUserStore = new Mock<IUserStore<User>>();
@@ -33,33 +33,24 @@ namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
                 mockedUserValidator, mockedPasswordValidator, mockedNormalizer.Object, mockedDescriber.Object,
                 mockedProvider.Object, mockedLogger.Object);
 
-            var mockedAccessor = new HttpContextAccessor();
-            var mockedUserClaimsPrincipalFactory = new Mock<IUserClaimsPrincipalFactory<User>>();
-            var mockedIdentityOptions = new Mock<IOptions<IdentityOptions>>();
-            var mockedSignInLogger = new Mock<ILogger<SignInManager<User>>>();
-
-            var mockedSchemeProvider = new Mock<IAuthenticationSchemeProvider>();
-
-            var mockedSignInManager = new Mock<SignInManager<User>>(mockedUserManager.Object, mockedAccessor,
-                mockedUserClaimsPrincipalFactory.Object, mockedIdentityOptions.Object, mockedSignInLogger.Object,
-                mockedSchemeProvider.Object);
+            var mockedPasswordHasher = new Mock<IPasswordHasher<User>>();
 
             var mockedTokenManager = new Mock<ITokenManager>();
 
-            var provider = new AuthenticationProvider(mockedUserManager.Object, mockedSignInManager.Object,
+            var provider = new AuthenticationProvider(mockedUserManager.Object, mockedPasswordHasher.Object,
                 mockedTokenManager.Object);
 
-            var user = new User();
+            var user = new User { PasswordHash = passHash };
 
             // Act
-            await provider.CheckPasswordSignInAsync(user, password);
+            provider.CheckPasswordSignIn(user, password);
 
             // Assert
-            mockedSignInManager.Verify(m => m.CheckPasswordSignInAsync(user, password, It.IsAny<bool>()), Times.Once);
+            mockedPasswordHasher.Verify(h => h.VerifyHashedPassword(user, passHash, password), Times.Once);
         }
 
         [TestCase("password")]
-        public async Task TestCheckPasswordSignInAsync_ShouldReturnCorrectly(string password)
+        public void TestCheckPasswordSignIn_ShouldReturnCorrectly(string password)
         {
             // Arrange
             var mockedUserStore = new Mock<IUserStore<User>>();
@@ -76,34 +67,25 @@ namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
                 mockedUserValidator, mockedPasswordValidator, mockedNormalizer.Object, mockedDescriber.Object,
                 mockedProvider.Object, mockedLogger.Object);
 
-            var mockedAccessor = new HttpContextAccessor();
-            var mockedUserClaimsPrincipalFactory = new Mock<IUserClaimsPrincipalFactory<User>>();
-            var mockedIdentityOptions = new Mock<IOptions<IdentityOptions>>();
-            var mockedSignInLogger = new Mock<ILogger<SignInManager<User>>>();
+            var mockedPasswordHasher = new Mock<IPasswordHasher<User>>();
 
-            var mockedSchemeProvider = new Mock<IAuthenticationSchemeProvider>();
-
-            var mockedSignInManager = new Mock<SignInManager<User>>(mockedUserManager.Object, mockedAccessor,
-                mockedUserClaimsPrincipalFactory.Object, mockedIdentityOptions.Object, mockedSignInLogger.Object,
-                mockedSchemeProvider.Object);
-
-            var expectedResult = SignInResult.Success;
-            mockedSignInManager.Setup(m => m.CheckPasswordSignInAsync(It.IsAny<User>(), It.IsAny<string>(),
-                    It.IsAny<bool>()))
-                .ReturnsAsync(expectedResult);
+            var expectedResult = PasswordVerificationResult.Success;
+            mockedPasswordHasher.Setup(h => h.VerifyHashedPassword(It.IsAny<User>(), It.IsAny<string>(),
+                    It.IsAny<string>()))
+                .Returns(PasswordVerificationResult.Success);
 
             var mockedTokenManager = new Mock<ITokenManager>();
 
-            var provider = new AuthenticationProvider(mockedUserManager.Object, mockedSignInManager.Object,
+            var provider = new AuthenticationProvider(mockedUserManager.Object, mockedPasswordHasher.Object,
                 mockedTokenManager.Object);
 
             var user = new User();
 
             // Act
-            var result = await provider.CheckPasswordSignInAsync(user, password);
+            var result = provider.CheckPasswordSignIn(user, password);
 
             // Assert
-            Assert.AreSame(expectedResult, result);
+            Assert.AreEqual(expectedResult, result);
         }
     }
 }
