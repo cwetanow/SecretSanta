@@ -28,6 +28,8 @@ using SecretSanta.Web.Infrastructure.Extensions;
 using SecretSanta.Providers.Contracts;
 using SecretSanta.Services.Contracts;
 using SecretSanta.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace SecretSanta.Web
 {
@@ -63,6 +65,10 @@ namespace SecretSanta.Web
             services.AddSingleton<ITokenManager, TokenManager>();
             services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
+            var policy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+
             services
                 .AddAuthentication(opts =>
                 {
@@ -84,7 +90,10 @@ namespace SecretSanta.Web
                 });
 
 
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(new AuthorizeFilter(policy));
+            });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
