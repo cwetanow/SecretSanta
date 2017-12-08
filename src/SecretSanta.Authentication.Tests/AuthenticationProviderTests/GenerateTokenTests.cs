@@ -33,20 +33,11 @@ namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
                 mockedUserValidator, mockedPasswordValidator, mockedNormalizer.Object, mockedDescriber.Object,
                 mockedProvider.Object, mockedLogger.Object);
 
-            var mockedAccessor = new HttpContextAccessor();
-            var mockedUserClaimsPrincipalFactory = new Mock<IUserClaimsPrincipalFactory<User>>();
-            var mockedIdentityOptions = new Mock<IOptions<IdentityOptions>>();
-            var mockedSignInLogger = new Mock<ILogger<SignInManager<User>>>();
-
-            var mockedSchemeProvider = new Mock<IAuthenticationSchemeProvider>();
-
-            var mockedSignInManager = new Mock<SignInManager<User>>(mockedUserManager.Object, mockedAccessor,
-                mockedUserClaimsPrincipalFactory.Object, mockedIdentityOptions.Object, mockedSignInLogger.Object,
-                mockedSchemeProvider.Object);
+            var mockedPasswordHasher = new Mock<IPasswordHasher<User>>();
 
             var mockedTokenManager = new Mock<ITokenManager>();
 
-            var provider = new AuthenticationProvider(mockedUserManager.Object, mockedSignInManager.Object,
+            var provider = new AuthenticationProvider(mockedUserManager.Object, mockedPasswordHasher.Object,
                 mockedTokenManager.Object);
 
             // Act
@@ -74,26 +65,17 @@ namespace SecretSanta.Authentication.Tests.AuthenticationProviderTests
                 mockedUserValidator, mockedPasswordValidator, mockedNormalizer.Object, mockedDescriber.Object,
                 mockedProvider.Object, mockedLogger.Object);
 
-            var mockedAccessor = new HttpContextAccessor();
-            var mockedUserClaimsPrincipalFactory = new Mock<IUserClaimsPrincipalFactory<User>>();
-            var mockedIdentityOptions = new Mock<IOptions<IdentityOptions>>();
-            var mockedSignInLogger = new Mock<ILogger<SignInManager<User>>>();
+            var mockedPasswordHasher = new Mock<IPasswordHasher<User>>();
 
-            var mockedSchemeProvider = new Mock<IAuthenticationSchemeProvider>();
-
-            var mockedSignInManager = new Mock<SignInManager<User>>(mockedUserManager.Object, mockedAccessor,
-                mockedUserClaimsPrincipalFactory.Object, mockedIdentityOptions.Object, mockedSignInLogger.Object,
-                mockedSchemeProvider.Object);
-
-            var expectedResult = SignInResult.Success;
-            mockedSignInManager.Setup(m => m.CheckPasswordSignInAsync(It.IsAny<User>(), It.IsAny<string>(),
-                    It.IsAny<bool>()))
-                .ReturnsAsync(expectedResult);
+            var expectedResult = PasswordVerificationResult.Success;
+            mockedPasswordHasher.Setup(m => m.VerifyHashedPassword(It.IsAny<User>(), It.IsAny<string>(),
+                    It.IsAny<string>()))
+                .Returns(expectedResult);
 
             var mockedTokenManager = new Mock<ITokenManager>();
             mockedTokenManager.Setup(m => m.GenerateToken(It.IsAny<string>())).Returns(token);
 
-            var provider = new AuthenticationProvider(mockedUserManager.Object, mockedSignInManager.Object,
+            var provider = new AuthenticationProvider(mockedUserManager.Object, mockedPasswordHasher.Object,
                 mockedTokenManager.Object);
 
             // Act
