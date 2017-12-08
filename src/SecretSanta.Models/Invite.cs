@@ -1,4 +1,5 @@
 ﻿using SecretSanta.Models.Enums;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace SecretSanta.Models
@@ -30,5 +31,7 @@ namespace SecretSanta.Models
         public User User { get; set; }
 
         public InviteState State { get; set; }
+
+        public DateTime Date { get; set; }
     }
 }
