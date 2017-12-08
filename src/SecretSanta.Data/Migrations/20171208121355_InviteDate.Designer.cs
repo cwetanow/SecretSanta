@@ -12,9 +12,10 @@ using System;
 namespace SecretSanta.Data.Migrations
 {
     [DbContext(typeof(SecretSantaContext))]
-    partial class SecretSantaContextModelSnapshot : ModelSnapshot
+    [Migration("20171208121355_InviteDate")]
+    partial class InviteDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
