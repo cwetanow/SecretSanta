@@ -4,6 +4,11 @@ namespace SecretSanta.Web.Models.Group
 {
     public class GroupDto
     {
+        public GroupDto()
+        {
+
+        }
+
         public GroupDto(SecretSanta.Models.Group group)
         {
             this.Name = group.GroupName;
