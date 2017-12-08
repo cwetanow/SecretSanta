@@ -30,6 +30,7 @@ namespace SecretSanta.Web.Controllers
             this.dtoFactory = dtoFactory;
         }
 
+        [HttpGet]
         public IActionResult Get([FromQuery]int offset = 0, [FromQuery]int limit = 10,
             [FromQuery]bool sortAscending = true, [FromQuery]string searchPattern = null)
         {
@@ -40,6 +41,7 @@ namespace SecretSanta.Web.Controllers
             return this.Ok(dto);
         }
 
+        [HttpGet]
         [Route("{username}")]
         public IActionResult GetByUsername([FromQuery]string username)
         {
