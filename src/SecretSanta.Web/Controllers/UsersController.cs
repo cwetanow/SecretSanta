@@ -7,7 +7,6 @@ using SecretSanta.Common;
 
 namespace SecretSanta.Web.Controllers
 {
-    [Authorize]
     [Route("api/users")]
     public class UsersController : Controller
     {

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using SecretSanta.Common;
 using SecretSanta.Factories;
 using SecretSanta.Web.Infrastructure;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SecretSanta.Web.Controllers
 {
@@ -42,6 +43,7 @@ namespace SecretSanta.Web.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto model)
         {
@@ -65,6 +67,7 @@ namespace SecretSanta.Web.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [Route("token")]
         public async Task<IActionResult> GenerateToken([FromBody]LoginDto model)
         {
