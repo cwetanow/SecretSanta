@@ -21,13 +21,27 @@ namespace SecretSanta.Services
             this.factory = factory;
         }
 
-        public IEnumerable<Invite> GetPendingInvites(string userId)
+        public IEnumerable<Invite> GetPendingInvites(string userId, bool orderByDesc, int limit, int offset)
         {
             var invites = this.repository.All
-                .Where(i => i.State == InviteState.Pending && i.UserId.Equals(userId))
-                .ToList();
+                 .Where(i => i.State == InviteState.Pending && i.UserId.Equals(userId));
 
-            return invites;
+            if (orderByDesc)
+            {
+                invites = invites
+                    .OrderBy(i => i.Date);
+            }
+            else
+            {
+                invites = invites
+                   .OrderByDescending(i => i.Date);
+            }
+
+            invites = invites
+                .Skip(limit)
+                .Take(offset);
+
+            return invites.ToList();
         }
     }
 }
