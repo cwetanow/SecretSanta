@@ -1,5 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
+using SecretSanta.Authentication.Contracts;
 using SecretSanta.Services.Contracts;
 using SecretSanta.Web.Controllers;
 using SecretSanta.Web.Infrastructure;
@@ -16,9 +17,10 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
             // Arrange
             var mockedService = new Mock<IGroupService>();
             var mockedFactory = new Mock<IDtoFactory>();
+            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
 
             // Act
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object);
+            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
 
             // Assert
             Assert.IsNotNull(controller);
@@ -29,9 +31,10 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
         {
             // Arrange
             var mockedFactory = new Mock<IDtoFactory>();
+            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
 
             // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => new GroupController(null, mockedFactory.Object));
+            Assert.Throws<ArgumentNullException>(() => new GroupController(null, mockedFactory.Object, mockedAuthenticationProvider.Object));
         }
 
         [Test]
@@ -39,9 +42,21 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
         {
             // Arrange
             var mockedService = new Mock<IGroupService>();
+            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
 
             // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => new GroupController(mockedService.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new GroupController(mockedService.Object, null, mockedAuthenticationProvider.Object));
+        }
+
+        [Test]
+        public void TestConstructor_PassAuthenticationProviderNull_ShouldThrowArgumentNullException()
+        {
+            // Arrange
+            var mockedService = new Mock<IGroupService>();
+            var mockedFactory = new Mock<IDtoFactory>();
+
+            // Act, Assert
+            Assert.Throws<ArgumentNullException>(() => new GroupController(mockedService.Object, mockedFactory.Object, null));
         }
     }
 }
