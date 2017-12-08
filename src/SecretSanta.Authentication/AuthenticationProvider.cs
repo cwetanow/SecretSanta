@@ -67,5 +67,12 @@ namespace SecretSanta.Authentication
 
             return token;
         }
+
+        public Task<User> GetCurrentUserAsync()
+        {
+            var principal = this.httpContextAccessor.HttpContext.User;
+
+            return this.userManager.GetUserAsync(principal);
+        }
     }
 }
