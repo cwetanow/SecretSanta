@@ -3,6 +3,7 @@ using SecretSanta.Models;
 using SecretSanta.Web.Models.Account;
 using SecretSanta.Web.Models.Users;
 using SecretSanta.Web.Models.Group;
+using SecretSanta.Web.Models.Invite;
 
 namespace SecretSanta.Web.Infrastructure
 {
@@ -15,5 +16,7 @@ namespace SecretSanta.Web.Infrastructure
         UserDto CreateUserDto(string username, string email, string displayName);
 
         GroupDto CreateGroupDto(Group group);
+
+        InviteListDto CreateInviteListDto(IEnumerable<Invite> invites);
     }
 }
