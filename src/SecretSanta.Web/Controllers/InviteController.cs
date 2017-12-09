@@ -22,7 +22,7 @@ namespace SecretSanta.Web.Controllers
 
         [HttpGet]
         [Route("pending")]
-        public async Task<IActionResult> GetPendingUserInvites(string username, [FromQuery]int offset = 0, [FromQuery]int limit = 10,
+        public async Task<IActionResult> GetPendingUserInvites([FromQuery]int offset = 0, [FromQuery]int limit = 10,
             [FromQuery]bool sortAscending = true)
         {
             var user = await this.authenticationProvider.GetCurrentUserAsync();
