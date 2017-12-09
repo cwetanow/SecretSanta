@@ -155,6 +155,10 @@ namespace SecretSanta.Web
                 .InScope(RequestScope);
 
             // Data
+            kernel.Bind<IDbContext>()
+                .ToMethod(context => this.Get<IDbContext>())
+                .InScope(RequestScope);
+
             kernel.Bind(typeof(IRepository<>))
                 .To(typeof(EfRepository<>))
                 .InScope(RequestScope);
