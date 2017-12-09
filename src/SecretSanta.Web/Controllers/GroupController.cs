@@ -9,6 +9,7 @@ using SecretSanta.Common;
 
 namespace SecretSanta.Web.Controllers
 {
+    [Route("api/groups")]
     public class GroupController : Controller
     {
         private readonly IGroupService groupService;

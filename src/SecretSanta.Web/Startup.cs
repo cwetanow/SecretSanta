@@ -59,7 +59,7 @@ namespace SecretSanta.Web
                 .AddEntityFrameworkStores<SecretSantaContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddScoped<IDbContext, SecretSantaContext>();
+            services.AddScoped<IDbContext>(serviceProvider => this.Get<SecretSantaContext>());
             services.AddScoped<IAuthenticationProvider, AuthenticationProvider>();
             services.AddSingleton<ITokenProvider, JwtTokenProvider>();
             services.AddSingleton<ITokenManager, TokenManager>();
@@ -170,6 +170,10 @@ namespace SecretSanta.Web
             // Services
             kernel.Bind<IUserService>()
                 .To<UserService>()
+                .InScope(RequestScope);
+
+            kernel.Bind<IGroupService>()
+                .To<GroupService>()
                 .InScope(RequestScope);
 
             kernel.Bind<IInviteService>()

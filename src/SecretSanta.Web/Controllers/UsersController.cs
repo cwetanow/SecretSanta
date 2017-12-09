@@ -42,7 +42,7 @@ namespace SecretSanta.Web.Controllers
 
         [HttpGet]
         [Route("{username}")]
-        public IActionResult GetByUsername([FromQuery]string username)
+        public IActionResult GetByUsername(string username)
         {
             if (string.IsNullOrEmpty(username))
             {
