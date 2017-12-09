@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using SecretSanta.Authentication.Contracts;
 using SecretSanta.Models;
@@ -72,7 +73,16 @@ namespace SecretSanta.Authentication
         {
             var principal = this.httpContextAccessor.HttpContext.User;
 
-            return this.userManager.GetUserAsync(principal);
+            var email = principal.Claims
+                .FirstOrDefault()
+                .Value;
+
+            if (string.IsNullOrEmpty(email))
+            {
+                return null;
+            }
+
+            return this.userManager.FindByEmailAsync(email);
         }
     }
 }
