@@ -38,8 +38,8 @@ namespace SecretSanta.Services
             }
 
             invites = invites
-                .Skip(limit)
-                .Take(offset);
+                .Skip(offset)
+                .Take(limit);
 
             return invites.ToList();
         }
