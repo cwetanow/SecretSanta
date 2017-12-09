@@ -141,6 +141,10 @@ namespace SecretSanta.Web
                 .ToFactory()
                 .InSingletonScope();
 
+            kernel.Bind<IInviteFactory>()
+                .ToFactory()
+                .InSingletonScope();
+
             kernel.Bind<IDtoFactory>()
                 .ToFactory()
                 .InSingletonScope();
@@ -151,6 +155,10 @@ namespace SecretSanta.Web
                 .InScope(RequestScope);
 
             // Data
+            kernel.Bind<IDbContext>()
+                .ToMethod(context => this.Get<IDbContext>())
+                .InScope(RequestScope);
+
             kernel.Bind(typeof(IRepository<>))
                 .To(typeof(EfRepository<>))
                 .InScope(RequestScope);
@@ -162,6 +170,10 @@ namespace SecretSanta.Web
             // Services
             kernel.Bind<IUserService>()
                 .To<UserService>()
+                .InScope(RequestScope);
+
+            kernel.Bind<IInviteService>()
+                .To<InviteService>()
                 .InScope(RequestScope);
 
             // Cross-wire required framework services
