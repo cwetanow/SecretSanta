@@ -21,12 +21,12 @@ namespace SecretSanta.Services
             this.factory = factory;
         }
 
-        public IEnumerable<Invite> GetPendingInvites(string userId, bool orderByDesc, int limit, int offset)
+        public IEnumerable<Invite> GetPendingInvites(string userId, bool orderByAscending, int limit, int offset)
         {
             var invites = this.repository.All
                  .Where(i => i.State == InviteState.Pending && i.UserId.Equals(userId));
 
-            if (orderByDesc)
+            if (orderByAscending)
             {
                 invites = invites
                     .OrderBy(i => i.Date);

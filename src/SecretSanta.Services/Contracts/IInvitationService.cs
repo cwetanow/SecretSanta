@@ -5,6 +5,6 @@ namespace SecretSanta.Services.Contracts
 {
     public interface IInviteService
     {
-        IEnumerable<Invite> GetPendingInvites(string userId, bool orderByDesc, int limit, int offset);
+        IEnumerable<Invite> GetPendingInvites(string userId, bool orderByAscending, int limit, int offset);
     }
 }
