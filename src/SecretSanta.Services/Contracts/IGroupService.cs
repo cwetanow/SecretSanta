@@ -1,4 +1,5 @@
-﻿using SecretSanta.Models;
+﻿using System.Collections.Generic;
+using SecretSanta.Models;
 using System.Threading.Tasks;
 
 namespace SecretSanta.Services.Contracts
@@ -8,5 +9,7 @@ namespace SecretSanta.Services.Contracts
         Task<Group> CreateGroupAsync(string groupName, string ownerId);
 
         Group GetByName(string groupName);
+
+        IEnumerable<User> GetGroupUsers(string groupName);
     }
 }
