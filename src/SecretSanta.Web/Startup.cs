@@ -106,8 +106,8 @@ namespace SecretSanta.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider provider)
         {
-            this.kernel = this.RegisterApplicationComponents(app);
             this.provider = provider;
+            this.kernel = this.RegisterApplicationComponents(app);
 
             if (env.IsDevelopment())
             {
@@ -156,8 +156,9 @@ namespace SecretSanta.Web
 
             // Data
             kernel.Bind<IDbContext>()
-                .ToMethod(context => this.Get<IDbContext>())
-                .InScope(RequestScope);
+                .To<SecretSantaContext>()
+                .InScope(RequestScope)
+                .WithConstructorArgument(typeof(DbContextOptions), this.Get<DbContextOptions>());
 
             kernel.Bind(typeof(IRepository<>))
                 .To(typeof(EfRepository<>))

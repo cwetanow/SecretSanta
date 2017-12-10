@@ -9,7 +9,7 @@ namespace SecretSanta.Data
 {
     public class SecretSantaContext : IdentityDbContext<User>, IDbContext
     {
-        public SecretSantaContext(DbContextOptions<SecretSantaContext> options)
+        public SecretSantaContext(DbContextOptions options)
             : base(options)
         {
         }
