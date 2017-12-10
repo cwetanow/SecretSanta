@@ -62,5 +62,30 @@ namespace SecretSanta.Web.Controllers
 
             return this.Ok(resultDto);
         }
+
+        [HttpGet]
+        [Route("{groupName}/users")]
+        public async Task<IActionResult> GetGroupUsers(string groupName)
+        {
+            if (string.IsNullOrEmpty(groupName))
+            {
+                return this.BadRequest(Constants.GroupNameCannotBeNull);
+            }
+
+            var user = await this.authenticationProvider.GetCurrentUserAsync();
+
+            var group = this.groupService.GetByName(groupName);
+
+            if (!group.OwnerId.Equals(user.Id))
+            {
+                return this.Forbid();
+            }
+
+            var users = this.groupService.GetGroupUsers(groupName);
+
+            var resultDto = this.factory.CreateUsersListDto(users);
+
+            return this.Ok(resultDto);
+        }
     }
 }
