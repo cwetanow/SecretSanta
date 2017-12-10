@@ -3,8 +3,10 @@ using SecretSanta.Factories;
 using SecretSanta.Models;
 using SecretSanta.Services.Contracts;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace SecretSanta.Services
 {
@@ -56,9 +58,28 @@ namespace SecretSanta.Services
         public Group GetByName(string groupName)
         {
             var group = this.repository.All
+                .Include(g => g.Owner)
+                .Include(g => g.Users)
+                .ThenInclude(gu => gu.User)
                 .FirstOrDefault(g => g.GroupName.Equals(groupName));
 
             return group;
+        }
+
+        public IEnumerable<User> GetGroupUsers(string groupName)
+        {
+            var group = this.GetByName(groupName);
+
+            if (group == null)
+            {
+                return null;
+            }
+
+            var users = group.Users
+                .Select(gu => gu.User)
+                .ToList();
+
+            return users;
         }
     }
 }
