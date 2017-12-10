@@ -139,6 +139,35 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 
         [TestCase("group", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
         [TestCase("new group name", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
+        public async Task TestCreateGroup_ServiceReturnsGroup_ShouldSetGroupOwner(string groupName, string userId)
+        {
+            // Arrange
+            var group = new Group();
+
+            var mockedService = new Mock<IGroupService>();
+            mockedService.Setup(s => s.CreateGroupAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(group);
+
+            var mockedFactory = new Mock<IDtoFactory>();
+
+            var user = new User { Id = userId };
+
+            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
+
+            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+
+            var dto = new CreateGroupDto { GroupName = groupName };
+
+            // Act
+            var result = await controller.CreateGroup(dto);
+
+            // Assert
+            Assert.AreSame(user, group.Owner);
+        }
+
+        [TestCase("group", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
+        [TestCase("new group name", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
         public async Task TestCreateGroup_ServiceReturnsGroup_ShouldCallFactoryCreate(string groupName, string userId)
         {
             // Arrange
