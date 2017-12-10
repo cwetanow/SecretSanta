@@ -56,6 +56,8 @@ namespace SecretSanta.Web.Controllers
                 return this.BadRequest(Constants.GroupAlreadyExists);
             }
 
+            group.Owner = user;
+
             var resultDto = this.factory.CreateGroupDto(group);
 
             return this.Ok(resultDto);
