@@ -18,8 +18,10 @@ namespace SecretSanta.Services.Tests.GroupServiceTests
             var mockedRepository = new Mock<IRepository<Group>>();
             var mockedUnitOfWork = new Mock<IUnitOfWork>();
             var mockedFactory = new Mock<IGroupFactory>();
+            var mockedGroupUserRepository = new Mock<IRepository<GroupUser>>();
 
-            var service = new GroupService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object);
+            var service = new GroupService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object,
+                mockedGroupUserRepository.Object);
 
             // Act
             service.GetGroupUsers(groupName);
@@ -35,8 +37,10 @@ namespace SecretSanta.Services.Tests.GroupServiceTests
             var mockedRepository = new Mock<IRepository<Group>>();
             var mockedUnitOfWork = new Mock<IUnitOfWork>();
             var mockedFactory = new Mock<IGroupFactory>();
+            var mockedGroupUserRepository = new Mock<IRepository<GroupUser>>();
 
-            var service = new GroupService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object);
+            var service = new GroupService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object,
+                mockedGroupUserRepository.Object);
 
             // Act
             var result = service.GetGroupUsers(groupName);
@@ -72,8 +76,10 @@ namespace SecretSanta.Services.Tests.GroupServiceTests
             
             var mockedUnitOfWork = new Mock<IUnitOfWork>();
             var mockedFactory = new Mock<IGroupFactory>();
+            var mockedGroupUserRepository = new Mock<IRepository<GroupUser>>();
 
-            var service = new GroupService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object);
+            var service = new GroupService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object,
+                mockedGroupUserRepository.Object);
 
             var expected = users
                 .Select(g => g.User)
