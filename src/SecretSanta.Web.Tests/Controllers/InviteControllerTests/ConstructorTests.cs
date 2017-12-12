@@ -17,10 +17,11 @@ namespace SecretSanta.Web.Tests.Controllers.InviteControllerTests
             var mockedService = new Mock<IInviteService>();
             var mockedFactory = new Mock<IDtoFactory>();
             var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+            var mockedGroupService = new Mock<IGroupService>();
 
             // Act
             var controller = new InviteController(mockedAuthenticationProvider.Object,
-                mockedService.Object, mockedFactory.Object);
+                mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
             // Assert
             Assert.IsNotNull(controller);
