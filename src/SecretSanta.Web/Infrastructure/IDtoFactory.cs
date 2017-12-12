@@ -20,5 +20,7 @@ namespace SecretSanta.Web.Infrastructure
         GroupListDto CreateGroupListDto(IEnumerable<Group> groups);
 
         InviteListDto CreateInviteListDto(IEnumerable<Invite> invites);
+
+        InviteDto CreateInviteDto(Invite invite);
     }
 }
