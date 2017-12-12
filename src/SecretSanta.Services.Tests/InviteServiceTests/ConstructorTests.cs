@@ -3,6 +3,7 @@ using NUnit.Framework;
 using SecretSanta.Data.Contracts;
 using SecretSanta.Factories;
 using SecretSanta.Models;
+using SecretSanta.Providers.Contracts;
 using SecretSanta.Services.Contracts;
 
 namespace SecretSanta.Services.Tests.InviteServiceTests
@@ -17,9 +18,10 @@ namespace SecretSanta.Services.Tests.InviteServiceTests
             var mockedRepository = new Mock<IRepository<Invite>>();
             var mockedUnitOfWork = new Mock<IUnitOfWork>();
             var mockedFactory = new Mock<IInviteFactory>();
+            var mockedDateTimeProvider = new Mock<IDateTimeProvider>();
 
             // Act
-            var service = new InviteService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object);
+            var service = new InviteService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object, mockedDateTimeProvider.Object);
 
             // Assert
             Assert.IsNotNull(service);
