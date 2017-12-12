@@ -73,14 +73,11 @@ namespace SecretSanta.Web.Controllers
                 return this.NotFound();
             }
 
-            var result = await this.service.CreateInviteAsync(group.Id, user.Id);
+            var invite = await this.service.CreateInviteAsync(group.Id, user.Id);
 
-            if (!result)
-            {
-                return this.BadRequest();
-            }
+            var dto = this.dtoFactory.CreateInviteDto(invite);
 
-            return this.NoContent();
+            return this.Ok(dto);
         }
     }
 }
