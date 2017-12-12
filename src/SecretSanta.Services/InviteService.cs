@@ -5,6 +5,8 @@ using SecretSanta.Data.Contracts;
 using SecretSanta.Factories;
 using System.Linq;
 using SecretSanta.Models.Enums;
+using SecretSanta.Providers.Contracts;
+using System.Threading.Tasks;
 
 namespace SecretSanta.Services
 {
@@ -44,6 +46,23 @@ namespace SecretSanta.Services
                 .Take(limit);
 
             return invites.ToList();
+        }
+
+        public async Task<bool> SendInvite(int groupId, string userId)
+        {
+            var date = this.dateTimeProvider.GetCurrentTime();
+
+            var invite = this.factory.CreateInvite(groupId, userId, date);
+
+            this.repository.Add(invite);
+            var result = await this.unitOfWork.CommitAsync();
+
+            if (result == 0)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
