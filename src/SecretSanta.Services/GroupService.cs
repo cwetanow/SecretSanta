@@ -15,27 +15,15 @@ namespace SecretSanta.Services
         private readonly IRepository<Group> repository;
         private readonly IUnitOfWork unitOfWork;
         private readonly IGroupFactory groupFactory;
+        private readonly IRepository<GroupUser> groupUsersRepository;
 
-        public GroupService(IRepository<Group> repository, IUnitOfWork unitOfWork, IGroupFactory groupFactory)
+        public GroupService(IRepository<Group> repository, IUnitOfWork unitOfWork, IGroupFactory groupFactory,
+            IRepository<GroupUser> groupUsersRepository)
         {
-            if (repository == null)
-            {
-                throw new ArgumentNullException(nameof(repository));
-            }
-
-            if (groupFactory == null)
-            {
-                throw new ArgumentNullException(nameof(groupFactory));
-            }
-
-            if (unitOfWork == null)
-            {
-                throw new ArgumentNullException(nameof(unitOfWork));
-            }
-
             this.repository = repository;
             this.unitOfWork = unitOfWork;
             this.groupFactory = groupFactory;
+            this.groupUsersRepository = groupUsersRepository;
         }
 
         public async Task<Group> CreateGroupAsync(string groupName, string ownerId)

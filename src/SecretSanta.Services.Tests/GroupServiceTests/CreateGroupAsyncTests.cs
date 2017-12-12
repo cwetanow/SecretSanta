@@ -20,8 +20,10 @@ namespace SecretSanta.Services.Tests.GroupServiceTests
             var mockedRepository = new Mock<IRepository<Group>>();
             var mockedUnitOfWork = new Mock<IUnitOfWork>();
             var mockedFactory = new Mock<IGroupFactory>();
+            var mockedGroupUserRepository = new Mock<IRepository<GroupUser>>();
 
-            var service = new GroupService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object);
+            var service = new GroupService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object,
+                mockedGroupUserRepository.Object);
 
             // Act
             await service.CreateGroupAsync(groupName, ownerId);
@@ -43,8 +45,10 @@ namespace SecretSanta.Services.Tests.GroupServiceTests
 
             var mockedUnitOfWork = new Mock<IUnitOfWork>();
             var mockedFactory = new Mock<IGroupFactory>();
+            var mockedGroupUserRepository = new Mock<IRepository<GroupUser>>();
 
-            var service = new GroupService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object);
+            var service = new GroupService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object,
+                mockedGroupUserRepository.Object);
 
             // Act
             var result = await service.CreateGroupAsync(groupName, ownerId);
@@ -64,8 +68,10 @@ namespace SecretSanta.Services.Tests.GroupServiceTests
 
             var mockedUnitOfWork = new Mock<IUnitOfWork>();
             var mockedFactory = new Mock<IGroupFactory>();
+            var mockedGroupUserRepository = new Mock<IRepository<GroupUser>>();
 
-            var service = new GroupService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object);
+            var service = new GroupService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object,
+                mockedGroupUserRepository.Object);
 
             // Act
             await service.CreateGroupAsync(groupName, ownerId);
@@ -91,7 +97,10 @@ namespace SecretSanta.Services.Tests.GroupServiceTests
             mockedFactory.Setup(f => f.CreateGroup(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(group);
 
-            var service = new GroupService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object);
+            var mockedGroupUserRepository = new Mock<IRepository<GroupUser>>();
+
+            var service = new GroupService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object,
+                mockedGroupUserRepository.Object);
 
             // Act
             await service.CreateGroupAsync(groupName, ownerId);
@@ -117,7 +126,10 @@ namespace SecretSanta.Services.Tests.GroupServiceTests
             mockedFactory.Setup(f => f.CreateGroup(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(group);
 
-            var service = new GroupService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object);
+            var mockedGroupUserRepository = new Mock<IRepository<GroupUser>>();
+
+            var service = new GroupService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object,
+                mockedGroupUserRepository.Object);
 
             // Act
             await service.CreateGroupAsync(groupName, ownerId);
@@ -143,7 +155,10 @@ namespace SecretSanta.Services.Tests.GroupServiceTests
             mockedFactory.Setup(f => f.CreateGroup(It.IsAny<string>(), It.IsAny<string>()))
                 .Returns(group);
 
-            var service = new GroupService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object);
+            var mockedGroupUserRepository = new Mock<IRepository<GroupUser>>();
+
+            var service = new GroupService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object,
+                mockedGroupUserRepository.Object);
 
             // Act
             var result = await service.CreateGroupAsync(groupName, ownerId);
