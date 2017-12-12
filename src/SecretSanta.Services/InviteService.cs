@@ -48,7 +48,7 @@ namespace SecretSanta.Services
             return invites.ToList();
         }
 
-        public async Task<bool> SendInvite(int groupId, string userId)
+        public async Task<bool> CreateInviteAsync(int groupId, string userId)
         {
             var date = this.dateTimeProvider.GetCurrentTime();
 

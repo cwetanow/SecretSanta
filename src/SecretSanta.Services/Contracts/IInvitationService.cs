@@ -8,6 +8,6 @@ namespace SecretSanta.Services.Contracts
     {
         IEnumerable<Invite> GetPendingInvites(string userId, bool orderByAscending, int limit, int offset);
 
-        Task<bool> SendInvite(int groupId, string userId);
+        Task<bool> CreateInviteAsync(int groupId, string userId);
     }
 }
