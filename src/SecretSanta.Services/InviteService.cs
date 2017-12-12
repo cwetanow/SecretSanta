@@ -48,21 +48,16 @@ namespace SecretSanta.Services
             return invites.ToList();
         }
 
-        public async Task<bool> CreateInviteAsync(int groupId, string userId)
+        public async Task<Invite> CreateInviteAsync(int groupId, string userId)
         {
             var date = this.dateTimeProvider.GetCurrentTime();
 
             var invite = this.factory.CreateInvite(groupId, userId, date);
 
             this.repository.Add(invite);
-            var result = await this.unitOfWork.CommitAsync();
+            await this.unitOfWork.CommitAsync();
 
-            if (result == 0)
-            {
-                return false;
-            }
-
-            return true;
+            return invite;
         }
     }
 }
