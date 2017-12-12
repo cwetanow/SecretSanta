@@ -10,11 +10,11 @@ namespace SecretSanta.Web.Models.Invite
         {
 
         }
-
-        public InviteDto(InviteState state, DateTime date)
+        
+        public InviteDto(SecretSanta.Models.Invite invite)
         {
-            this.State = state;
-            this.Date = date;
+            this.State = invite.State;
+            this.Date = invite.Date;
         }
 
         public InviteState State { get; set; }
@@ -23,7 +23,7 @@ namespace SecretSanta.Web.Models.Invite
 
         public static Func<SecretSanta.Models.Invite, InviteDto> FromInvite
         {
-            get { return (invite) => new InviteDto(invite.State, invite.Date); }
+            get { return (invite) => new InviteDto(invite); }
         }
     }
 }
