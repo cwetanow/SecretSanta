@@ -11,5 +11,7 @@ namespace SecretSanta.Services.Contracts
         Group GetByName(string groupName);
 
         IEnumerable<User> GetGroupUsers(string groupName);
+
+        IEnumerable<Group> GetUserGroups(string userId);
     }
 }
