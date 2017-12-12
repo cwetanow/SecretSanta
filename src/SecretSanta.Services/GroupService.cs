@@ -69,5 +69,15 @@ namespace SecretSanta.Services
 
             return users;
         }
+
+        public IEnumerable<Group> GetUserGroups(string userId)
+        {
+            var groups = this.groupUsersRepository.All
+                .Where(g => g.UserId.Equals(userId))
+                .Select(g => g.Group)
+                .ToList();
+
+            return groups;
+        }
     }
 }
