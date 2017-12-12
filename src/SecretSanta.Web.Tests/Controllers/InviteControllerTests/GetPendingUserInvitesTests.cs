@@ -29,8 +29,10 @@ namespace SecretSanta.Web.Tests.Controllers.InviteControllerTests
             var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
             mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 
+            var mockedGroupService = new Mock<IGroupService>();
+
             var controller = new InviteController(mockedAuthenticationProvider.Object,
-                mockedService.Object, mockedFactory.Object);
+                mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
             // Act
             await controller.GetPendingUserInvites(offset, limit, sortAscending);
@@ -53,8 +55,10 @@ namespace SecretSanta.Web.Tests.Controllers.InviteControllerTests
             var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
             mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 
+            var mockedGroupService = new Mock<IGroupService>();
+
             var controller = new InviteController(mockedAuthenticationProvider.Object,
-                mockedService.Object, mockedFactory.Object);
+                mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
             // Act
             await controller.GetPendingUserInvites(offset, limit, sortAscending);
@@ -87,8 +91,10 @@ namespace SecretSanta.Web.Tests.Controllers.InviteControllerTests
             var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
             mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 
+            var mockedGroupService = new Mock<IGroupService>();
+
             var controller = new InviteController(mockedAuthenticationProvider.Object,
-                mockedService.Object, mockedFactory.Object);
+                mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
             // Act
             await controller.GetPendingUserInvites(offset, limit, sortAscending);
@@ -115,8 +121,10 @@ namespace SecretSanta.Web.Tests.Controllers.InviteControllerTests
             var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
             mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 
+            var mockedGroupService = new Mock<IGroupService>();
+
             var controller = new InviteController(mockedAuthenticationProvider.Object,
-                mockedService.Object, mockedFactory.Object);
+                mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
             // Act
             var result = await controller.GetPendingUserInvites(offset, limit, sortAscending);
@@ -143,8 +151,10 @@ namespace SecretSanta.Web.Tests.Controllers.InviteControllerTests
             var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
             mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 
+            var mockedGroupService = new Mock<IGroupService>();
+
             var controller = new InviteController(mockedAuthenticationProvider.Object,
-                mockedService.Object, mockedFactory.Object);
+                mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
             // Act
             var result = await controller.GetPendingUserInvites(offset, limit, sortAscending) as OkObjectResult;
