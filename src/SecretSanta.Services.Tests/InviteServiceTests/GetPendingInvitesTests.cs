@@ -4,6 +4,7 @@ using SecretSanta.Data.Contracts;
 using SecretSanta.Factories;
 using SecretSanta.Models;
 using SecretSanta.Models.Enums;
+using SecretSanta.Providers.Contracts;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,8 +21,9 @@ namespace SecretSanta.Services.Tests.InviteServiceTests
             var mockedRepository = new Mock<IRepository<Invite>>();
             var mockedUnitOfWork = new Mock<IUnitOfWork>();
             var mockedFactory = new Mock<IInviteFactory>();
+            var mockedDateTimeProvider = new Mock<IDateTimeProvider>();
 
-            var service = new InviteService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object);
+            var service = new InviteService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object, mockedDateTimeProvider.Object);
 
             // Act
             service.GetPendingInvites(userId, sortAscending, limit, offset);
@@ -48,8 +50,9 @@ namespace SecretSanta.Services.Tests.InviteServiceTests
 
             var mockedUnitOfWork = new Mock<IUnitOfWork>();
             var mockedFactory = new Mock<IInviteFactory>();
+            var mockedDateTimeProvider = new Mock<IDateTimeProvider>();
 
-            var service = new InviteService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object);
+            var service = new InviteService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object, mockedDateTimeProvider.Object);
 
             var expectedInvites = invites
                  .Where(i => i.State == InviteState.Pending && i.UserId.Equals(userId))
@@ -80,8 +83,9 @@ namespace SecretSanta.Services.Tests.InviteServiceTests
 
             var mockedUnitOfWork = new Mock<IUnitOfWork>();
             var mockedFactory = new Mock<IInviteFactory>();
+            var mockedDateTimeProvider = new Mock<IDateTimeProvider>();
 
-            var service = new InviteService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object);
+            var service = new InviteService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object, mockedDateTimeProvider.Object);
 
             var expectedInvites = invites
                 .Where(i => i.State == InviteState.Pending && i.UserId.Equals(userId))
@@ -116,8 +120,9 @@ namespace SecretSanta.Services.Tests.InviteServiceTests
 
             var mockedUnitOfWork = new Mock<IUnitOfWork>();
             var mockedFactory = new Mock<IInviteFactory>();
+            var mockedDateTimeProvider = new Mock<IDateTimeProvider>();
 
-            var service = new InviteService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object);
+            var service = new InviteService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object, mockedDateTimeProvider.Object);
 
             var expectedInvites = invites
                 .Where(i => i.State == InviteState.Pending && i.UserId.Equals(userId))
