@@ -12,12 +12,15 @@ namespace SecretSanta.Web.Controllers
         private readonly IAuthenticationProvider authenticationProvider;
         private readonly IInviteService service;
         private readonly IDtoFactory dtoFactory;
+        private readonly IGroupService groupService;
 
-        public InviteController(IAuthenticationProvider authenticationProvider, IInviteService service, IDtoFactory dtoFactory)
+        public InviteController(IAuthenticationProvider authenticationProvider, IInviteService service,
+            IDtoFactory dtoFactory, IGroupService groupService)
         {
             this.authenticationProvider = authenticationProvider;
             this.service = service;
             this.dtoFactory = dtoFactory;
+            this.groupService = groupService;
         }
 
         [HttpGet]
