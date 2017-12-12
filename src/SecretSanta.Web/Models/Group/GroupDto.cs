@@ -1,4 +1,5 @@
 ﻿using SecretSanta.Web.Models.Users;
+using System;
 
 namespace SecretSanta.Web.Models.Group
 {
@@ -18,5 +19,10 @@ namespace SecretSanta.Web.Models.Group
         public string Name { get; set; }
 
         public UserDto Owner { get; set; }
+
+        public static Func<SecretSanta.Models.Group, GroupDto> FromGroup
+        {
+            get { return (group) => new GroupDto(group); }
+        }
     }
 }
