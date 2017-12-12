@@ -79,5 +79,19 @@ namespace SecretSanta.Services
 
             return groups;
         }
+
+        public async Task RemoveUserFromGroup(int groupId, string userId)
+        {
+            var group = this.groupUsersRepository.All
+                .FirstOrDefault(g => g.GroupId.Equals(groupId) && g.UserId.Equals(userId));
+
+            if (group == null)
+            {
+                return;
+            }
+
+            this.groupUsersRepository.Delete(group);
+            await this.unitOfWork.CommitAsync();
+        }
     }
 }
