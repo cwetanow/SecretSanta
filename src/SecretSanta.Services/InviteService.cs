@@ -13,12 +13,14 @@ namespace SecretSanta.Services
         private readonly IRepository<Invite> repository;
         private readonly IUnitOfWork unitOfWork;
         private readonly IInviteFactory factory;
+        private readonly IDateTimeProvider dateTimeProvider;
 
-        public InviteService(IRepository<Invite> repository, IUnitOfWork unitOfWork, IInviteFactory factory)
+        public InviteService(IRepository<Invite> repository, IUnitOfWork unitOfWork, IInviteFactory factory, IDateTimeProvider dateTimeProvider)
         {
             this.repository = repository;
             this.unitOfWork = unitOfWork;
             this.factory = factory;
+            this.dateTimeProvider = dateTimeProvider;
         }
 
         public IEnumerable<Invite> GetPendingInvites(string userId, bool orderByAscending, int limit, int offset)
