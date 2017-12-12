@@ -11,11 +11,12 @@ namespace SecretSanta.Models
             this.State = InviteState.Pending;
         }
 
-        public Invite(int groupId, string userId)
+        public Invite(int groupId, string userId, DateTime date)
             : this()
         {
             this.GroupId = groupId;
             this.UserId = userId;
+            this.Date = date;
         }
 
         public int Id { get; set; }
