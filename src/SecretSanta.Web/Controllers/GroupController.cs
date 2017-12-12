@@ -87,5 +87,18 @@ namespace SecretSanta.Web.Controllers
 
             return this.Ok(resultDto);
         }
+
+        [HttpGet]
+        [Route("personal")]
+        public async Task<IActionResult> GetUserGroups()
+        {
+            var user = await this.authenticationProvider.GetCurrentUserAsync();
+
+            var groups = this.groupService.GetUserGroups(user.Id);
+
+            var dto = this.factory.CreateGroupListDto(groups);
+
+            return this.Ok(dto);
+        }
     }
 }
