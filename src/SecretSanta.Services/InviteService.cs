@@ -7,6 +7,7 @@ using System.Linq;
 using SecretSanta.Models.Enums;
 using SecretSanta.Providers.Contracts;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace SecretSanta.Services
 {
@@ -28,7 +29,8 @@ namespace SecretSanta.Services
         public IEnumerable<Invite> GetPendingInvites(string userId, bool orderByAscending, int limit, int offset)
         {
             var invites = this.repository.All
-                 .Where(i => i.State == InviteState.Pending && i.UserId.Equals(userId));
+                .Include(i => i.Group)
+                .Where(i => i.State == InviteState.Pending && i.UserId.Equals(userId));
 
             if (orderByAscending)
             {

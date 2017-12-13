@@ -1,6 +1,5 @@
 ﻿using System;
 using SecretSanta.Models.Enums;
-using SecretSanta.Web.Models.Users;
 
 namespace SecretSanta.Web.Models.Invite
 {
@@ -15,11 +14,14 @@ namespace SecretSanta.Web.Models.Invite
         {
             this.State = invite.State;
             this.Date = invite.Date;
+            this.GroupName = invite.Group.GroupName;
         }
 
         public InviteState State { get; set; }
 
         public DateTime Date { get; set; }
+
+        public string GroupName { get; set; }
 
         public static Func<SecretSanta.Models.Invite, InviteDto> FromInvite
         {
