@@ -100,5 +100,37 @@ namespace SecretSanta.Web.Controllers
 
             return this.Ok(dto);
         }
+
+        [HttpDelete]
+        [Route("{groupName}/users")]
+        public async Task<IActionResult> RemoveUserFromGroup(string groupName, [FromBody]string username)
+        {
+            var currentUserTask = this.authenticationProvider.GetCurrentUserAsync();
+
+            var group = this.groupService.GetByName(groupName);
+
+            if (group == null)
+            {
+                return this.NotFound();
+            }
+
+            var currentUser = await currentUserTask;
+
+            if (!currentUser.Id.Equals(group.OwnerId))
+            {
+                return this.Forbid();
+            }
+
+            var user = await this.authenticationProvider.FindByUsernameAsync(username);
+
+            if (user == null)
+            {
+                return this.NotFound();
+            }
+
+            await this.groupService.RemoveUserFromGroup(group.Id, user.Id);
+
+            return this.NoContent();
+        }
     }
 }
