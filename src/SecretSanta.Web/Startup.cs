@@ -177,6 +177,10 @@ namespace SecretSanta.Web
                 .To<UserService>()
                 .InScope(RequestScope);
 
+            kernel.Bind<IMembershipService>()
+                .To<MembershipService>()
+                .InScope(RequestScope);
+
             kernel.Bind<IGroupService>()
                 .To<GroupService>()
                 .InScope(RequestScope);
