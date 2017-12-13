@@ -141,6 +141,10 @@ namespace SecretSanta.Web
                 .ToFactory()
                 .InSingletonScope();
 
+            kernel.Bind<IGroupUserFactory>()
+                .ToFactory()
+                .InSingletonScope();
+
             kernel.Bind<IInviteFactory>()
                 .ToFactory()
                 .InSingletonScope();
