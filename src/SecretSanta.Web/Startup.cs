@@ -141,6 +141,10 @@ namespace SecretSanta.Web
                 .ToFactory()
                 .InSingletonScope();
 
+            kernel.Bind<IGroupUserFactory>()
+                .ToFactory()
+                .InSingletonScope();
+
             kernel.Bind<IInviteFactory>()
                 .ToFactory()
                 .InSingletonScope();
@@ -171,6 +175,10 @@ namespace SecretSanta.Web
             // Services
             kernel.Bind<IUserService>()
                 .To<UserService>()
+                .InScope(RequestScope);
+
+            kernel.Bind<IMembershipService>()
+                .To<MembershipService>()
                 .InScope(RequestScope);
 
             kernel.Bind<IGroupService>()

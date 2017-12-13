@@ -61,5 +61,27 @@ namespace SecretSanta.Services
 
             return invite;
         }
+
+        public bool IsUserInvited(int groupId, string userId)
+        {
+            var invite = this.repository.All
+                       .FirstOrDefault(i => i.GroupId.Equals(groupId) && i.UserId.Equals(userId));
+
+            var hasInvite = invite != null;
+
+            return hasInvite;
+        }
+
+        public async Task CancelInvite(int groupId, string userId)
+        {
+            var invite = this.repository.All
+                .FirstOrDefault(i => i.GroupId.Equals(groupId) && i.UserId.Equals(userId));
+
+            if (invite != null)
+            {
+                this.repository.Delete(invite);
+                await this.unitOfWork.CommitAsync();
+            }
+        }
     }
 }

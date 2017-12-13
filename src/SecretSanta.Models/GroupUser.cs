@@ -2,6 +2,17 @@
 {
     public class GroupUser
     {
+        public GroupUser()
+        {
+
+        }
+
+        public GroupUser(int groupId, string userId)
+        {
+            this.GroupId = groupId;
+            this.UserId = UserId;
+        }
+
         public int Id { get; set; }
 
         public string UserId { get; set; }
