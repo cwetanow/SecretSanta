@@ -9,5 +9,9 @@ namespace SecretSanta.Services.Contracts
         IEnumerable<Invite> GetPendingInvites(string userId, bool orderByAscending, int limit, int offset);
 
         Task<Invite> CreateInviteAsync(int groupId, string userId);
+
+        bool IsUserInvited(int groupId, string userId);
+
+        Task CancelInvite(int id1, string id2);
     }
 }
