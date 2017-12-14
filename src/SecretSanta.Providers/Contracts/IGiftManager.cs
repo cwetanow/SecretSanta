@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SecretSanta.Providers.Contracts
 {
-    public interface IGiftDistributionProvider
+    public interface IGiftManager
     {
         IEnumerable<Gift> DistributeGifts(IEnumerable<User> groupUsers);
     }

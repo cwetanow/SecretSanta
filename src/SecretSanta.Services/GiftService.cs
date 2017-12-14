@@ -6,6 +6,7 @@ using SecretSanta.Services.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using SecretSanta.Providers.Contracts;
 
 namespace SecretSanta.Services
 {
@@ -14,12 +15,14 @@ namespace SecretSanta.Services
         private readonly IRepository<Gift> repository;
         private readonly IUnitOfWork unitOfWork;
         private readonly IGiftFactory factory;
+        private readonly IGiftManager giftManager;
 
-        public GiftService(IRepository<Gift> repository, IUnitOfWork unitOfWork, IGiftFactory factory)
+        public GiftService(IRepository<Gift> repository, IUnitOfWork unitOfWork, IGiftFactory factory, IGiftManager giftManager)
         {
             this.repository = repository;
             this.unitOfWork = unitOfWork;
             this.factory = factory;
+            this.giftManager = giftManager;
         }
 
         public Gift GetGiftInGroup(int groupId, string senderId)
@@ -47,6 +50,20 @@ namespace SecretSanta.Services
             await this.unitOfWork.CommitAsync();
 
             return gift;
+        }
+
+        public async Task<IEnumerable<Gift>> DistributeGifts(IEnumerable<User> groupUsers)
+        {
+            var gifts = this.giftManager.DistributeGifts(groupUsers);
+
+            foreach (var gift in gifts)
+            {
+                this.repository.Add(gift);
+            }
+
+            await this.unitOfWork.CommitAsync();
+
+            return gifts;
         }
     }
 }
