@@ -1,4 +1,5 @@
 ﻿using SecretSanta.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SecretSanta.Services.Contracts
@@ -7,6 +8,8 @@ namespace SecretSanta.Services.Contracts
     {
         Gift GetGiftInGroup(int groupId, string senderId);
 
-        Task<Gift> CreateGift(int groupId, string senderId, string receiverId);
+        Task<Gift> CreateGiftAsync(int groupId, User sender, User receiver);
+
+        Task<IEnumerable<Gift>> DistributeGifts(IEnumerable<User> groupUsers);
     }
 }

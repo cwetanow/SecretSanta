@@ -1,9 +1,11 @@
-﻿using SecretSanta.Data.Contracts;
+﻿using Microsoft.EntityFrameworkCore;
+using SecretSanta.Data.Contracts;
 using SecretSanta.Factories;
 using SecretSanta.Models;
 using SecretSanta.Services.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace SecretSanta.Services
 {
@@ -23,16 +25,25 @@ namespace SecretSanta.Services
         public Gift GetGiftInGroup(int groupId, string senderId)
         {
             var gift = this.repository.All
+                .Include(g => g.Group)
+                .Include(g => g.Sender)
+                .Include(g => g.Receiver)
                 .FirstOrDefault(g => g.GroupId.Equals(groupId) && g.SenderId.Equals(senderId));
 
             return gift;
         }
 
-        public async Task<Gift> CreateGift(int groupId, string senderId, string receiverId)
+        public async Task<Gift> CreateGiftAsync(int groupId, User sender, User receiver)
         {
-            var gift = this.factory.CreateGift(groupId, senderId, receiverId);
+            var gift = this.factory.CreateGift(groupId, sender.Id, receiver.Id);
 
             this.repository.Add(gift);
+
+            await this.unitOfWork.CommitAsync();
+
+            sender.SentGifts.Add(gift);
+            receiver.ReceivedGifts.Add(gift);
+
             await this.unitOfWork.CommitAsync();
 
             return gift;
