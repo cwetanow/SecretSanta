@@ -1,4 +1,6 @@
-﻿namespace SecretSanta.Web.Models.Gift
+﻿using System;
+
+namespace SecretSanta.Web.Models.Gift
 {
     public class GiftDto
     {
@@ -22,5 +24,10 @@
         public string Sender { get; set; }
 
         public string Receiver { get; set; }
+
+        public static Func<SecretSanta.Models.Gift, GiftDto> FromGift
+        {
+            get { return (gift) => new GiftDto(gift); }
+        }
     }
 }

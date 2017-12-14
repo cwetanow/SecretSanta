@@ -27,5 +27,7 @@ namespace SecretSanta.Web.Infrastructure
         GiftDto CreateGiftDto(Gift gift);
 
         HasGiftDto CreateHasGiftDto(bool hasGift, GiftDto giftDto);
+
+        GiftListDto CreateGiftListDto(IEnumerable<Gift> gifts);
     }
 }
