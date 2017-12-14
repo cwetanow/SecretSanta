@@ -4,6 +4,7 @@ using SecretSanta.Web.Models.Account;
 using SecretSanta.Web.Models.Users;
 using SecretSanta.Web.Models.Group;
 using SecretSanta.Web.Models.Invite;
+using SecretSanta.Web.Models.Gift;
 
 namespace SecretSanta.Web.Infrastructure
 {
@@ -22,5 +23,9 @@ namespace SecretSanta.Web.Infrastructure
         InviteListDto CreateInviteListDto(IEnumerable<Invite> invites);
 
         InviteDto CreateInviteDto(Invite invite);
+
+        GiftDto CreateGiftDto(Gift gift);
+
+        HasGiftDto CreateHasGiftDto(bool hasGift, GiftDto giftDto);
     }
 }
