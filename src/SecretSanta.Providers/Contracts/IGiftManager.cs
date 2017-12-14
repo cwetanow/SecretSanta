@@ -5,6 +5,6 @@ namespace SecretSanta.Providers.Contracts
 {
     public interface IGiftManager
     {
-        IEnumerable<Gift> DistributeGifts(IEnumerable<User> groupUsers);
+        IEnumerable<Gift> DistributeGifts(ICollection<User> groupUsers);
     }
 }
