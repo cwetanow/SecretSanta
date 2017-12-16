@@ -37,10 +37,10 @@ namespace SecretSanta.Authentication
             return gifts;
         }
 
-        private IList<int> SecretSantaShuffle(int numberOfUsers)
+        private IEnumerable<int> SecretSantaShuffle(int numberOfUsers)
         {
             var assignments = new List<int>();
-            for (int i = 0; i < numberOfUsers; i++)
+            for (var i = 0; i < numberOfUsers; i++)
             {
                 assignments[i] = i;
             }
@@ -53,7 +53,7 @@ namespace SecretSanta.Authentication
 
                 isValid = true;
 
-                for (int i = 0; i < numberOfUsers; i++)
+                for (var i = 0; i < numberOfUsers; i++)
                 {
                     if (assignments[i] == i)
                     {

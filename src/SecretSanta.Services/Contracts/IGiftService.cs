@@ -10,6 +10,6 @@ namespace SecretSanta.Services.Contracts
 
         Task<Gift> CreateGiftAsync(int groupId, User sender, User receiver);
 
-        Task<IEnumerable<Gift>> DistributeGifts(IEnumerable<User> groupUsers);
+        Task<IEnumerable<Gift>> DistributeGifts(Group group);
     }
 }

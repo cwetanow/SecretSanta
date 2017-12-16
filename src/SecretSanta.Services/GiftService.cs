@@ -16,13 +16,16 @@ namespace SecretSanta.Services
         private readonly IUnitOfWork unitOfWork;
         private readonly IGiftFactory factory;
         private readonly IGiftManager giftManager;
+        private readonly IGroupService groupService;
 
-        public GiftService(IRepository<Gift> repository, IUnitOfWork unitOfWork, IGiftFactory factory, IGiftManager giftManager)
+        public GiftService(IRepository<Gift> repository, IUnitOfWork unitOfWork, IGiftFactory factory, IGiftManager giftManager,
+            IGroupService groupService)
         {
             this.repository = repository;
             this.unitOfWork = unitOfWork;
             this.factory = factory;
             this.giftManager = giftManager;
+            this.groupService = groupService;
         }
 
         public Gift GetGiftInGroup(int groupId, string senderId)
@@ -52,9 +55,13 @@ namespace SecretSanta.Services
             return gift;
         }
 
-        public async Task<IEnumerable<Gift>> DistributeGifts(IEnumerable<User> groupUsers)
+        public async Task<IEnumerable<Gift>> DistributeGifts(Group group)
         {
-            var gifts = this.giftManager.DistributeGifts(groupUsers);
+            var groupUsers = this.groupService.GetGroupUsers(group.GroupName)
+                .ToList();
+
+            var gifts = this.giftManager.DistributeGifts(groupUsers, group.Id)
+                .ToList();
 
             foreach (var gift in gifts)
             {
