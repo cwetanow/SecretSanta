@@ -44,7 +44,7 @@ namespace SecretSanta.Web.Controllers
             var isInvited = this.inviteService.IsUserInvited(group.Id, user.Id);
 
             if (!isInvited)
-            {   
+            {
                 return this.Forbid();
             }
 
@@ -77,9 +77,11 @@ namespace SecretSanta.Web.Controllers
                 return this.Forbid();
             }
 
-            var gifts = this.service.DistributeGifts(group);
+            var gifts = await this.service.DistributeGifts(group);
 
-            return this.Ok(gifts);
+            var dto = this.factory.CreateGiftListDto(gifts);
+
+            return this.Ok(dto);
         }
     }
 }

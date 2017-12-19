@@ -42,7 +42,7 @@ namespace SecretSanta.Authentication
             var assignments = new List<int>();
             for (var i = 0; i < numberOfUsers; i++)
             {
-                assignments[i] = i;
+                assignments.Add(i);
             }
 
             var isValid = false;
