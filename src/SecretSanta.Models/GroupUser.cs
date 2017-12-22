@@ -10,7 +10,7 @@
         public GroupUser(int groupId, string userId)
         {
             this.GroupId = groupId;
-            this.UserId = UserId;
+            this.UserId = userId;
         }
 
         public int Id { get; set; }

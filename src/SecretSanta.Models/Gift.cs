@@ -4,6 +4,18 @@ namespace SecretSanta.Models
 {
     public class Gift
     {
+        public Gift()
+        {
+
+        }
+
+        public Gift(int groupId, string senderId, string receiverId)
+        {
+            this.GroupId = groupId;
+            this.SenderId = senderId;
+            this.ReceiverId = receiverId;
+        }
+
         public int Id { get; set; }
 
         [Required]

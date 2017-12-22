@@ -149,6 +149,10 @@ namespace SecretSanta.Web
                 .ToFactory()
                 .InSingletonScope();
 
+            kernel.Bind<IGiftFactory>()
+                .ToFactory()
+                .InSingletonScope();
+
             kernel.Bind<IDtoFactory>()
                 .ToFactory()
                 .InSingletonScope();
@@ -177,6 +181,10 @@ namespace SecretSanta.Web
                 .To<UserService>()
                 .InScope(RequestScope);
 
+            kernel.Bind<IGiftService>()
+                .To<GiftService>()
+                .InScope(RequestScope);
+
             kernel.Bind<IMembershipService>()
                 .To<MembershipService>()
                 .InScope(RequestScope);
@@ -188,6 +196,15 @@ namespace SecretSanta.Web
             kernel.Bind<IInviteService>()
                 .To<InviteService>()
                 .InScope(RequestScope);
+
+            // Providers
+            kernel.Bind<IDateTimeProvider>()
+                .To<DateTimeProvider>()
+                .InSingletonScope();
+
+            kernel.Bind<IGiftManager>()
+                .To<GiftManager>()
+                .InSingletonScope();
 
             // Cross-wire required framework services
             kernel.BindToMethod(app.GetRequestService<IViewBufferScope>);
