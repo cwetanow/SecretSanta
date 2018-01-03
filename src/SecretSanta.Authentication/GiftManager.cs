@@ -26,7 +26,7 @@ namespace SecretSanta.Authentication
                   .Select((element, index) =>
                   {
                       var senderId = groupUsers[element].Id;
-                      var receiverId = groupUsers[element].Id;
+                      var receiverId = groupUsers[index].Id;
 
                       var gift = this.factory.CreateGift(groupId, senderId, receiverId);
 
