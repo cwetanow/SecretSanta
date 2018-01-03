@@ -9,369 +9,398 @@ using System.Threading.Tasks;
 using SecretSanta.Common;
 using SecretSanta.Models;
 using SecretSanta.Web.Models.Invite;
+using SecretSanta.Web.Models.Users;
 
 namespace SecretSanta.Web.Tests.Controllers.InviteControllerTests
 {
-    [TestFixture]
-    public class SendInviteTests
-    {
-        [Test]
-        public async Task TestSendInvite_PassEmptyGroupName_ShouldReturnBadRequest()
-        {
-            // Arrange
-            var mockedService = new Mock<IInviteService>();
-            var mockedFactory = new Mock<IDtoFactory>();
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            var mockedGroupService = new Mock<IGroupService>();
-
-            var controller = new InviteController(mockedAuthenticationProvider.Object,
-                mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
-
-            // Act
-            var result = await controller.SendInvite(null, string.Empty);
-
-            // Assert
-            Assert.IsInstanceOf<BadRequestObjectResult>(result);
-        }
-
-        [Test]
-        public async Task TestSendInvite_PassEmptyGroupName_ShouldSetCorrectErrorMessage()
-        {
-            // Arrange
-            var mockedService = new Mock<IInviteService>();
-            var mockedFactory = new Mock<IDtoFactory>();
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            var mockedGroupService = new Mock<IGroupService>();
-
-            var controller = new InviteController(mockedAuthenticationProvider.Object,
-                mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
-
-            // Act
-            var result = await controller.SendInvite(null, string.Empty) as BadRequestObjectResult;
-
-            // Assert
-            Assert.AreSame(Constants.GroupNameCannotBeNull, result.Value);
-        }
-
-        [TestCase("group name")]
-        public async Task TestSendInvite_PassEmptyUsername_ShouldReturnBadRequest(string groupName)
-        {
-            // Arrange
-            var mockedService = new Mock<IInviteService>();
-            var mockedFactory = new Mock<IDtoFactory>();
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            var mockedGroupService = new Mock<IGroupService>();
-
-            var controller = new InviteController(mockedAuthenticationProvider.Object,
-                mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
-
-            // Act
-            var result = await controller.SendInvite(groupName, string.Empty);
-
-            // Assert
-            Assert.IsInstanceOf<BadRequestObjectResult>(result);
-        }
-
-        [TestCase("group name")]
-        public async Task TestSendInvite_PassEmptyUsername_ShouldSetCorrectErrorMessage(string groupName)
-        {
-            // Arrange
-            var mockedService = new Mock<IInviteService>();
-            var mockedFactory = new Mock<IDtoFactory>();
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            var mockedGroupService = new Mock<IGroupService>();
-
-            var controller = new InviteController(mockedAuthenticationProvider.Object,
-                mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
-
-            // Act
-            var result = await controller.SendInvite(groupName, string.Empty) as BadRequestObjectResult;
-
-            // Assert
-            Assert.AreSame(Constants.UsernameCannotBeNull, result.Value);
-        }
-
-        [TestCase("group name", "username")]
-        public async Task TestSendInvite_ShouldCallGroupServiceGetByName(string groupName, string username)
-        {
-            // Arrange
-            var mockedService = new Mock<IInviteService>();
-            var mockedFactory = new Mock<IDtoFactory>();
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            var mockedGroupService = new Mock<IGroupService>();
-
-            var controller = new InviteController(mockedAuthenticationProvider.Object,
-                mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
-
-            // Act
-            var result = await controller.SendInvite(groupName, username);
-
-            // Assert
-            mockedGroupService.Verify(s => s.GetByName(groupName), Times.Once);
-        }
-
-        [TestCase("group name", "username")]
-        public async Task TestSendInvite_NoGroupFound_ShouldReturnNotFound(string groupName, string username)
-        {
-            // Arrange
-            var mockedService = new Mock<IInviteService>();
-            var mockedFactory = new Mock<IDtoFactory>();
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            var mockedGroupService = new Mock<IGroupService>();
+	[TestFixture]
+	public class SendInviteTests
+	{
+		[Test]
+		public async Task TestSendInvite_PassEmptyGroupName_ShouldReturnBadRequest()
+		{
+			// Arrange
+			var mockedService = new Mock<IInviteService>();
+			var mockedFactory = new Mock<IDtoFactory>();
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			var mockedGroupService = new Mock<IGroupService>();
+
+			var controller = new InviteController(mockedAuthenticationProvider.Object,
+				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
+
+			var dto = new UserDto { UserName = string.Empty };
+
+			// Act
+			var result = await controller.SendInvite(null, dto);
+
+			// Assert
+			Assert.IsInstanceOf<BadRequestObjectResult>(result);
+		}
+
+		[Test]
+		public async Task TestSendInvite_PassEmptyGroupName_ShouldSetCorrectErrorMessage()
+		{
+			// Arrange
+			var mockedService = new Mock<IInviteService>();
+			var mockedFactory = new Mock<IDtoFactory>();
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			var mockedGroupService = new Mock<IGroupService>();
+
+			var controller = new InviteController(mockedAuthenticationProvider.Object,
+				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
+
+			var dto = new UserDto { UserName = string.Empty };
+
+			// Act
+			var result = await controller.SendInvite(null, dto) as BadRequestObjectResult;
+
+			// Assert
+			Assert.AreSame(Constants.GroupNameCannotBeNull, result.Value);
+		}
+
+		[TestCase("group name")]
+		public async Task TestSendInvite_PassEmptyUsername_ShouldReturnBadRequest(string groupName)
+		{
+			// Arrange
+			var mockedService = new Mock<IInviteService>();
+			var mockedFactory = new Mock<IDtoFactory>();
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			var mockedGroupService = new Mock<IGroupService>();
+
+			var controller = new InviteController(mockedAuthenticationProvider.Object,
+				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
+
+			var dto = new UserDto { UserName = string.Empty };
+
+			// Act
+			var result = await controller.SendInvite(null, dto);
+
+			// Assert
+			Assert.IsInstanceOf<BadRequestObjectResult>(result);
+		}
+
+		[TestCase("group name")]
+		public async Task TestSendInvite_PassEmptyUsername_ShouldSetCorrectErrorMessage(string groupName)
+		{
+			// Arrange
+			var mockedService = new Mock<IInviteService>();
+			var mockedFactory = new Mock<IDtoFactory>();
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			var mockedGroupService = new Mock<IGroupService>();
+
+			var controller = new InviteController(mockedAuthenticationProvider.Object,
+				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
+
+			var dto = new UserDto { UserName = string.Empty };
 
-            var controller = new InviteController(mockedAuthenticationProvider.Object,
-                mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
+			// Act
+			var result = await controller.SendInvite(groupName, dto) as BadRequestObjectResult;
 
-            // Act
-            var result = await controller.SendInvite(groupName, username);
+			// Assert
+			Assert.AreSame(Constants.UsernameCannotBeNull, result.Value);
+		}
 
-            // Assert
-            Assert.IsInstanceOf<NotFoundResult>(result);
-        }
+		[TestCase("group name", "username")]
+		public async Task TestSendInvite_ShouldCallGroupServiceGetByName(string groupName, string username)
+		{
+			// Arrange
+			var mockedService = new Mock<IInviteService>();
+			var mockedFactory = new Mock<IDtoFactory>();
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			var mockedGroupService = new Mock<IGroupService>();
 
-        [TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
-        public async Task TestSendInvite_ThereIsGroup_ShouldCallAuthenticationProviderGetCurrentUserAsync(string groupName, string username, string userId)
-        {
-            // Arrange
-            var mockedService = new Mock<IInviteService>();
-            var mockedFactory = new Mock<IDtoFactory>();
+			var controller = new InviteController(mockedAuthenticationProvider.Object,
+				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
-            var user = new User { Id = userId };
+			var dto = new UserDto { UserName = username };
 
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
+			// Act
+			var result = await controller.SendInvite(groupName, dto);
 
-            var group = new Group();
+			// Assert
+			mockedGroupService.Verify(s => s.GetByName(groupName), Times.Once);
+		}
 
-            var mockedGroupService = new Mock<IGroupService>();
-            mockedGroupService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
+		[TestCase("group name", "username")]
+		public async Task TestSendInvite_NoGroupFound_ShouldReturnNotFound(string groupName, string username)
+		{
+			// Arrange
+			var mockedService = new Mock<IInviteService>();
+			var mockedFactory = new Mock<IDtoFactory>();
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			var mockedGroupService = new Mock<IGroupService>();
 
-            var controller = new InviteController(mockedAuthenticationProvider.Object,
-                mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
+			var controller = new InviteController(mockedAuthenticationProvider.Object,
+				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
-            // Act
-            var result = await controller.SendInvite(groupName, username);
+			var dto = new UserDto { UserName = username };
 
-            // Assert
-            mockedAuthenticationProvider.Verify(p => p.GetCurrentUserAsync(), Times.Once);
-        }
+			// Act
+			var result = await controller.SendInvite(groupName, dto);
 
-        [TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
-        public async Task TestSendInvite_GroupOwnerDoesNotMatchUser_ShouldReturnForbidden(string groupName, string username, string userId)
-        {
-            // Arrange
-            var mockedService = new Mock<IInviteService>();
-            var mockedFactory = new Mock<IDtoFactory>();
+			// Assert
+			Assert.IsInstanceOf<NotFoundResult>(result);
+		}
 
-            var user = new User { Id = userId };
+		[TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
+		public async Task TestSendInvite_ThereIsGroup_ShouldCallAuthenticationProviderGetCurrentUserAsync(string groupName, string username, string userId)
+		{
+			// Arrange
+			var mockedService = new Mock<IInviteService>();
+			var mockedFactory = new Mock<IDtoFactory>();
 
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
+			var user = new User { Id = userId };
 
-            var group = new Group();
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 
-            var mockedGroupService = new Mock<IGroupService>();
-            mockedGroupService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
+			var group = new Group();
 
-            var controller = new InviteController(mockedAuthenticationProvider.Object,
-                mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
+			var mockedGroupService = new Mock<IGroupService>();
+			mockedGroupService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
 
-            // Act
-            var result = await controller.SendInvite(groupName, username);
+			var controller = new InviteController(mockedAuthenticationProvider.Object,
+				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
-            // Assert
-            Assert.IsInstanceOf<ForbidResult>(result);
-        }
+			var dto = new UserDto { UserName = username };
 
-        [TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
-        public async Task TestSendInvite_GroupOwnerMatchesUser_ShouldCallAuthenticationProviderFindByUsernameAsync(string groupName,
-            string username, string userId)
-        {
-            // Arrange
-            var mockedService = new Mock<IInviteService>();
-            var mockedFactory = new Mock<IDtoFactory>();
+			// Act
+			var result = await controller.SendInvite(groupName, dto);
 
-            var user = new User { Id = userId };
+			// Assert
+			mockedAuthenticationProvider.Verify(p => p.GetCurrentUserAsync(), Times.Once);
+		}
 
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
+		[TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
+		public async Task TestSendInvite_GroupOwnerDoesNotMatchUser_ShouldReturnForbidden(string groupName, string username, string userId)
+		{
+			// Arrange
+			var mockedService = new Mock<IInviteService>();
+			var mockedFactory = new Mock<IDtoFactory>();
 
-            var group = new Group { OwnerId = userId };
+			var user = new User { Id = userId };
 
-            var mockedGroupService = new Mock<IGroupService>();
-            mockedGroupService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 
-            var controller = new InviteController(mockedAuthenticationProvider.Object,
-                mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
+			var group = new Group();
 
-            // Act
-            var result = await controller.SendInvite(groupName, username);
+			var mockedGroupService = new Mock<IGroupService>();
+			mockedGroupService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
 
-            // Assert
-            mockedAuthenticationProvider.Verify(p => p.FindByUsernameAsync(username), Times.Once);
-        }
+			var controller = new InviteController(mockedAuthenticationProvider.Object,
+				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
-        [TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
-        public async Task TestSendInvite_NoUserFound_ShouldReturnNotFound(string groupName,
-            string username, string userId)
-        {
-            // Arrange
-            var mockedService = new Mock<IInviteService>();
-            var mockedFactory = new Mock<IDtoFactory>();
+			var dto = new UserDto { UserName = username };
 
-            var user = new User { Id = userId };
+			// Act
+			var result = await controller.SendInvite(groupName, dto);
 
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
+			// Assert
+			Assert.IsInstanceOf<ForbidResult>(result);
+		}
 
-            var group = new Group { OwnerId = userId };
+		[TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
+		public async Task TestSendInvite_GroupOwnerMatchesUser_ShouldCallAuthenticationProviderFindByUsernameAsync(string groupName,
+			string username, string userId)
+		{
+			// Arrange
+			var mockedService = new Mock<IInviteService>();
+			var mockedFactory = new Mock<IDtoFactory>();
 
-            var mockedGroupService = new Mock<IGroupService>();
-            mockedGroupService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
+			var user = new User { Id = userId };
 
-            var controller = new InviteController(mockedAuthenticationProvider.Object,
-                mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 
-            // Act
-            var result = await controller.SendInvite(groupName, username);
+			var group = new Group { OwnerId = userId };
 
-            // Assert
-            Assert.IsInstanceOf<NotFoundResult>(result);
-        }
+			var mockedGroupService = new Mock<IGroupService>();
+			mockedGroupService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
 
-        [TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
-        public async Task TestSendInvite_ThereIsUser_ShouldCallServiceCreateInviteAsync(string groupName,
-            string username, string userId, int groupId)
-        {
-            // Arrange
-            var mockedService = new Mock<IInviteService>();
-            var mockedFactory = new Mock<IDtoFactory>();
+			var controller = new InviteController(mockedAuthenticationProvider.Object,
+				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
-            var user = new User { Id = userId };
+			var dto = new UserDto { UserName = username };
 
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
-            mockedAuthenticationProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>()))
-                .ReturnsAsync(user);
+			// Act
+			var result = await controller.SendInvite(groupName, dto);
 
-            var group = new Group { OwnerId = userId, Id = groupId };
+			// Assert
+			mockedAuthenticationProvider.Verify(p => p.FindByUsernameAsync(username), Times.Once);
+		}
 
-            var mockedGroupService = new Mock<IGroupService>();
-            mockedGroupService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
+		[TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
+		public async Task TestSendInvite_NoUserFound_ShouldReturnNotFound(string groupName,
+			string username, string userId)
+		{
+			// Arrange
+			var mockedService = new Mock<IInviteService>();
+			var mockedFactory = new Mock<IDtoFactory>();
 
-            var controller = new InviteController(mockedAuthenticationProvider.Object,
-                mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
+			var user = new User { Id = userId };
 
-            // Act
-            var result = await controller.SendInvite(groupName, username);
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 
-            // Assert
-            mockedService.Verify(s => s.CreateInviteAsync(groupId, userId), Times.Once);
-        }
+			var group = new Group { OwnerId = userId };
 
-        [TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
-        public async Task TestSendInvite_ThereIsUser_ShouldCallFactoryCreate(string groupName,
-            string username, string userId, int groupId)
-        {
-            // Arrange
-            var invite = new Invite();
+			var mockedGroupService = new Mock<IGroupService>();
+			mockedGroupService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
 
-            var mockedService = new Mock<IInviteService>();
-            mockedService.Setup(s => s.CreateInviteAsync(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(invite);
+			var controller = new InviteController(mockedAuthenticationProvider.Object,
+				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
-            var mockedFactory = new Mock<IDtoFactory>();
+			var dto = new UserDto { UserName = username };
 
-            var user = new User { Id = userId };
+			// Act
+			var result = await controller.SendInvite(groupName, dto);
 
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
-            mockedAuthenticationProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>()))
-                .ReturnsAsync(user);
+			// Assert
+			Assert.IsInstanceOf<NotFoundResult>(result);
+		}
 
-            var group = new Group { OwnerId = userId, Id = groupId };
+		[TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
+		public async Task TestSendInvite_ThereIsUser_ShouldCallServiceCreateInviteAsync(string groupName,
+			string username, string userId, int groupId)
+		{
+			// Arrange
+			var mockedService = new Mock<IInviteService>();
+			var mockedFactory = new Mock<IDtoFactory>();
 
-            var mockedGroupService = new Mock<IGroupService>();
-            mockedGroupService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
+			var user = new User { Id = userId };
 
-            var controller = new InviteController(mockedAuthenticationProvider.Object,
-                mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
+			mockedAuthenticationProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>()))
+				.ReturnsAsync(user);
 
-            // Act
-            var result = await controller.SendInvite(groupName, username);
+			var group = new Group { OwnerId = userId, Id = groupId };
 
-            // Assert
-            mockedFactory.Verify(f => f.CreateInviteDto(invite), Times.Once);
-        }
+			var mockedGroupService = new Mock<IGroupService>();
+			mockedGroupService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
 
-        [TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
-        public async Task TestSendInvite_ShouldReturnOk(string groupName,
-            string username, string userId, int groupId)
-        {
-            // Arrange
-            var invite = new Invite();
+			var controller = new InviteController(mockedAuthenticationProvider.Object,
+				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
-            var mockedService = new Mock<IInviteService>();
-            mockedService.Setup(s => s.CreateInviteAsync(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(invite);
+			var dto = new UserDto { UserName = username };
 
-            var mockedFactory = new Mock<IDtoFactory>();
+			// Act
+			var result = await controller.SendInvite(groupName, dto);
 
-            var user = new User { Id = userId };
+			// Assert
+			mockedService.Verify(s => s.CreateInviteAsync(groupId, userId), Times.Once);
+		}
 
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
-            mockedAuthenticationProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>()))
-                .ReturnsAsync(user);
+		[TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
+		public async Task TestSendInvite_ThereIsUser_ShouldCallFactoryCreate(string groupName,
+			string username, string userId, int groupId)
+		{
+			// Arrange
+			var invite = new Invite();
 
-            var group = new Group { OwnerId = userId, Id = groupId };
+			var mockedService = new Mock<IInviteService>();
+			mockedService.Setup(s => s.CreateInviteAsync(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(invite);
 
-            var mockedGroupService = new Mock<IGroupService>();
-            mockedGroupService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
+			var mockedFactory = new Mock<IDtoFactory>();
 
-            var controller = new InviteController(mockedAuthenticationProvider.Object,
-                mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
+			var user = new User { Id = userId };
 
-            // Act
-            var result = await controller.SendInvite(groupName, username);
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
+			mockedAuthenticationProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>()))
+				.ReturnsAsync(user);
 
-            // Assert
-            Assert.IsInstanceOf<OkObjectResult>(result);
-        }
+			var group = new Group { OwnerId = userId, Id = groupId };
 
-        [TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
-        public async Task TestSendInvite_ShouldSetCorrectBody(string groupName,
-            string username, string userId, int groupId)
-        {
-            // Arrange
-            var invite = new Invite();
+			var mockedGroupService = new Mock<IGroupService>();
+			mockedGroupService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
 
-            var mockedService = new Mock<IInviteService>();
-            mockedService.Setup(s => s.CreateInviteAsync(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(invite);
+			var controller = new InviteController(mockedAuthenticationProvider.Object,
+				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
-            var dto = new InviteDto();
+			var dto = new UserDto { UserName = username };
 
-            var mockedFactory = new Mock<IDtoFactory>();
-            mockedFactory.Setup(s => s.CreateInviteDto(It.IsAny<Invite>())).Returns(dto);
+			// Act
+			var result = await controller.SendInvite(groupName, dto);
 
-            var user = new User { Id = userId };
+			// Assert
+			mockedFactory.Verify(f => f.CreateInviteDto(invite), Times.Once);
+		}
 
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
-            mockedAuthenticationProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>()))
-                .ReturnsAsync(user);
+		[TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
+		public async Task TestSendInvite_ShouldReturnOk(string groupName,
+			string username, string userId, int groupId)
+		{
+			// Arrange
+			var invite = new Invite();
 
-            var group = new Group { OwnerId = userId, Id = groupId };
+			var mockedService = new Mock<IInviteService>();
+			mockedService.Setup(s => s.CreateInviteAsync(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(invite);
 
-            var mockedGroupService = new Mock<IGroupService>();
-            mockedGroupService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
+			var mockedFactory = new Mock<IDtoFactory>();
 
-            var controller = new InviteController(mockedAuthenticationProvider.Object,
-                mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
+			var user = new User { Id = userId };
 
-            // Act
-            var result = await controller.SendInvite(groupName, username) as OkObjectResult;
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
+			mockedAuthenticationProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>()))
+				.ReturnsAsync(user);
 
-            // Assert
-            Assert.AreSame(dto, result.Value);
-        }
-    }
+			var group = new Group { OwnerId = userId, Id = groupId };
+
+			var mockedGroupService = new Mock<IGroupService>();
+			mockedGroupService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
+
+			var controller = new InviteController(mockedAuthenticationProvider.Object,
+				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
+
+			var dto = new UserDto { UserName = username };
+
+			// Act
+			var result = await controller.SendInvite(groupName, dto);
+
+			// Assert
+			Assert.IsInstanceOf<OkObjectResult>(result);
+		}
+
+		[TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
+		public async Task TestSendInvite_ShouldSetCorrectBody(string groupName,
+			string username, string userId, int groupId)
+		{
+			// Arrange
+			var invite = new Invite();
+
+			var mockedService = new Mock<IInviteService>();
+			mockedService.Setup(s => s.CreateInviteAsync(It.IsAny<int>(), It.IsAny<string>())).ReturnsAsync(invite);
+
+			var dto = new InviteDto();
+
+			var mockedFactory = new Mock<IDtoFactory>();
+			mockedFactory.Setup(s => s.CreateInviteDto(It.IsAny<Invite>())).Returns(dto);
+
+			var user = new User { Id = userId };
+
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
+			mockedAuthenticationProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>()))
+				.ReturnsAsync(user);
+
+			var group = new Group { OwnerId = userId, Id = groupId };
+
+			var mockedGroupService = new Mock<IGroupService>();
+			mockedGroupService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
+
+			var controller = new InviteController(mockedAuthenticationProvider.Object,
+				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
+
+			var userDto = new UserDto { UserName = username };
+
+			// Act
+			var result = await controller.SendInvite(groupName, userDto) as OkObjectResult;
+
+			// Assert
+			Assert.AreSame(dto, result.Value);
+		}
+	}
 }
