@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SecretSanta.Authentication.Contracts;
 using SecretSanta.Services.Contracts;
+using SecretSanta.Web.Models.Membership;
 using System.Threading.Tasks;
 
 namespace SecretSanta.Web.Controllers
@@ -26,11 +27,11 @@ namespace SecretSanta.Web.Controllers
 
         [HttpPost]
         [Route("answerInvite")]
-        public async Task<IActionResult> AnswerInvite([FromBody]string groupName, [FromBody]string username, [FromBody]bool accepted)
+        public async Task<IActionResult> AnswerInvite([FromBody]AnswerInviteDto dto)
         {
-            var userTask = this.authenticationProvider.FindByUsernameAsync(username);
+			var userTask = this.authenticationProvider.GetCurrentUserAsync();
 
-            var group = this.groupService.GetByName(groupName);
+            var group = this.groupService.GetByName(dto.GroupName);
 
             if (group == null)
             {
@@ -51,7 +52,7 @@ namespace SecretSanta.Web.Controllers
                 return this.Forbid();
             }
 
-            if (accepted)
+            if (dto.Accepted)
             {
                 await this.membershipService.JoinGroup(group.Id, user.Id);
             }
