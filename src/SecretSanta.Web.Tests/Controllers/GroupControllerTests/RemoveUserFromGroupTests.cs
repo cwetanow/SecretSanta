@@ -6,197 +6,214 @@ using SecretSanta.Models;
 using SecretSanta.Services.Contracts;
 using SecretSanta.Web.Controllers;
 using SecretSanta.Web.Infrastructure;
+using SecretSanta.Web.Models.Users;
 using System.Threading.Tasks;
 
 namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 {
-    [TestFixture]
-    public class RemoveUserFromGroupTests
-    {
-        [TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
-        public async Task TestRemoveUserFromGroup_ShouldCallAuthenticationProviderGetCurrentUserAsync(string groupName,
-            string username, string userId, int groupId)
-        {
-            // Arrange
-            var mockedService = new Mock<IGroupService>();
-            var mockedFactory = new Mock<IDtoFactory>();
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+	[TestFixture]
+	public class RemoveUserFromGroupTests
+	{
+		[TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
+		public async Task TestRemoveUserFromGroup_ShouldCallAuthenticationProviderGetCurrentUserAsync(string groupName,
+			string username, string userId, int groupId)
+		{
+			// Arrange
+			var mockedService = new Mock<IGroupService>();
+			var mockedFactory = new Mock<IDtoFactory>();
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
 
-            // Act
-            await controller.RemoveUserFromGroup(groupName, username);
+			var dto = new UserDto { UserName = username };
 
-            // Assert
-            mockedAuthenticationProvider.Verify(p => p.GetCurrentUserAsync(), Times.Once);
-        }
+			// Act
+			await controller.RemoveUserFromGroup(groupName, dto);
 
-        [TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
-        public async Task TestRemoveUserFromGroup_ShouldCallGroupServiceGetByName(string groupName,
-            string username, string userId, int groupId)
-        {
-            // Arrange
-            var mockedService = new Mock<IGroupService>();
-            var mockedFactory = new Mock<IDtoFactory>();
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			// Assert
+			mockedAuthenticationProvider.Verify(p => p.GetCurrentUserAsync(), Times.Once);
+		}
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+		[TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
+		public async Task TestRemoveUserFromGroup_ShouldCallGroupServiceGetByName(string groupName,
+			string username, string userId, int groupId)
+		{
+			// Arrange
+			var mockedService = new Mock<IGroupService>();
+			var mockedFactory = new Mock<IDtoFactory>();
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
 
-            // Act
-            await controller.RemoveUserFromGroup(groupName, username);
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
 
-            // Assert
-            mockedService.Verify(s => s.GetByName(groupName), Times.Once);
-        }
+			var dto = new UserDto { UserName = username };
 
-        [TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
-        public async Task TestRemoveUserFromGroup_ThereIsNoGroup_ShouldReturnNotFound(string groupName,
-            string username, string userId, int groupId)
-        {
-            // Arrange
-            var mockedService = new Mock<IGroupService>();
-            var mockedFactory = new Mock<IDtoFactory>();
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			// Act
+			await controller.RemoveUserFromGroup(groupName, dto);
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			// Assert
+			mockedService.Verify(s => s.GetByName(groupName), Times.Once);
+		}
 
-            // Act
-            var result = await controller.RemoveUserFromGroup(groupName, username);
+		[TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
+		public async Task TestRemoveUserFromGroup_ThereIsNoGroup_ShouldReturnNotFound(string groupName,
+			string username, string userId, int groupId)
+		{
+			// Arrange
+			var mockedService = new Mock<IGroupService>();
+			var mockedFactory = new Mock<IDtoFactory>();
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
 
-            // Assert
-            Assert.IsInstanceOf<NotFoundResult>(result);
-        }
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
 
-        [TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
-        public async Task TestRemoveUserFromGroup_UserIsNotOwner_ShouldReturnForbidden(string groupName,
-            string username, string userId, int groupId)
-        {
-            // Arrange
-            var group = new Group();
+			var dto = new UserDto { UserName = username };
 
-            var mockedService = new Mock<IGroupService>();
-            mockedService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
+			// Act
+			var result = await controller.RemoveUserFromGroup(groupName, dto);
 
-            var mockedFactory = new Mock<IDtoFactory>();
+			// Assert
+			Assert.IsInstanceOf<NotFoundResult>(result);
+		}
 
-            var user = new User { Id = userId };
+		[TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
+		public async Task TestRemoveUserFromGroup_UserIsNotOwner_ShouldReturnForbidden(string groupName,
+			string username, string userId, int groupId)
+		{
+			// Arrange
+			var group = new Group();
 
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
+			var mockedService = new Mock<IGroupService>();
+			mockedService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var mockedFactory = new Mock<IDtoFactory>();
 
-            // Act
-            var result = await controller.RemoveUserFromGroup(groupName, username);
+			var user = new User { Id = userId };
 
-            // Assert
-            Assert.IsInstanceOf<ForbidResult>(result);
-        }
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 
-        [TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
-        public async Task TestRemoveUserFromGroup_UserIsOwner_ShouldCallAuthenticationProviderFindByUsernameAsync(string groupName,
-            string username, string userId, int groupId)
-        {
-            // Arrange
-            var group = new Group { OwnerId = userId };
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
 
-            var mockedService = new Mock<IGroupService>();
-            mockedService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
+			var dto = new UserDto { UserName = username };
 
-            var mockedFactory = new Mock<IDtoFactory>();
+			// Act
+			var result = await controller.RemoveUserFromGroup(groupName, dto);
 
-            var user = new User { Id = userId };
+			// Assert
+			Assert.IsInstanceOf<ForbidResult>(result);
+		}
 
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
+		[TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
+		public async Task TestRemoveUserFromGroup_UserIsOwner_ShouldCallAuthenticationProviderFindByUsernameAsync(string groupName,
+			string username, string userId, int groupId)
+		{
+			// Arrange
+			var group = new Group { OwnerId = userId };
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var mockedService = new Mock<IGroupService>();
+			mockedService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
 
-            // Act
-            var result = await controller.RemoveUserFromGroup(groupName, username);
+			var mockedFactory = new Mock<IDtoFactory>();
 
-            // Assert
-            mockedAuthenticationProvider.Verify(p => p.FindByUsernameAsync(username), Times.Once);
-        }
+			var user = new User { Id = userId };
 
-        [TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
-        public async Task TestRemoveUserFromGroup_NoUserFound_ShouldReturnNotFound(string groupName,
-            string username, string userId, int groupId)
-        {
-            // Arrange
-            var group = new Group { OwnerId = userId };
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 
-            var mockedService = new Mock<IGroupService>();
-            mockedService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
 
-            var mockedFactory = new Mock<IDtoFactory>();
+			var dto = new UserDto { UserName = username };
 
-            var user = new User { Id = userId };
+			// Act
+			await controller.RemoveUserFromGroup(groupName, dto);
 
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
+			// Assert
+			mockedAuthenticationProvider.Verify(p => p.FindByUsernameAsync(username), Times.Once);
+		}
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+		[TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
+		public async Task TestRemoveUserFromGroup_NoUserFound_ShouldReturnNotFound(string groupName,
+			string username, string userId, int groupId)
+		{
+			// Arrange
+			var group = new Group { OwnerId = userId };
 
-            // Act
-            var result = await controller.RemoveUserFromGroup(groupName, username);
+			var mockedService = new Mock<IGroupService>();
+			mockedService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
 
-            // Assert
-            Assert.IsInstanceOf<NotFoundResult>(result);
-        }
+			var mockedFactory = new Mock<IDtoFactory>();
 
-        [TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
-        public async Task TestRemoveUserFromGroup_UserFound_ShouldCallGroupServiceRemoveUserFromGroup(string groupName,
-            string username, string userId, int groupId)
-        {
-            // Arrange
-            var group = new Group { OwnerId = userId, Id = groupId };
+			var user = new User { Id = userId };
 
-            var mockedService = new Mock<IGroupService>();
-            mockedService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 
-            var mockedFactory = new Mock<IDtoFactory>();
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
 
-            var user = new User { Id = userId };
+			var dto = new UserDto { UserName = username };
 
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
-            mockedAuthenticationProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>())).ReturnsAsync(user);
+			// Act
+			var result = await controller.RemoveUserFromGroup(groupName, dto);
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			// Assert
+			Assert.IsInstanceOf<NotFoundResult>(result);
+		}
 
-            // Act
-            var result = await controller.RemoveUserFromGroup(groupName, username);
+		[TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
+		public async Task TestRemoveUserFromGroup_UserFound_ShouldCallGroupServiceRemoveUserFromGroup(string groupName,
+			string username, string userId, int groupId)
+		{
+			// Arrange
+			var group = new Group { OwnerId = userId, Id = groupId };
 
-            // Assert
-            mockedService.Verify(s => s.RemoveUserFromGroup(groupId, userId), Times.Once);
-        }
+			var mockedService = new Mock<IGroupService>();
+			mockedService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
 
-        [TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
-        public async Task TestRemoveUserFromGroup_UserFound_ShouldReturnNoContent(string groupName,
-            string username, string userId, int groupId)
-        {
-            // Arrange
-            var group = new Group { OwnerId = userId, Id = groupId };
+			var mockedFactory = new Mock<IDtoFactory>();
 
-            var mockedService = new Mock<IGroupService>();
-            mockedService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
+			var user = new User { Id = userId };
 
-            var mockedFactory = new Mock<IDtoFactory>();
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
+			mockedAuthenticationProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>())).ReturnsAsync(user);
 
-            var user = new User { Id = userId };
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
 
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
-            mockedAuthenticationProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>())).ReturnsAsync(user);
+			var dto = new UserDto { UserName = username };
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			// Act
+			await controller.RemoveUserFromGroup(groupName, dto);
 
-            // Act
-            var result = await controller.RemoveUserFromGroup(groupName, username);
+			// Assert
+			mockedService.Verify(s => s.RemoveUserFromGroup(groupId, userId), Times.Once);
+		}
 
-            // Assert
-            Assert.IsInstanceOf<NoContentResult>(result);
-        }
-    }
+		[TestCase("group name", "username", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 3)]
+		public async Task TestRemoveUserFromGroup_UserFound_ShouldReturnNoContent(string groupName,
+			string username, string userId, int groupId)
+		{
+			// Arrange
+			var group = new Group { OwnerId = userId, Id = groupId };
+
+			var mockedService = new Mock<IGroupService>();
+			mockedService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
+
+			var mockedFactory = new Mock<IDtoFactory>();
+
+			var user = new User { Id = userId };
+
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
+			mockedAuthenticationProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>())).ReturnsAsync(user);
+
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+
+			var dto = new UserDto { UserName = username };
+
+			// Act
+			var result = await controller.RemoveUserFromGroup(groupName, dto);
+
+			// Assert
+			Assert.IsInstanceOf<NoContentResult>(result);
+		}
+	}
 }

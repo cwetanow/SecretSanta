@@ -6,131 +6,132 @@ using SecretSanta.Web.Models.Group;
 using System;
 using System.Threading.Tasks;
 using SecretSanta.Common;
+using SecretSanta.Web.Models.Users;
 
 namespace SecretSanta.Web.Controllers
 {
-    [Route("api/groups")]
-    public class GroupController : Controller
-    {
-        private readonly IGroupService groupService;
-        private readonly IDtoFactory factory;
-        private readonly IAuthenticationProvider authenticationProvider;
+	[Route("api/groups")]
+	public class GroupController : Controller
+	{
+		private readonly IGroupService groupService;
+		private readonly IDtoFactory factory;
+		private readonly IAuthenticationProvider authenticationProvider;
 
-        public GroupController(IGroupService groupService, IDtoFactory factory, IAuthenticationProvider authenticationProvider)
-        {
-            if (groupService == null)
-            {
-                throw new ArgumentNullException(nameof(groupService));
-            }
+		public GroupController(IGroupService groupService, IDtoFactory factory, IAuthenticationProvider authenticationProvider)
+		{
+			if (groupService == null)
+			{
+				throw new ArgumentNullException(nameof(groupService));
+			}
 
-            if (authenticationProvider == null)
-            {
-                throw new ArgumentNullException(nameof(authenticationProvider));
-            }
+			if (authenticationProvider == null)
+			{
+				throw new ArgumentNullException(nameof(authenticationProvider));
+			}
 
-            if (factory == null)
-            {
-                throw new ArgumentNullException(nameof(factory));
-            }
+			if (factory == null)
+			{
+				throw new ArgumentNullException(nameof(factory));
+			}
 
-            this.groupService = groupService;
-            this.factory = factory;
-            this.authenticationProvider = authenticationProvider;
-        }
+			this.groupService = groupService;
+			this.factory = factory;
+			this.authenticationProvider = authenticationProvider;
+		}
 
-        [HttpPost]
-        [Route("")]
-        public async Task<IActionResult> CreateGroup([FromBody]CreateGroupDto dto)
-        {
-            if (string.IsNullOrEmpty(dto.GroupName))
-            {
-                return this.BadRequest(Constants.GroupNameCannotBeNull);
-            }
+		[HttpPost]
+		[Route("")]
+		public async Task<IActionResult> CreateGroup([FromBody]CreateGroupDto dto)
+		{
+			if (string.IsNullOrEmpty(dto.GroupName))
+			{
+				return this.BadRequest(Constants.GroupNameCannotBeNull);
+			}
 
-            var user = await this.authenticationProvider.GetCurrentUserAsync();
+			var user = await this.authenticationProvider.GetCurrentUserAsync();
 
-            var group = await this.groupService.CreateGroupAsync(dto.GroupName, user.Id);
+			var group = await this.groupService.CreateGroupAsync(dto.GroupName, user.Id);
 
-            if (group == null)
-            {
-                return this.BadRequest(Constants.GroupAlreadyExists);
-            }
+			if (group == null)
+			{
+				return this.BadRequest(Constants.GroupAlreadyExists);
+			}
 
-            group.Owner = user;
+			group.Owner = user;
 
-            var resultDto = this.factory.CreateGroupDto(group);
+			var resultDto = this.factory.CreateGroupDto(group);
 
-            return this.Ok(resultDto);
-        }
+			return this.Ok(resultDto);
+		}
 
-        [HttpGet]
-        [Route("{groupName}/users")]
-        public async Task<IActionResult> GetGroupUsers(string groupName)
-        {
-            if (string.IsNullOrEmpty(groupName))
-            {
-                return this.BadRequest(Constants.GroupNameCannotBeNull);
-            }
+		[HttpGet]
+		[Route("{groupName}/users")]
+		public async Task<IActionResult> GetGroupUsers(string groupName)
+		{
+			if (string.IsNullOrEmpty(groupName))
+			{
+				return this.BadRequest(Constants.GroupNameCannotBeNull);
+			}
 
-            var user = await this.authenticationProvider.GetCurrentUserAsync();
+			var user = await this.authenticationProvider.GetCurrentUserAsync();
 
-            var group = this.groupService.GetByName(groupName);
+			var group = this.groupService.GetByName(groupName);
 
-            if (!group.OwnerId.Equals(user.Id))
-            {
-                return this.Forbid();
-            }
+			if (!group.OwnerId.Equals(user.Id))
+			{
+				return this.Forbid();
+			}
 
-            var users = this.groupService.GetGroupUsers(groupName);
+			var users = this.groupService.GetGroupUsers(groupName);
 
-            var resultDto = this.factory.CreateUsersListDto(users);
+			var resultDto = this.factory.CreateUsersListDto(users);
 
-            return this.Ok(resultDto);
-        }
+			return this.Ok(resultDto);
+		}
 
-        [HttpGet]
-        [Route("personal")]
-        public async Task<IActionResult> GetUserGroups()
-        {
-            var user = await this.authenticationProvider.GetCurrentUserAsync();
+		[HttpGet]
+		[Route("personal")]
+		public async Task<IActionResult> GetUserGroups()
+		{
+			var user = await this.authenticationProvider.GetCurrentUserAsync();
 
-            var groups = this.groupService.GetUserGroups(user.Id);
+			var groups = this.groupService.GetUserGroups(user.Id);
 
-            var dto = this.factory.CreateGroupListDto(groups);
+			var dto = this.factory.CreateGroupListDto(groups);
 
-            return this.Ok(dto);
-        }
+			return this.Ok(dto);
+		}
 
-        [HttpDelete]
-        [Route("{groupName}/users")]
-        public async Task<IActionResult> RemoveUserFromGroup(string groupName, [FromBody]string username)
-        {
-            var currentUserTask = this.authenticationProvider.GetCurrentUserAsync();
+		[HttpDelete]
+		[Route("{groupName}/users")]
+		public async Task<IActionResult> RemoveUserFromGroup(string groupName, [FromBody]UserDto dto)
+		{
+			var currentUserTask = this.authenticationProvider.GetCurrentUserAsync();
 
-            var group = this.groupService.GetByName(groupName);
+			var group = this.groupService.GetByName(groupName);
 
-            if (group == null)
-            {
-                return this.NotFound();
-            }
+			if (group == null)
+			{
+				return this.NotFound();
+			}
 
-            var currentUser = await currentUserTask;
+			var currentUser = await currentUserTask;
 
-            if (!currentUser.Id.Equals(group.OwnerId))
-            {
-                return this.Forbid();
-            }
+			if (!currentUser.Id.Equals(group.OwnerId))
+			{
+				return this.Forbid();
+			}
 
-            var user = await this.authenticationProvider.FindByUsernameAsync(username);
+			var user = await this.authenticationProvider.FindByUsernameAsync(dto.UserName);
 
-            if (user == null)
-            {
-                return this.NotFound();
-            }
+			if (user == null)
+			{
+				return this.NotFound();
+			}
 
-            await this.groupService.RemoveUserFromGroup(group.Id, user.Id);
+			await this.groupService.RemoveUserFromGroup(group.Id, user.Id);
 
-            return this.NoContent();
-        }
-    }
+			return this.NoContent();
+		}
+	}
 }
