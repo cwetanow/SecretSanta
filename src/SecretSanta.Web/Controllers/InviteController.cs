@@ -26,7 +26,7 @@ namespace SecretSanta.Web.Controllers
 		}
 
 		[HttpGet]
-		[Route("pending")]
+		[Route("")]
 		public async Task<IActionResult> GetPendingUserInvites([FromQuery]int offset = 0, [FromQuery]int limit = 10,
 			[FromQuery]bool sortAscending = true)
 		{

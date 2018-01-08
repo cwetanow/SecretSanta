@@ -90,7 +90,7 @@ namespace SecretSanta.Web.Controllers
 		}
 
 		[HttpGet]
-		[Route("personal")]
+		[Route("user")]
 		public async Task<IActionResult> GetUserGroups()
 		{
 			var user = await this.authenticationProvider.GetCurrentUserAsync();

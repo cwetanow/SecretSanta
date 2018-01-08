@@ -6,62 +6,61 @@ using System.Threading.Tasks;
 
 namespace SecretSanta.Web.Controllers
 {
-    [Route("api/membership")]
-    public class MembershipController : Controller
-    {
-        private readonly IMembershipService membershipService;
-        private readonly IInviteService inviteService;
-        private readonly IGroupService groupService;
-        private readonly IAuthenticationProvider authenticationProvider;
+	public class MembershipController : Controller
+	{
+		private readonly IMembershipService membershipService;
+		private readonly IInviteService inviteService;
+		private readonly IGroupService groupService;
+		private readonly IAuthenticationProvider authenticationProvider;
 
-        public MembershipController(IMembershipService membershipService,
-            IInviteService inviteService,
-            IGroupService groupService,
-            IAuthenticationProvider authenticationProvider)
-        {
-            this.membershipService = membershipService;
-            this.inviteService = inviteService;
-            this.groupService = groupService;
-            this.authenticationProvider = authenticationProvider;
-        }
+		public MembershipController(IMembershipService membershipService,
+			IInviteService inviteService,
+			IGroupService groupService,
+			IAuthenticationProvider authenticationProvider)
+		{
+			this.membershipService = membershipService;
+			this.inviteService = inviteService;
+			this.groupService = groupService;
+			this.authenticationProvider = authenticationProvider;
+		}
 
-        [HttpPost]
-        [Route("answerInvite")]
-        public async Task<IActionResult> AnswerInvite([FromBody]AnswerInviteDto dto)
-        {
+		[HttpPost]
+		[Route("api/groups/members")]
+		public async Task<IActionResult> AnswerInvite([FromBody]AnswerInviteDto dto)
+		{
 			var userTask = this.authenticationProvider.GetCurrentUserAsync();
 
-            var group = this.groupService.GetByName(dto.GroupName);
+			var group = this.groupService.GetByName(dto.GroupName);
 
-            if (group == null)
-            {
-                return this.NotFound();
-            }
+			if (group == null)
+			{
+				return this.NotFound();
+			}
 
-            var user = await userTask;
+			var user = await userTask;
 
-            if (user == null)
-            {
-                return this.NotFound();
-            }
+			if (user == null)
+			{
+				return this.NotFound();
+			}
 
-            var isInvited = this.inviteService.IsUserInvited(group.Id, user.Id);
+			var isInvited = this.inviteService.IsUserInvited(group.Id, user.Id);
 
-            if (!isInvited)
-            {
-                return this.Forbid();
-            }
+			if (!isInvited)
+			{
+				return this.Forbid();
+			}
 
-            if (dto.Accepted)
-            {
-                await this.membershipService.JoinGroup(group.Id, user.Id);
-            }
-            else
-            {
-                await this.inviteService.CancelInvite(group.Id, user.Id);
-            }
+			if (dto.Accepted)
+			{
+				await this.membershipService.JoinGroup(group.Id, user.Id);
+			}
+			else
+			{
+				await this.inviteService.CancelInvite(group.Id, user.Id);
+			}
 
-            return this.NoContent();
-        }
-    }
+			return this.NoContent();
+		}
+	}
 }

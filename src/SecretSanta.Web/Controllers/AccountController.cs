@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace SecretSanta.Web.Controllers
 {
-    [Route("api/account")]
     public class AccountController : Controller
     {
         private readonly IAuthenticationProvider authenticationProvider;
@@ -44,7 +43,7 @@ namespace SecretSanta.Web.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("register")]
+        [Route("api/users")]
         public async Task<IActionResult> Register([FromBody] RegisterDto model)
         {
             var user = await this.authenticationProvider.FindByUsernameAsync(model.Username);
@@ -68,7 +67,7 @@ namespace SecretSanta.Web.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Route("token")]
+        [Route("api/login")]
         public async Task<IActionResult> GenerateToken([FromBody]LoginDto model)
         {
             var user = await this.authenticationProvider.FindByUsernameAsync(model.Username);

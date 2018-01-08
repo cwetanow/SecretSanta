@@ -60,7 +60,7 @@ namespace SecretSanta.Web.Controllers
         }
 
         [HttpPost]
-        [Route("distribute/{groupName}")]
+        [Route("{groupName}")]
         public async Task<IActionResult> DistributeGifts(string groupName)
         {
             var user = await this.authenticationProvider.GetCurrentUserAsync();
