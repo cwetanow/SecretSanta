@@ -60,6 +60,11 @@ namespace SecretSanta.Services
             var groupUsers = this.groupService.GetGroupUsers(group.GroupName)
                 .ToList();
 
+			if(groupUsers.Count < 2)
+			{
+				return null;
+			}
+
             var gifts = this.giftManager.DistributeGifts(groupUsers, group.Id)
                 .ToList();
 
