@@ -30,6 +30,7 @@ using SecretSanta.Services.Contracts;
 using SecretSanta.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace SecretSanta.Web
 {
@@ -117,7 +118,29 @@ namespace SecretSanta.Web
 			app.UseAuthentication();
 
 			app.UseMiddleware(typeof(ErrorHandlingMiddleware));
+
+			//order is important for CORS to work
+			app.UseCors("AllowAnyPolicy");
+			app.UseDefaultFiles();
+			app.UseStaticFiles(GetStaticFileConfiguration());
+			app.UseFileServer();
 			app.UseMvc();
+		}
+
+		private StaticFileOptions GetStaticFileConfiguration()
+		{
+			var provider = new FileExtensionContentTypeProvider();
+			provider.Mappings[".exe"] = "application/octect-stream";
+			return new StaticFileOptions {
+				ContentTypeProvider = provider,
+				OnPrepareResponse = context => {
+					if (context.File.Name == "index.html")
+					{
+						context.Context.Response.Headers.Add("Cache-Control", "no-cache, no-store");
+						context.Context.Response.Headers.Add("Expires", "-1");
+					}
+				}
+			};
 		}
 
 		private IKernel RegisterApplicationComponents(IApplicationBuilder app)
