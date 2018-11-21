@@ -6,6 +6,7 @@ const htmlPlugin = new HtmlWebPackPlugin({
 });
 
 module.exports = {
+  entry: "./src/app.js",
   module: {
     rules: [
       {
@@ -14,6 +15,10 @@ module.exports = {
         use: {
           loader: "babel-loader"
         }
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"]
       }
     ]
   },
