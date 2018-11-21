@@ -1,4 +1,5 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const path = require('path');
 
 const htmlPlugin = new HtmlWebPackPlugin({
   template: "./src/index.html",
@@ -7,6 +8,9 @@ const htmlPlugin = new HtmlWebPackPlugin({
 
 module.exports = {
   entry: "./src/app.js",
+  output: {
+    path: path.resolve(__dirname, '../server/SecretSanta.Web/wwwroot')
+  },
   module: {
     rules: [
       {
