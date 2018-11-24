@@ -6,7 +6,7 @@ notifications:
   email: false
 
 script:
-  - cd src
+  - cd server
   - dotnet restore
   - dotnet build 
   - dotnet test SecretSanta.Authentication.Tests/
