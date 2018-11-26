@@ -1,8 +1,10 @@
+import 'babel-polyfill';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Route from 'react-router-dom/Route';
 import { withRouter } from 'react-router';
+import Register from './auth/Register';
 
 import { Container, Jumbotron } from 'reactstrap';
 import Navbar from './common/Navbar';
@@ -16,6 +18,8 @@ class App extends Component {
     return (
       <Container fluid>
         <Navbar></Navbar>
+
+        <Route exact path="/register" component={Register} />
 
       </Container>
     );
