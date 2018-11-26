@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import Route from 'react-router-dom/Route';
 import { withRouter } from 'react-router';
 import Register from './auth/Register';
+import Login from './auth/Login';
 
 import { Container, Jumbotron } from 'reactstrap';
 import Navbar from './common/Navbar';
@@ -20,6 +21,7 @@ class App extends Component {
         <Navbar></Navbar>
 
         <Route exact path="/register" component={Register} />
+        <Route exact path="/login" component={Login} />
 
       </Container>
     );

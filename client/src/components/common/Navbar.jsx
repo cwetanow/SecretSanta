@@ -46,10 +46,10 @@ export default class NavBar extends React.Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                {this.renderNavLink('Register', '/register')}
+                {this.renderNavLink('Login', '/login')}
               </NavItem>
               <NavItem>
-                <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
+                {this.renderNavLink('Register', '/register')}
               </NavItem>
             </Nav>
           </Collapse>
