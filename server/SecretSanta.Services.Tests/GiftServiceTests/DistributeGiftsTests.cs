@@ -6,6 +6,7 @@ using SecretSanta.Models;
 using SecretSanta.Providers.Contracts;
 using SecretSanta.Services.Contracts;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SecretSanta.Services.Tests.GiftServiceTests
@@ -74,7 +75,14 @@ namespace SecretSanta.Services.Tests.GiftServiceTests
 			mockedManager.Setup(m => m.DistributeGifts(It.IsAny<IList<User>>(), It.IsAny<int>()))
 				.Returns(gifts);
 
+			var groupUsers = new List<User> {
+				new User(),
+				new User()
+			};
+
 			var mockedGroupService = new Mock<IGroupService>();
+			mockedGroupService.Setup(s => s.GetGroupUsers(It.IsAny<string>()))
+				.Returns(groupUsers);
 
 			var service = new GiftService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object, mockedManager.Object, mockedGroupService.Object);
 
@@ -101,7 +109,14 @@ namespace SecretSanta.Services.Tests.GiftServiceTests
 			mockedManager.Setup(m => m.DistributeGifts(It.IsAny<IList<User>>(), It.IsAny<int>()))
 				.Returns(gifts);
 
+			var groupUsers = new List<User> {
+				new User(),
+				new User()
+			};
+
 			var mockedGroupService = new Mock<IGroupService>();
+			mockedGroupService.Setup(s => s.GetGroupUsers(It.IsAny<string>()))
+				.Returns(groupUsers);
 
 			var service = new GiftService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object, mockedManager.Object, mockedGroupService.Object);
 
@@ -128,7 +143,14 @@ namespace SecretSanta.Services.Tests.GiftServiceTests
 			mockedManager.Setup(m => m.DistributeGifts(It.IsAny<IList<User>>(), It.IsAny<int>()))
 				.Returns(gifts);
 
+			var groupUsers = new List<User> {
+				new User(),
+				new User()
+			};
+
 			var mockedGroupService = new Mock<IGroupService>();
+			mockedGroupService.Setup(s => s.GetGroupUsers(It.IsAny<string>()))
+				.Returns(groupUsers);
 
 			var service = new GiftService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object, mockedManager.Object, mockedGroupService.Object);
 
