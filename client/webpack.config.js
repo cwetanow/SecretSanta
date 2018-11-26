@@ -7,9 +7,10 @@ const htmlPlugin = new HtmlWebPackPlugin({
 });
 
 module.exports = {
-  entry: "./src/app.js",
+  entry: ["babel-polyfill", "./src/app.js"],
   output: {
-    path: path.resolve(__dirname, '../server/SecretSanta.Web/wwwroot')
+    path: path.resolve(__dirname, '../server/SecretSanta.Web/wwwroot'),
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -38,5 +39,12 @@ module.exports = {
   resolve: {
     extensions: ['*', '.js', '.jsx']
   },
-  plugins: [htmlPlugin]
+  plugins: [htmlPlugin],
+  devServer: {
+    proxy: {
+      '/api': { target: 'http://localhost:5000/', secure: false },
+      changeOrigin: true
+    },
+    historyApiFallback: true
+  }
 };
