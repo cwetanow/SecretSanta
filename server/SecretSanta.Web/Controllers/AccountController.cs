@@ -11,82 +11,84 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace SecretSanta.Web.Controllers
 {
-    public class AccountController : Controller
-    {
-        private readonly IAuthenticationProvider authenticationProvider;
-        private readonly IUserFactory userFactory;
-        private readonly IDtoFactory dtoFactory;
+	public class AccountController : Controller
+	{
+		private readonly IAuthenticationProvider authenticationProvider;
+		private readonly IUserFactory userFactory;
+		private readonly IDtoFactory dtoFactory;
 
-        public AccountController(IAuthenticationProvider authenticationProvider,
-            IUserFactory userFactory,
-            IDtoFactory dtoFactory)
-        {
-            if (authenticationProvider == null)
-            {
-                throw new ArgumentNullException(nameof(authenticationProvider));
-            }
+		public AccountController(IAuthenticationProvider authenticationProvider,
+			IUserFactory userFactory,
+			IDtoFactory dtoFactory)
+		{
+			if (authenticationProvider == null)
+			{
+				throw new ArgumentNullException(nameof(authenticationProvider));
+			}
 
-            if (userFactory == null)
-            {
-                throw new ArgumentNullException(nameof(userFactory));
-            }
+			if (userFactory == null)
+			{
+				throw new ArgumentNullException(nameof(userFactory));
+			}
 
-            if (dtoFactory == null)
-            {
-                throw new ArgumentNullException(nameof(dtoFactory));
-            }
+			if (dtoFactory == null)
+			{
+				throw new ArgumentNullException(nameof(dtoFactory));
+			}
 
-            this.authenticationProvider = authenticationProvider;
-            this.userFactory = userFactory;
-            this.dtoFactory = dtoFactory;
-        }
+			this.authenticationProvider = authenticationProvider;
+			this.userFactory = userFactory;
+			this.dtoFactory = dtoFactory;
+		}
 
-        [HttpPost]
-        [AllowAnonymous]
-        [Route("api/users")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto model)
-        {
-            var user = await this.authenticationProvider.FindByUsernameAsync(model.Username);
+		[HttpPost]
+		[AllowAnonymous]
+		[Route("api/users")]
+		public async Task<IActionResult> Register([FromBody] RegisterDto model)
+		{
+			var user = await this.authenticationProvider.FindByUsernameAsync(model.Username);
 
-            if (user == null)
-            {
-                user = this.userFactory.CreateUser(model.Username, model.Email, model.DisplayName);
+			if (user == null)
+			{
+				user = this.userFactory.CreateUser(model.Username, model.Email, model.DisplayName);
 
-                var result = await this.authenticationProvider.RegisterUser(user, model.Password);
+				var result = await this.authenticationProvider.RegisterUser(user, model.Password);
 
-                if (result == IdentityResult.Success)
-                {
-                    return this.Ok(user);
-                }
+				if (result == IdentityResult.Success)
+				{
+					var dto = this.dtoFactory.CreateUserDto(user.UserName, user.Email, user.DisplayName);
 
-                return this.BadRequest();
-            }
+					return this.Ok(dto);
+				}
 
-            return this.BadRequest(Constants.UserAlreadyExists);
-        }
+				return this.BadRequest();
+			}
 
-        [HttpPost]
-        [AllowAnonymous]
-        [Route("api/login")]
-        public async Task<IActionResult> GenerateToken([FromBody]LoginDto model)
-        {
-            var user = await this.authenticationProvider.FindByUsernameAsync(model.Username);
+			return this.BadRequest(Constants.UserAlreadyExists);
+		}
 
-            if (user != null)
-            {
-                var result = this.authenticationProvider.CheckPasswordSignIn(user, model.Password);
+		[HttpPost]
+		[AllowAnonymous]
+		[Route("api/login")]
+		public async Task<IActionResult> GenerateToken([FromBody]LoginDto model)
+		{
+			var user = await this.authenticationProvider.FindByUsernameAsync(model.Username);
 
-                if (result == PasswordVerificationResult.Success)
-                {
-                    var token = this.authenticationProvider.GenerateToken(user.Email);
+			if (user != null)
+			{
+				var result = this.authenticationProvider.CheckPasswordSignIn(user, model.Password);
 
-                    var dto = this.dtoFactory.CreateTokenDto(token);
+				if (result == PasswordVerificationResult.Success)
+				{
+					var token = this.authenticationProvider.GenerateToken(user.Email);
 
-                    return this.Ok(dto);
-                }
-            }
+					var dto = this.dtoFactory.CreateTokenDto(token);
 
-            return this.BadRequest(Constants.InvalidCredentials);
-        }
-    }
+					return this.Ok(dto);
+				}
+			}
+
+			return this.BadRequest(Constants.InvalidCredentials);
+		}
+	}
 }
