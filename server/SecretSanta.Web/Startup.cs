@@ -56,7 +56,13 @@ namespace SecretSanta.Web
 			services.AddDbContext<SecretSantaContext>(options =>
 			 options.UseSqlServer(Configuration.GetConnectionString("Default")));
 
-			services.AddIdentity<User, IdentityRole>()
+			services.AddIdentity<User, IdentityRole>(options => {
+				options.Password.RequireDigit = false;
+				options.Password.RequiredLength = 6;
+				options.Password.RequireNonAlphanumeric = false;
+				options.Password.RequireUppercase = false;
+				options.Password.RequireLowercase = false;
+			})
 				.AddEntityFrameworkStores<SecretSantaContext>()
 				.AddDefaultTokenProviders();
 
@@ -71,18 +77,15 @@ namespace SecretSanta.Web
 				.Build();
 
 			services
-				.AddAuthentication(opts =>
-				{
+				.AddAuthentication(opts => {
 					opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 					opts.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 					opts.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 				})
-				.AddJwtBearer((config) =>
-				{
+				.AddJwtBearer((config) => {
 					config.RequireHttpsMetadata = false;
 					config.SaveToken = true;
-					config.TokenValidationParameters = new TokenValidationParameters()
-					{
+					config.TokenValidationParameters = new TokenValidationParameters() {
 						ValidIssuer = Configuration[Constants.TokenIssuer],
 						ValidAudience = Configuration[Constants.TokenIssuer],
 						IssuerSigningKey =
@@ -91,8 +94,7 @@ namespace SecretSanta.Web
 				});
 
 
-			services.AddMvc(options =>
-			{
+			services.AddMvc(options => {
 				options.Filters.Add(new AuthorizeFilter(policy));
 			});
 
