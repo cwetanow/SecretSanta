@@ -15,6 +15,13 @@ export default function authReducer(state = {}, action) {
         user: action.user
       };
 
+    case types.LOGGED_USER:
+      return {
+        ...state,
+        isAuthenticated: true,
+        user: action.user
+      };
+
     default:
       return state;
   }
