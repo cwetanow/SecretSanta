@@ -15,12 +15,15 @@ class App extends Component {
     super(props);
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ isAuthenticated: nextProps.isAuthenticated });
+  }
+
   render() {
     return (
       <Container fluid>
-        <Navbar></Navbar>
-
-        <Route exact path="/register" component={Register} />
+        <Navbar isAuthenticated={this.props.isAuthenticated}></Navbar>
+        {!this.props.isAuthenticated && <Route exact path="/register" component={Register} />}
         <Route exact path="/login" component={Login} />
 
       </Container>
@@ -33,7 +36,7 @@ App.propTypes = {
 }
 
 function mapStateToProps(state, ownProps) {
-  return {};
+  return { isAuthenticated: state.auth.isAuthenticated };
 }
 
 export default withRouter(connect(mapStateToProps)(App));

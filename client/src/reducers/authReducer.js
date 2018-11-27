@@ -11,14 +11,14 @@ export default function authReducer(state = {}, action) {
     case types.LOGIN_SUCCESS:
       return {
         ...state,
-        isAuthenticated: true,
+        isAuthenticated: !!action.user,
         user: action.user
       };
 
     case types.LOGGED_USER:
       return {
         ...state,
-        isAuthenticated: true,
+        isAuthenticated: !!action.user,
         user: action.user
       };
 
