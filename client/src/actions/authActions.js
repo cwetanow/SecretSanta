@@ -45,18 +45,7 @@ export function login(user) {
 
 export function getAuthenticatedUser() {
   return (dispatch) => {
-    const user = getCurrentUser();
-
-    dispatch({
-      type: types.LOGGED_USER,
-      user
-    });
-  }
-}
-
-export function isAuthenticated() {
-  return (dispatch) => {
-    const user = getCurrentUser();
+    const user = authApi.getCurrentUser();
 
     dispatch({
       type: types.LOGGED_USER,

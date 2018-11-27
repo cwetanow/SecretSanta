@@ -23,7 +23,7 @@ class App extends Component {
     return (
       <Container fluid>
         <Navbar isAuthenticated={this.props.isAuthenticated}></Navbar>
-        {!this.props.isAuthenticated && <Route exact path="/register" component={Register} />}
+        <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
 
       </Container>
