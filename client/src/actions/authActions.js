@@ -31,7 +31,7 @@ export function login(user) {
         localStorage.setItem(authKey, JSON.stringify(auth));
 
         dispatch({
-          type: types.LOGIN,
+          type: types.LOGIN_SUCCESS,
           user: auth.user
         })
       });
