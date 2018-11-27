@@ -36,6 +36,10 @@ class Register extends Component {
   }
 
   render() {
+    if (this.props.isAuthenticated) {
+      return <Redirect to="/" />
+    }
+
     return (
       <Container>
         <Row className="justify-content-center">
@@ -82,8 +86,13 @@ class Register extends Component {
   }
 }
 
+const mapStateToProps = (state, ownProps) => {
+  return { isAuthenticated: state.auth && state.auth.isAuthenticated };
+}
+
+
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ register }, dispatch)
 };
 
-export default connect(null, mapDispatchToProps)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);
