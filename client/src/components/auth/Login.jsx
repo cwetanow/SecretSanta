@@ -34,6 +34,10 @@ class Login extends Component {
   }
 
   render() {
+    if (this.props.isAuthenticated) {
+      return <Redirect to="/" />
+    }
+
     return (
       <Container>
         <Row className="justify-content-center">
@@ -66,8 +70,12 @@ class Login extends Component {
   }
 }
 
+const mapStateToProps = (state, ownProps) => {
+  return { isAuthenticated: state.auth && state.auth.isAuthenticated };
+}
+
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ login }, dispatch)
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

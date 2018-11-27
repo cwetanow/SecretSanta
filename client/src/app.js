@@ -6,9 +6,13 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import App from './components/App';
 
+import * as authActions from './actions/authActions';
+
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 const store = configureStore();
+
+store.dispatch(authActions.getAuthenticatedUser());
 
 ReactDOM.render(
   <Provider store={store}>
