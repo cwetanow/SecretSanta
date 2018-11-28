@@ -34,6 +34,7 @@
     "reactstrap": "^6.5.0",
     "redux": "^4.0.1",
     "redux-immutable-state-invariant": "^2.1.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "toastr": "^2.1.4"
   }
 }
