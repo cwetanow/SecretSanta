@@ -6,6 +6,7 @@ import Route from 'react-router-dom/Route';
 import { withRouter } from 'react-router';
 import Register from './auth/Register';
 import Login from './auth/Login';
+import Logout from './auth/Logout';
 
 import { Container, Jumbotron } from 'reactstrap';
 import Navbar from './common/Navbar';
@@ -26,6 +27,7 @@ class App extends Component {
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
 
+        <Route exact path="/logout" component={Logout} />
       </Container>
     );
   }
