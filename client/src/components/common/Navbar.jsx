@@ -54,6 +54,11 @@ export default class NavBar extends React.Component {
                   {this.renderNavLink('Register', '/register')}
                 </NavItem>
               }
+
+              {this.props.isAuthenticated &&
+                <NavItem>
+                  {this.renderNavLink('Users', '/users')}
+                </NavItem>}
               {this.props.isAuthenticated &&
                 <NavItem>
                   {this.renderNavLink('Logout', '/logout')}
