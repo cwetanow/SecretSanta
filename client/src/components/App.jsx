@@ -9,6 +9,8 @@ import Login from './auth/Login';
 import Logout from './auth/Logout';
 import PrivateRoute from './auth/PrivateRoute';
 
+import Notification from './common/Notification'
+
 import { Container, Jumbotron } from 'reactstrap';
 import Navbar from './common/Navbar';
 
@@ -24,6 +26,7 @@ class App extends Component {
   render() {
     return (
       <Container fluid>
+        <Notification />
         <Navbar isAuthenticated={this.props.isAuthenticated}></Navbar>
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
