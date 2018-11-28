@@ -12,3 +12,16 @@ export function getJoinedGroups() {
       });
   }
 }
+export function createGroup(groupName) {
+  return (dispatch) => {
+    const group = { groupName };
+
+    return groupService.createGroup(group)
+      .then((createdGroup) => {
+        dispatch({
+          type: types.NEW_GROUP_SUCCESS,
+          group: createdGroup
+        });
+      });
+  }
+}
