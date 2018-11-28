@@ -10,7 +10,7 @@ const initalFilter = {
   pattern: '',
   sortAscending: true,
   offset: 0,
-  limit: 0
+  limit: 1
 };
 
 class UsersList extends Component {
@@ -44,26 +44,51 @@ class UsersList extends Component {
   }
 
   render() {
-    return (<Container>
-      <Row className="justify-content-center">
-        <Col md="6">
-          <Card className="mx-4">
-            <CardBody className="p-4">
-              <InputGroup className="mb-3">
-                <Input onChange={this.patternChange}
-                  value={this.state.filter.pattern}
-                  name="username"
-                  type="text" />
-              </InputGroup>
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
+    return ((this.props.users && this.props.users.length) ?
+      <Container>
+        <Row className="justify-content-center">
+          <Col md="6">
+            <Card className="mx-4">
+              <CardBody className="p-4">
+                Search...
+                <InputGroup className="mb-3">
+                  <Input onChange={this.patternChange}
+                    value={this.state.filter.pattern}
+                    name="username"
+                    type="text" />
+                </InputGroup>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
 
-      {this.props.users.map((user, index) =>
-        <UserRow user={user} key={index} />
-      )}
-    </Container>);
+        <hr />
+        {this.props.users.map((user, index) =>
+          <UserRow user={user} key={index} />
+        )}
+
+        {this.props.users.length === this.state.filter.limit &&
+          <Row className="justify-content-center">
+            <Col md="6">
+              <Card className="mx-4">
+                <CardBody className="p-4">
+                  <Button onClick={this.patternChange} color="success" block>Load more</Button>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>}
+      </Container> :
+      <Container>
+        <Row className="justify-content-center">
+          <Col md="6">
+            <Card className="mx-4">
+              <CardBody className="p-4">
+                No users found!
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </Container>);
   }
 }
 
