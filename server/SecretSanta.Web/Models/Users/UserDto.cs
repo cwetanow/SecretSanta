@@ -12,7 +12,7 @@ namespace SecretSanta.Web.Models.Users
 
         public UserDto(string username, string email, string displayName)
         {
-            this.UserName = username;
+            this.Username = username;
             this.Email = email;
             this.DisplayName = displayName;
         }
@@ -21,7 +21,7 @@ namespace SecretSanta.Web.Models.Users
 
         public string Email { get; set; }
 
-        public string UserName { get; set; }
+        public string Username { get; set; }
 
         public static Func<User, UserDto> FromUser
         {

@@ -48,7 +48,7 @@ namespace SecretSanta.Web.Controllers
 				return this.BadRequest(Constants.GroupNameCannotBeNull);
 			}
 
-			if (string.IsNullOrEmpty(userDto.UserName))
+			if (string.IsNullOrEmpty(userDto.Username))
 			{
 				return this.BadRequest(Constants.UsernameCannotBeNull);
 			}
@@ -67,7 +67,7 @@ namespace SecretSanta.Web.Controllers
 				return this.Forbid();
 			}
 
-			var user = await this.authenticationProvider.FindByUsernameAsync(userDto.UserName);
+			var user = await this.authenticationProvider.FindByUsernameAsync(userDto.Username);
 
 			if (user == null)
 			{

@@ -28,7 +28,7 @@ namespace SecretSanta.Web.Tests.Controllers.InviteControllerTests
 			var controller = new InviteController(mockedAuthenticationProvider.Object,
 				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
-			var dto = new UserDto { UserName = string.Empty };
+			var dto = new UserDto { Username = string.Empty };
 
 			// Act
 			var result = await controller.SendInvite(null, dto);
@@ -49,7 +49,7 @@ namespace SecretSanta.Web.Tests.Controllers.InviteControllerTests
 			var controller = new InviteController(mockedAuthenticationProvider.Object,
 				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
-			var dto = new UserDto { UserName = string.Empty };
+			var dto = new UserDto { Username = string.Empty };
 
 			// Act
 			var result = await controller.SendInvite(null, dto) as BadRequestObjectResult;
@@ -70,7 +70,7 @@ namespace SecretSanta.Web.Tests.Controllers.InviteControllerTests
 			var controller = new InviteController(mockedAuthenticationProvider.Object,
 				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
-			var dto = new UserDto { UserName = string.Empty };
+			var dto = new UserDto { Username = string.Empty };
 
 			// Act
 			var result = await controller.SendInvite(null, dto);
@@ -91,7 +91,7 @@ namespace SecretSanta.Web.Tests.Controllers.InviteControllerTests
 			var controller = new InviteController(mockedAuthenticationProvider.Object,
 				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
-			var dto = new UserDto { UserName = string.Empty };
+			var dto = new UserDto { Username = string.Empty };
 
 			// Act
 			var result = await controller.SendInvite(groupName, dto) as BadRequestObjectResult;
@@ -112,7 +112,7 @@ namespace SecretSanta.Web.Tests.Controllers.InviteControllerTests
 			var controller = new InviteController(mockedAuthenticationProvider.Object,
 				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
-			var dto = new UserDto { UserName = username };
+			var dto = new UserDto { Username = username };
 
 			// Act
 			var result = await controller.SendInvite(groupName, dto);
@@ -133,7 +133,7 @@ namespace SecretSanta.Web.Tests.Controllers.InviteControllerTests
 			var controller = new InviteController(mockedAuthenticationProvider.Object,
 				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
-			var dto = new UserDto { UserName = username };
+			var dto = new UserDto { Username = username };
 
 			// Act
 			var result = await controller.SendInvite(groupName, dto);
@@ -162,7 +162,7 @@ namespace SecretSanta.Web.Tests.Controllers.InviteControllerTests
 			var controller = new InviteController(mockedAuthenticationProvider.Object,
 				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
-			var dto = new UserDto { UserName = username };
+			var dto = new UserDto { Username = username };
 
 			// Act
 			var result = await controller.SendInvite(groupName, dto);
@@ -191,7 +191,7 @@ namespace SecretSanta.Web.Tests.Controllers.InviteControllerTests
 			var controller = new InviteController(mockedAuthenticationProvider.Object,
 				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
-			var dto = new UserDto { UserName = username };
+			var dto = new UserDto { Username = username };
 
 			// Act
 			var result = await controller.SendInvite(groupName, dto);
@@ -221,7 +221,7 @@ namespace SecretSanta.Web.Tests.Controllers.InviteControllerTests
 			var controller = new InviteController(mockedAuthenticationProvider.Object,
 				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
-			var dto = new UserDto { UserName = username };
+			var dto = new UserDto { Username = username };
 
 			// Act
 			var result = await controller.SendInvite(groupName, dto);
@@ -251,7 +251,7 @@ namespace SecretSanta.Web.Tests.Controllers.InviteControllerTests
 			var controller = new InviteController(mockedAuthenticationProvider.Object,
 				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
-			var dto = new UserDto { UserName = username };
+			var dto = new UserDto { Username = username };
 
 			// Act
 			var result = await controller.SendInvite(groupName, dto);
@@ -283,7 +283,7 @@ namespace SecretSanta.Web.Tests.Controllers.InviteControllerTests
 			var controller = new InviteController(mockedAuthenticationProvider.Object,
 				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
-			var dto = new UserDto { UserName = username };
+			var dto = new UserDto { Username = username };
 
 			// Act
 			var result = await controller.SendInvite(groupName, dto);
@@ -319,7 +319,7 @@ namespace SecretSanta.Web.Tests.Controllers.InviteControllerTests
 			var controller = new InviteController(mockedAuthenticationProvider.Object,
 				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
-			var dto = new UserDto { UserName = username };
+			var dto = new UserDto { Username = username };
 
 			// Act
 			var result = await controller.SendInvite(groupName, dto);
@@ -355,7 +355,7 @@ namespace SecretSanta.Web.Tests.Controllers.InviteControllerTests
 			var controller = new InviteController(mockedAuthenticationProvider.Object,
 				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
-			var dto = new UserDto { UserName = username };
+			var dto = new UserDto { Username = username };
 
 			// Act
 			var result = await controller.SendInvite(groupName, dto);
@@ -394,7 +394,7 @@ namespace SecretSanta.Web.Tests.Controllers.InviteControllerTests
 			var controller = new InviteController(mockedAuthenticationProvider.Object,
 				mockedService.Object, mockedFactory.Object, mockedGroupService.Object);
 
-			var userDto = new UserDto { UserName = username };
+			var userDto = new UserDto { Username = username };
 
 			// Act
 			var result = await controller.SendInvite(groupName, userDto) as OkObjectResult;
