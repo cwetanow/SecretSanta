@@ -4,7 +4,7 @@ import userService from '../services/userService';
 
 export function register(user) {
   return (dispatch) => {
-    return authServiceregister(user)
+    return authService.register(user)
       .then((registeredUser) => {
         dispatch({
           type: types.REGISTER_SUCCESS,
@@ -18,11 +18,11 @@ export function register(user) {
 
 export function login(user) {
   return (dispatch) => {
-    return authServicelogin(user)
+    return authService.login(user)
       .then(response => {
-        authServicesetAuth(response.data.token);
+        authService.setAuth(response.data.token);
 
-        const currentUser = authServicegetCurrentUser();
+        const currentUser = authService.getCurrentUser();
         if (!currentUser) {
           return userService.getByUsername(user.username)
             .then(response => {
@@ -33,7 +33,7 @@ export function login(user) {
         return Promise.resolve(currentUser);
       })
       .then(currentUser => {
-        authServicesetAuth(null, currentUser);
+        authService.setAuth(null, currentUser);
 
         dispatch({
           type: types.LOGIN_SUCCESS,
@@ -45,7 +45,7 @@ export function login(user) {
 
 export function getAuthenticatedUser() {
   return (dispatch) => {
-    const user = authServicegetCurrentUser();
+    const user = authService.getCurrentUser();
 
     dispatch({
       type: types.LOGGED_USER,
@@ -56,7 +56,7 @@ export function getAuthenticatedUser() {
 
 export function logout() {
   return (dispatch) => {
-    return authServicelogout()
+    return authService.logout()
       .then(() => {
         dispatch({
           type: types.LOGOUT
