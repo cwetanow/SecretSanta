@@ -15,6 +15,7 @@ import Notification from './common/Notification'
 
 import { Container, Jumbotron } from 'reactstrap';
 import Navbar from './common/Navbar';
+import Home from './home/Home';
 
 class App extends Component {
   constructor(props) {
@@ -37,6 +38,8 @@ class App extends Component {
 
         <PrivateRoute exact path="/users" component={UsersList} isAuthenticated={this.props.isAuthenticated} />
         <PrivateRoute exact path="/users/:username" component={UserProfile} isAuthenticated={this.props.isAuthenticated} />
+
+        <PrivateRoute exact path="/" component={Home} isAuthenticated={this.props.isAuthenticated} />
       </Container>
     );
   }
