@@ -7,6 +7,11 @@ class GroupService {
     return requester.getAuthorized(`/groups/user`)
       .then(response => Promise.resolve(response.data.groups));
   }
+
+  static createGroup(group) {
+    return requester.postAuthorized(`/groups`)
+      .then(response => Promise.resolve(response.data));
+  }
 }
 
 export default GroupService;
