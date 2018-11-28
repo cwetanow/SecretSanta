@@ -6,6 +6,8 @@ import Route from 'react-router-dom/Route';
 import { withRouter } from 'react-router';
 import Register from './auth/Register';
 import Login from './auth/Login';
+import Logout from './auth/Logout';
+import PrivateRoute from './auth/PrivateRoute';
 
 import { Container, Jumbotron } from 'reactstrap';
 import Navbar from './common/Navbar';
@@ -26,6 +28,7 @@ class App extends Component {
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
 
+        <PrivateRoute exact path="/logout" component={Logout} isAuthenticated={this.state && this.state.isAuthenticated} />
       </Container>
     );
   }

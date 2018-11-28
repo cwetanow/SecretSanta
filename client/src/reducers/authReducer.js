@@ -22,6 +22,9 @@ export default function authReducer(state = {}, action) {
         user: action.user
       };
 
+    case types.LOGOUT:
+      return {};
+
     default:
       return state;
   }

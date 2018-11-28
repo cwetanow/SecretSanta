@@ -53,3 +53,14 @@ export function getAuthenticatedUser() {
     });
   }
 }
+
+export function logout() {
+  return (dispatch) => {
+    return authApi.logout()
+      .then(() => {
+        dispatch({
+          type: types.LOGOUT
+        });
+      });
+  }
+}
