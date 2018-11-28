@@ -122,7 +122,7 @@ namespace SecretSanta.Web.Controllers
 				return this.Forbid();
 			}
 
-			var user = await this.authenticationProvider.FindByUsernameAsync(dto.UserName);
+			var user = await this.authenticationProvider.FindByUsernameAsync(dto.Username);
 
 			if (user == null)
 			{

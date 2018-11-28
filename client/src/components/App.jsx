@@ -7,6 +7,7 @@ import { withRouter } from 'react-router';
 import Register from './auth/Register';
 import Login from './auth/Login';
 import Logout from './auth/Logout';
+import UsersList from './user/UsersList';
 import PrivateRoute from './auth/PrivateRoute';
 
 import Notification from './common/Notification'
@@ -31,7 +32,9 @@ class App extends Component {
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
 
-        <PrivateRoute exact path="/logout" component={Logout} isAuthenticated={this.state && this.state.isAuthenticated} />
+        <PrivateRoute exact path="/logout" component={Logout} isAuthenticated={this.props.isAuthenticated} />
+
+        <PrivateRoute exact path="/users" component={UsersList} isAuthenticated={this.props.isAuthenticated} />
       </Container>
     );
   }

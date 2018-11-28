@@ -25,7 +25,7 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 
 			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
 
-			var dto = new UserDto { UserName = username };
+			var dto = new UserDto { Username = username };
 
 			// Act
 			await controller.RemoveUserFromGroup(groupName, dto);
@@ -45,7 +45,7 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 
 			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
 
-			var dto = new UserDto { UserName = username };
+			var dto = new UserDto { Username = username };
 
 			// Act
 			await controller.RemoveUserFromGroup(groupName, dto);
@@ -65,7 +65,7 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 
 			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
 
-			var dto = new UserDto { UserName = username };
+			var dto = new UserDto { Username = username };
 
 			// Act
 			var result = await controller.RemoveUserFromGroup(groupName, dto);
@@ -93,7 +93,7 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 
 			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
 
-			var dto = new UserDto { UserName = username };
+			var dto = new UserDto { Username = username };
 
 			// Act
 			var result = await controller.RemoveUserFromGroup(groupName, dto);
@@ -121,7 +121,7 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 
 			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
 
-			var dto = new UserDto { UserName = username };
+			var dto = new UserDto { Username = username };
 
 			// Act
 			await controller.RemoveUserFromGroup(groupName, dto);
@@ -149,7 +149,7 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 
 			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
 
-			var dto = new UserDto { UserName = username };
+			var dto = new UserDto { Username = username };
 
 			// Act
 			var result = await controller.RemoveUserFromGroup(groupName, dto);
@@ -178,7 +178,7 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 
 			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
 
-			var dto = new UserDto { UserName = username };
+			var dto = new UserDto { Username = username };
 
 			// Act
 			await controller.RemoveUserFromGroup(groupName, dto);
@@ -207,7 +207,7 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 
 			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
 
-			var dto = new UserDto { UserName = username };
+			var dto = new UserDto { Username = username };
 
 			// Act
 			var result = await controller.RemoveUserFromGroup(groupName, dto);
