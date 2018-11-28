@@ -46,6 +46,11 @@ class AuthApi {
     }
   }
 
+  static logout() {
+    localStorage.removeItem(authKey);
+
+    return Promise.resolve();
+  }
 }
 
 export default AuthApi;
