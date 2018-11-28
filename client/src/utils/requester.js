@@ -1,8 +1,8 @@
 import axios from 'axios';
-import AuthApi from './authApi';
+import authService from '../services/authService';
 
 const getConfig = () => {
-  const token = AuthApi.getToken();
+  const token = authService.getToken();
 
   let config = {
     headers: { 'Authorization': `Bearer ${token}` }

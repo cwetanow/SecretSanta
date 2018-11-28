@@ -1,8 +1,8 @@
-import requester from './requester';
+import requester from '../utils/requester';
 
 const authKey = 'auth';
 
-class AuthApi {
+class AuthService {
   static register(user) {
     return requester.post('/users', user);
   }
@@ -53,4 +53,4 @@ class AuthApi {
   }
 }
 
-export default AuthApi;
+export default AuthService;

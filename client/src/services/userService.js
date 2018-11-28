@@ -1,11 +1,11 @@
-import requester from './requester';
+import requester from '../utils/requester';
 
 const API_URL = '/api';
 
-class UserApi {
+class UserService {
   static getByUsername(username) {
     return requester.getAuthorized(`/users/${username}`)
   }
 }
 
-export default UserApi;
+export default UserService;
