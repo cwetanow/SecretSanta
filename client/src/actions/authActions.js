@@ -2,6 +2,8 @@ import * as types from './actionTypes';
 import authService from '../services/authService';
 import userService from '../services/userService';
 
+import * as notificationActions from './notificationActions';
+
 export function register(user) {
   return (dispatch) => {
     return authService.register(user)
@@ -10,6 +12,8 @@ export function register(user) {
           type: types.REGISTER_SUCCESS,
           user: registeredUser
         });
+
+        dispatch(notificationActions.success({ message: 'Register successfull, logging you in...' }));
 
         dispatch(login(user));
       })
@@ -38,7 +42,9 @@ export function login(user) {
         dispatch({
           type: types.LOGIN_SUCCESS,
           user: currentUser
-        })
+        });
+
+        dispatch(notificationActions.success({ message: 'Login successful!' }));
       });
   }
 }
@@ -61,6 +67,8 @@ export function logout() {
         dispatch({
           type: types.LOGOUT
         });
+
+        dispatch(notificationActions.success({ message: 'See you soon!' }));
       });
   }
 }
