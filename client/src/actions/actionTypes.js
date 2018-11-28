@@ -11,3 +11,6 @@ export const ERROR_NOTIFICATION = 'ERROR_NOTIFICATION';
 // Users
 export const USER_LIST = 'USER_LIST';
 export const USER_PROFILE = 'USER_PROFILE';
+
+// Groups
+export const JOINED_GROUPS = 'JOINED_GROUPS';
