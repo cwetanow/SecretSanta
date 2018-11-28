@@ -5,6 +5,9 @@ export default function userReducer(state = {}, action) {
     case types.USER_LIST:
       return { users: [...action.users] }
 
+    case types.USER_PROFILE:
+      return { user: Object.assign(action.user) }
+
     default:
       return state;
   }
