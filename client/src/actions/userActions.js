@@ -14,3 +14,17 @@ export function getUsers(pattern, sortAscending, offset, limit) {
       });
   }
 }
+
+export function getUser(username) {
+  return (dispatch) => {
+    return userService.getByUsername(username)
+      .then(response => {
+        const user = response.data;
+
+        dispatch({
+          type: types.USER_PROFILE,
+          user
+        })
+      })
+  }
+}
