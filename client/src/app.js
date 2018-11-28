@@ -8,6 +8,7 @@ import App from './components/App';
 
 import * as authActions from './actions/authActions';
 
+import './styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'toastr/build/toastr.min.css'
 
