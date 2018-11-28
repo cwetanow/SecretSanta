@@ -8,6 +8,7 @@ import Register from './auth/Register';
 import Login from './auth/Login';
 import Logout from './auth/Logout';
 import UsersList from './user/UsersList';
+import UserProfile from './user/UserProfile';
 import PrivateRoute from './auth/PrivateRoute';
 
 import Notification from './common/Notification'
@@ -35,6 +36,7 @@ class App extends Component {
         <PrivateRoute exact path="/logout" component={Logout} isAuthenticated={this.props.isAuthenticated} />
 
         <PrivateRoute exact path="/users" component={UsersList} isAuthenticated={this.props.isAuthenticated} />
+        <PrivateRoute exact path="/users/:username" component={UserProfile} isAuthenticated={this.props.isAuthenticated} />
       </Container>
     );
   }
