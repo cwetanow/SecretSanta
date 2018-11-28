@@ -9,7 +9,7 @@ const UserRow = ({ user }) => (
       <Card className="mx-4">
         <CardBody className="p-4">
           <CardTitle>
-            <Link to={'/users/' + user.username}>{user.username}</Link>
+            <Link to={'/users/' + user.username}>{user.displayName} ({user.username})</Link>
           </CardTitle>
         </CardBody>
       </Card>
