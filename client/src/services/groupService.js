@@ -9,7 +9,7 @@ class GroupService {
   }
 
   static createGroup(group) {
-    return requester.postAuthorized(`/groups`)
+    return requester.postAuthorized(`/groups`, group)
       .then(response => Promise.resolve(response.data));
   }
 }

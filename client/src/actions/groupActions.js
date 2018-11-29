@@ -12,10 +12,8 @@ export function getJoinedGroups() {
       });
   }
 }
-export function createGroup(groupName) {
+export function createGroup(group) {
   return (dispatch) => {
-    const group = { groupName };
-
     return groupService.createGroup(group)
       .then((createdGroup) => {
         dispatch({
