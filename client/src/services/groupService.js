@@ -10,7 +10,8 @@ class GroupService {
 
   static createGroup(group) {
     return requester.postAuthorized(`/groups`, group)
-      .then(response => Promise.resolve(response.data));
+      .then(response => Promise.resolve(response.data))
+      .catch(err => err.response.status === 400 && Promise.reject(err.response.data));
   }
 }
 

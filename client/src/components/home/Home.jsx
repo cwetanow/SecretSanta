@@ -3,9 +3,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import GroupsList from '../group/GroupsList';
 import CreateGroupModal from '../group/CreateGroupModal';
-
+import { Redirect } from 'react-router-dom';
 import { getJoinedGroups, createGroup } from '../../actions/groupActions.js';
-
 import { Button } from 'reactstrap';
 
 class Home extends Component {
@@ -20,15 +19,18 @@ class Home extends Component {
     this.createGroup = this.createGroup.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.createdGroup) {
+      this.toggleModal();
+    }
+  }
+
   componentDidMount() {
     this.props.getJoinedGroups();
   }
 
   createGroup(group) {
-    this.props.createGroup(group)
-      .then(() => {
-        console.log(group)
-      })
+    this.props.createGroup(group);
   }
 
   toggleModal() {
@@ -36,6 +38,10 @@ class Home extends Component {
   }
 
   render() {
+    if (this.props.createdGroup) {
+      return <Redirect to={`/groups/${this.props.createdGroup.name}`} />
+    }
+
     return (<div>
       <Button type="submit" size="xl" color="primary" onClick={this.toggleModal} > Create group</Button>
       {this.state.isCreateGroupModalOpen && <CreateGroupModal closeModal={this.toggleModal} createGroup={this.createGroup} />}
@@ -46,7 +52,8 @@ class Home extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    joinedGroups: state.group.groups || []
+    joinedGroups: state.group.groups || [],
+    createdGroup: state.group.group
   };
 }
 

@@ -14,4 +14,4 @@ export const USER_PROFILE = 'USER_PROFILE';
 
 // Groups
 export const JOINED_GROUPS = 'JOINED_GROUPS';
-export const NEW_GROUP_SUCCESS = 'NEW_GROUP_SUCCESS';
+export const CREATE_GROUP = 'CREATE_GROUP';
