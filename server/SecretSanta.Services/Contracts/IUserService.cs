@@ -8,5 +8,7 @@ namespace SecretSanta.Services.Contracts
         IEnumerable<User> GetUsers(int offset, int limit, bool sortAscending = true, string searchPattern = null);
 
         User GetByUsername(string username);
+
+		IEnumerable<User> GetUsersNotInGroup(string groupName, string pattern);
     }
 }

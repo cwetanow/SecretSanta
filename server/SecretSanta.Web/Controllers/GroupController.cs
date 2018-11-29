@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using SecretSanta.Authentication.Contracts;
 using SecretSanta.Services.Contracts;
 using SecretSanta.Web.Infrastructure;
@@ -77,11 +77,6 @@ namespace SecretSanta.Web.Controllers
 
 			var group = this.groupService.GetByName(groupName);
 
-			if (!group.OwnerId.Equals(user.Id))
-			{
-				return this.Forbid();
-			}
-
 			var users = this.groupService.GetGroupUsers(groupName);
 
 			var resultDto = this.factory.CreateUsersListDto(users);
@@ -100,6 +95,17 @@ namespace SecretSanta.Web.Controllers
 			var dto = this.factory.CreateGroupListDto(groups);
 
 			return this.Ok(dto);
+		}
+
+		[HttpGet]
+		[Route("{groupName}/checkOwner")]
+		public async Task<IActionResult> CheckGroupOwner(string groupName)
+		{
+			var user = await this.authenticationProvider.GetCurrentUserAsync();
+
+			var isUserOwner = this.groupService.IsUserOwner(groupName, user.Id);
+
+			return this.Ok(new { isUserOwner });
 		}
 
 		[HttpDelete]

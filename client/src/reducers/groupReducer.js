@@ -14,6 +14,18 @@ export default function groupReducer(state = {}, action) {
         ...state
       };
 
+    case types.CHECK_GROUP_OWNER:
+      return {
+        isUserOwner: action.isUserOwner,
+        ...state
+      };
+
+    case types.GROUP_USERS:
+      return {
+        users: [...action.groupUsers],
+        ...state
+      };
+
     default:
       return state;
   }

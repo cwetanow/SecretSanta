@@ -15,5 +15,7 @@ namespace SecretSanta.Services.Contracts
         IEnumerable<Group> GetUserGroups(string userId);
 
         Task RemoveUserFromGroup(int groupId, string userId);
-    }
+
+		bool IsUserOwner(string groupName, string id);
+	}
 }

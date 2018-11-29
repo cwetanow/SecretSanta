@@ -15,3 +15,8 @@ export const USER_PROFILE = 'USER_PROFILE';
 // Groups
 export const JOINED_GROUPS = 'JOINED_GROUPS';
 export const CREATE_GROUP = 'CREATE_GROUP';
+export const GROUP_USERS = 'GROUP_USERS';
+export const CHECK_GROUP_OWNER = 'CHECK_GROUP_OWNER';
+
+// Invite
+export const INVITE_SENT = 'INVITE_SENT';
