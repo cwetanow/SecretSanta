@@ -6,6 +6,11 @@ class InviteService {
 
     return requester.postAuthorized(url, { username });
   }
+
+  static getUserInvites() {
+    return requester.getAuthorized('/invites')
+      .then(response => Promise.resolve(response.data.invites));
+  }
 }
 
 export default InviteService;

@@ -11,3 +11,15 @@ export function sendInvite(groupName, username) {
       });
   }
 }
+
+export function getUserInvites() {
+  return (dispatch) => {
+    return inviteService.getUserInvites()
+      .then(invites => {
+        dispatch({
+          type: types.INVITE_LIST,
+          invites
+        });
+      });
+  }
+}
