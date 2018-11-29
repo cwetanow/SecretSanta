@@ -16,7 +16,7 @@ class GroupService {
 
   static getGroupUsers(groupName) {
     return requester.getAuthorized(`/groups/${groupName}/users`)
-      .then(response => Promise.resolve(response.data));
+      .then(response => Promise.resolve(response.data.users));
   }
 
   static checkGroupOwner(groupName) {
