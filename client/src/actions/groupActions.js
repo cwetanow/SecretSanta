@@ -31,3 +31,27 @@ export function createGroup(group) {
       });
   }
 }
+
+export function getGroupUsers(groupName) {
+  return (dispatch) => {
+    return groupService.getGroupUsers(groupName)
+      .then(users => {
+        dispatch({
+          type: types.GROUP_USERS,
+          groupUsers: users
+        });
+      });
+  }
+}
+
+export function checkGroupOwner(groupName) {
+  return (dispatch) => {
+    return groupService.checkGroupOwner(groupName)
+      .then(isUserOwner => {
+        dispatch({
+          type: types.CHECK_GROUP_OWNER,
+          isUserOwner
+        });
+      });
+  }
+}
