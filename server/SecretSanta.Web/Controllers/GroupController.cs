@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using SecretSanta.Authentication.Contracts;
 using SecretSanta.Services.Contracts;
 using SecretSanta.Web.Infrastructure;
@@ -76,11 +76,6 @@ namespace SecretSanta.Web.Controllers
 			var user = await this.authenticationProvider.GetCurrentUserAsync();
 
 			var group = this.groupService.GetByName(groupName);
-
-			if (!group.OwnerId.Equals(user.Id))
-			{
-				return this.Forbid();
-			}
 
 			var users = this.groupService.GetGroupUsers(groupName);
 

@@ -106,33 +106,7 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 
         [TestCase("group name", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
         [TestCase("name", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
-        public async Task TestGetGroupUsers_GroupOwnerDoesntMatchUser_ShouldReturnForbidden(string groupName, string userId)
-        {
-            // Arrange
-            var group = new Group { OwnerId = string.Empty };
-
-            var mockedService = new Mock<IGroupService>();
-            mockedService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
-
-            var mockedFactory = new Mock<IDtoFactory>();
-
-            var user = new User { Id = userId };
-
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
-
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
-
-            // Act
-            var result = await controller.GetGroupUsers(groupName);
-
-            // Assert
-            Assert.IsInstanceOf<ForbidResult>(result);
-        }
-
-        [TestCase("group name", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
-        [TestCase("name", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
-        public async Task TestGetGroupUsers_GroupOwnerMatchesUser_ShouldCallServiceGetGroupUsers(string groupName, string userId)
+        public async Task TestGetGroupUsers_ShouldCallServiceGetGroupUsers(string groupName, string userId)
         {
             // Arrange
             var group = new Group { OwnerId = userId };
@@ -158,7 +132,7 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 
         [TestCase("group name", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
         [TestCase("name", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
-        public async Task TestGetGroupUsers_GroupOwnerMatchesUser_ShouldCallFactoryCreate(string groupName, string userId)
+        public async Task TestGetGroupUsers_ShouldCallFactoryCreate(string groupName, string userId)
         {
             // Arrange
             var group = new Group { OwnerId = userId };
@@ -186,7 +160,7 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 
         [TestCase("group name", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
         [TestCase("name", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
-        public async Task TestGetGroupUsers_GroupOwnerMatchesUser_ShouldReturnOk(string groupName, string userId)
+        public async Task TestGetGroupUsers_ShouldReturnOk(string groupName, string userId)
         {
             // Arrange
             var group = new Group { OwnerId = userId };
@@ -214,7 +188,7 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 
         [TestCase("group name", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
         [TestCase("name", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
-        public async Task TestGetGroupUsers_GroupOwnerMatchesUser_ShouldSetCorrectBody(string groupName, string userId)
+        public async Task TestGetGroupUsers_ShouldSetCorrectBody(string groupName, string userId)
         {
             // Arrange
             var group = new Group { OwnerId = userId };
