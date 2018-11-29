@@ -1,7 +1,6 @@
 import React from 'react';
 import Modal from 'react-bootstrap4-modal';
 import { Button, FormGroup, Input, Form, Col, Label, Row } from 'reactstrap';
-import { getUsers } from '../../actions/userActions';
 import { bindActionCreators } from 'redux';
 
 export class CreateGroupModal extends React.Component {
@@ -14,10 +13,14 @@ export class CreateGroupModal extends React.Component {
       }
     };
 
-    this.createGroup = this.createGroup.bind(this);
+    this.onGroupNameChange = this.onGroupNameChange.bind(this);
   }
 
-  createGroup() {
+  onGroupNameChange(newGroupName) {
+    const group = Object.assign({}, this.state.group);
+    group.groupName = newGroupName;
+
+    this.setState({ group });
   }
 
   render() {
@@ -27,14 +30,14 @@ export class CreateGroupModal extends React.Component {
           <Row>
             <Col md="6">
               <Label>Name</Label>
-              <Input onChange={this.onInputChange}
+              <Input onChange={(ev) => this.onGroupNameChange(ev.target.value)}
                 value={this.state.group.groupName} type="text" />
             </Col>
           </Row>
         </FormGroup>
 
         <FormGroup>
-          <Button type="submit" size="xl" color="primary" onClick={this.save}><i className="fa fa-dot-circle-o"></i> Save</Button>
+          <Button type="submit" size="xl" color="primary" onClick={() => this.props.createGroup(this.state.group)} disabled={!this.state.group.groupName}><i className="fa fa-dot-circle-o"></i> Save</Button>
           <Button size="xl" color="primary" className="float-right" onClick={this.props.closeModal}><i className="fa fa-dot-circle-o"></i> Close</Button>
         </FormGroup>
       </Form>
@@ -42,8 +45,4 @@ export class CreateGroupModal extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ getUsers }, dispatch)
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(CreateGroupModal);
+export default CreateGroupModal;
