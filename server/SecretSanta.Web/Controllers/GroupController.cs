@@ -97,6 +97,17 @@ namespace SecretSanta.Web.Controllers
 			return this.Ok(dto);
 		}
 
+		[HttpGet]
+		[Route("{groupName}/checkOwner")]
+		public async Task<IActionResult> CheckGroupOwner(string groupName)
+		{
+			var user = await this.authenticationProvider.GetCurrentUserAsync();
+
+			var isUserOwner = this.groupService.IsUserOwner(groupName, user.Id);
+
+			return this.Ok(new { isUserOwner });
+		}
+
 		[HttpDelete]
 		[Route("{groupName}/users")]
 		public async Task<IActionResult> RemoveUserFromGroup(string groupName, [FromBody]UserDto dto)
