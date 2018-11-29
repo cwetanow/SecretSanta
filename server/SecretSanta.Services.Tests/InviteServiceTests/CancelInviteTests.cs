@@ -25,7 +25,7 @@ namespace SecretSanta.Services.Tests.InviteServiceTests
             var service = new InviteService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object, mockedDateTimeProvider.Object);
 
             // Act
-            await service.CancelInvite(groupId, userId);
+            await service.RemoveInvite(groupId, userId);
 
             // Assert
             mockedRepository.Verify(r => r.All, Times.Once);
@@ -44,7 +44,7 @@ namespace SecretSanta.Services.Tests.InviteServiceTests
             var service = new InviteService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object, mockedDateTimeProvider.Object);
 
             // Act
-            await service.CancelInvite(groupId, userId);
+            await service.RemoveInvite(groupId, userId);
 
             // Assert
             mockedRepository.Verify(r => r.Delete(It.IsAny<Invite>()), Times.Never);
@@ -67,7 +67,7 @@ namespace SecretSanta.Services.Tests.InviteServiceTests
             var service = new InviteService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object, mockedDateTimeProvider.Object);
 
             // Act
-            await service.CancelInvite(groupId, userId);
+            await service.RemoveInvite(groupId, userId);
 
             // Assert
             mockedRepository.Verify(r => r.Delete(invite), Times.Once);
@@ -90,7 +90,7 @@ namespace SecretSanta.Services.Tests.InviteServiceTests
             var service = new InviteService(mockedRepository.Object, mockedUnitOfWork.Object, mockedFactory.Object, mockedDateTimeProvider.Object);
 
             // Act
-            await service.CancelInvite(groupId, userId);
+            await service.RemoveInvite(groupId, userId);
 
             // Assert
             mockedUnitOfWork.Verify(u => u.CommitAsync(), Times.Once);

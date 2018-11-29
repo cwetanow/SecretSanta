@@ -235,7 +235,7 @@ namespace SecretSanta.Web.Tests.Controllers.MembershipControllerTests
 			await controller.AnswerInvite(dto);
 
 			// Assert
-			mockedInviteService.Verify(s => s.CancelInvite(groupId, userId), Times.Never);
+			mockedInviteService.Verify(s => s.RemoveInvite(groupId, userId), Times.Never);
 		}
 
 		[TestCase(2, "d547a40d-c45f-4c43-99de-0bfe9199ff95", "groupName")]
@@ -301,7 +301,7 @@ namespace SecretSanta.Web.Tests.Controllers.MembershipControllerTests
 			await controller.AnswerInvite(dto);
 
 			// Assert
-			mockedInviteService.Verify(s => s.CancelInvite(groupId, userId), Times.Once);
+			mockedInviteService.Verify(s => s.RemoveInvite(groupId, userId), Times.Once);
 		}
 	}
 }

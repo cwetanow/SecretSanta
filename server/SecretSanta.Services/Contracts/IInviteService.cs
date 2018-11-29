@@ -12,6 +12,6 @@ namespace SecretSanta.Services.Contracts
 
         bool IsUserInvited(int groupId, string userId);
 
-        Task CancelInvite(int groupId, string userId);
+        Task RemoveInvite(int groupId, string userId);
     }
 }
