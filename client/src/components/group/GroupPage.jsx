@@ -7,13 +7,11 @@ import { Redirect } from 'react-router-dom';
 import { getGroupUsers, checkGroupOwner } from '../../actions/groupActions.js';
 import { Button, Container } from 'reactstrap';
 
+import InviteUsers from '../invite/InviteUsers';
+
 class GroupPage extends Component {
   constructor(props, context) {
     super(props, context);
-
-    this.loadUsers = this.loadUsers.bind(this);
-    this.handleUserChange = this.handleUserChange.bind(this);
-    this.inviteSelectedUser = this.inviteSelectedUser.bind(this);
   }
 
   componentDidMount() {
@@ -21,14 +19,10 @@ class GroupPage extends Component {
     this.props.checkGroupOwner(this.props.groupName);
   }
 
-  inviteSelectedUser() {
-
-  }
-
   render() {
     return (
       <Container>
-        {this.props.isUserOwner && <InviteUsers />}
+        {this.props.isUserOwner && <InviteUsers groupName={this.props.groupName} />}
       </Container>
     );
   }
