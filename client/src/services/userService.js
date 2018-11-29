@@ -28,6 +28,17 @@ class UserService {
 
     return requester.getAuthorized(url);
   }
+
+  static getUsersNotInGroup(groupName, pattern = null) {
+    let url = `/select/inviteUsers/${groupName}`;
+
+    if (pattern) {
+      url = `${url}?searchPattern=${pattern}`;
+    }
+
+    return requester.getAuthorized(url)
+      .then(response => Promise.resolve(response.data.users));
+  }
 }
 
 export default UserService;
