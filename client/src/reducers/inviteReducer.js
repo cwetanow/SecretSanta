@@ -8,6 +8,12 @@ export default function inviteReducer(state = {}, action) {
         ...state
       };
 
+    case types.ANSWER_INVITE:
+      return {
+        invites: [...(state.invites.filter(i => i.groupName !== action.groupName))],
+        ...state
+      };
+
     default:
       return state;
   }
