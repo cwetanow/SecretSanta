@@ -20,3 +20,4 @@ export const CHECK_GROUP_OWNER = 'CHECK_GROUP_OWNER';
 
 // Invite
 export const INVITE_SENT = 'INVITE_SENT';
+export const INVITE_LIST = 'INVITE_LIST';
