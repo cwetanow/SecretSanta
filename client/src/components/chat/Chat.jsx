@@ -14,7 +14,8 @@ export class Chat extends React.Component {
 
     this.state = {
       message,
-      socket
+      socket,
+      messages: props.messages || []
     };
 
     this.onContentChange = this.onContentChange.bind(this);
@@ -64,9 +65,9 @@ export class Chat extends React.Component {
   render() {
     return (
       <div>
-        {(!this.props.messages || !this.props.messages.length) && this.renderNoMessagesText()}
-        {this.props.messages && !!this.props.messages.length &&
-          this.props.messages
+        {(!this.state.messages || !this.state.messages.length) && this.renderNoMessagesText()}
+        {this.state.messages && !!this.state.messages.length &&
+          this.state.messages
             .map((message, index) => (<Card key={index}>
               <CardBody>
                 <CardTitle>{message.user}</CardTitle>

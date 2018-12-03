@@ -61,7 +61,7 @@ class GroupPage extends Component {
         {this.props.hasGift && <Gift gift={this.props.gift} />}
 
         {!this.props.hasGift && this.renderGroupUsers()}
-
+        <hr />
         <Chat isActive={true} room={this.props.groupName} user={this.props.currentUser.displayName} />
       </Container>
     );
