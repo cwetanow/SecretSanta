@@ -6,7 +6,7 @@ module.exports = (data) => {
       data.getMessages(room)
         .then(messages => {
           res.send(messages);
-        })
+        });
     }
   };
 }

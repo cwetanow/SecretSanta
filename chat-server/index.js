@@ -12,6 +12,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 require('./config/db')(config);
 
+const messageRouter = require('./messages');
+app.use('/message', messageRouter);
+
 app.server.listen(config.port, () => {
   console.log(`Started on port ${config.port}`);
 });
