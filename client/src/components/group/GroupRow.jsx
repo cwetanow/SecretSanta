@@ -11,6 +11,9 @@ const GroupRow = ({ group }) => (
           <CardTitle>
             <Link to={'/groups/' + group.name}>{group.name} by {group.owner.displayName}</Link>
           </CardTitle>
+          <CardSubtitle>
+            {group.isOwner && 'You have created this group'}
+          </CardSubtitle>
         </CardBody>
       </Card>
     </Col>

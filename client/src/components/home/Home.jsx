@@ -52,9 +52,14 @@ class Home extends Component {
   }
 }
 
+const setIsGroupOwner = (groups, currentUser) => {
+  return groups
+    .map(group => Object.assign({ isOwner: currentUser.username === group.owner.username }, group))
+}
+
 const mapStateToProps = (state, ownProps) => {
   return {
-    groups: state.group.groups || [],
+    groups: setIsGroupOwner(state.group.groups || [], state.auth.user),
     createdGroup: state.group.group
   };
 }
