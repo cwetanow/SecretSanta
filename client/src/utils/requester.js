@@ -32,6 +32,13 @@ const requester = {
   },
   deleteAuthorized: (url, body) => {
     return axios.delete(`${requester.apiUrl}${url}`, { ...getConfig(), data: body });
+  },
+  createNew: () => {
+    const copy = {};
+    Object.keys(requester)
+      .forEach(key => copy[key] = requester[key]);
+
+    return copy;
   }
 }
 
