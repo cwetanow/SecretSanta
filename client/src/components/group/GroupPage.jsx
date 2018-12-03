@@ -8,6 +8,7 @@ import { getGroupUsers, checkGroupOwner } from '../../actions/groupActions.js';
 import { distributeGifts, getGift } from '../../actions/giftActions';
 import { Button, Container } from 'reactstrap';
 
+import Gift from '../gift/Gift'
 import InviteUsers from '../invite/InviteUsers';
 
 class GroupPage extends Component {
@@ -30,9 +31,10 @@ class GroupPage extends Component {
   render() {
     return (
       <Container>
-        {this.props.isUserOwner && <InviteUsers groupName={this.props.groupName} />}
+        {!this.props.hasGift && this.props.isUserOwner && <InviteUsers groupName={this.props.groupName} />}
         <hr />
         {!this.props.hasGift && this.props.isUserOwner && <Button type="submit" size="xl" color="primary" onClick={this.distributeGifts} >Distribute gifts</Button>}
+        {this.props.hasGift && <Gift gift={this.props.gift} />}
       </Container>
     );
   }
