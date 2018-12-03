@@ -23,6 +23,10 @@ class GroupService {
     return requester.getAuthorized(`/groups/${groupName}/checkOwner`)
       .then(response => Promise.resolve(response.data.isUserOwner));
   }
+
+  static removeUser(groupName, user) {
+    return requester.deleteAuthorized(`/groups/${groupName}/users`, user);
+  }
 }
 
 export default GroupService;

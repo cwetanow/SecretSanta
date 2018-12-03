@@ -32,6 +32,20 @@ export function createGroup(group) {
   }
 }
 
+export function removeUser(groupName, user) {
+  return (dispatch) => {
+    return groupService.removeUser(groupName, user)
+      .then(() => {
+        dispatch(getGroupUsers(groupName));
+
+        dispatch(notificationActions.success({ message: 'User removed...' }));
+      })
+      .catch(message => {
+        dispatch(notificationActions.error({ message }));
+      });
+  }
+}
+
 export function getGroupUsers(groupName) {
   return (dispatch) => {
     return groupService.getGroupUsers(groupName)

@@ -10,20 +10,20 @@ export default function groupReducer(state = {}, action) {
 
     case types.CREATE_GROUP:
       return {
+        ...state,
         group: Object.assign({}, action.group),
-        ...state
       };
 
     case types.CHECK_GROUP_OWNER:
       return {
+        ...state,
         isUserOwner: action.isUserOwner,
-        ...state
       };
 
     case types.GROUP_USERS:
       return {
-        users: [...action.groupUsers],
-        ...state
+        ...state,
+        users: [...action.groupUsers]
       };
 
     default:
