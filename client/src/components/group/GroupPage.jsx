@@ -32,7 +32,7 @@ class GroupPage extends Component {
       <Container>
         {this.props.isUserOwner && <InviteUsers groupName={this.props.groupName} />}
         <hr />
-        {this.props.isUserOwner && <Button type="submit" size="xl" color="primary" onClick={this.distributeGifts} >Distribute gifts</Button>}
+        {!this.props.hasGift && this.props.isUserOwner && <Button type="submit" size="xl" color="primary" onClick={this.distributeGifts} >Distribute gifts</Button>}
       </Container>
     );
   }
