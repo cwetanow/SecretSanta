@@ -75,6 +75,7 @@ namespace SecretSanta.Services
 			var groups = this.groupUsersRepository.All
 				.Where(g => g.UserId.Equals(userId))
 				.Select(g => g.Group)
+				.Include(g => g.Owner)
 				.ToList();
 
 			return groups;
