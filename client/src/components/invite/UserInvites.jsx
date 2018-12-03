@@ -10,21 +10,11 @@ class UserInvites extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state = {
-      invites: []
-    }
-
     this.answerInvite = this.answerInvite.bind(this);
   }
 
   componentDidMount() {
     this.props.getUserInvites();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.invites) {
-      this.setState({ invites: nextProps.invites });
-    }
   }
 
   answerInvite(accept, groupName) {
@@ -36,7 +26,7 @@ class UserInvites extends Component {
       <Container>
         Pending invites
 
-        {this.state.invites.map((invite, index) =>
+        {this.props.invites.map((invite, index) =>
           <Invite invite={invite} key={index} answerInvite={this.answerInvite} />
         )}
       </Container>
