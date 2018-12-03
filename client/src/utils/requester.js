@@ -30,7 +30,7 @@ const requester = {
     return axios.put(`${API_URL}${url}`, body, getConfig());
   },
   deleteAuthorized: (url, body) => {
-    return axios.delete(`${API_URL}${url}`, getConfig());
+    return axios.delete(`${API_URL}${url}`, { ...getConfig(), data: body });
   }
 }
 
