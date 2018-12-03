@@ -3,12 +3,12 @@ import groupService from '../services/groupService';
 
 import * as notificationActions from './notificationActions';
 
-export function getJoinedGroups() {
+export function getGroups() {
   return (dispatch) => {
-    return groupService.getJoinedGroups()
+    return groupService.getGroups()
       .then((groups) => {
         dispatch({
-          type: types.JOINED_GROUPS,
+          type: types.GROUPS_LIST,
           groups
         });
       });

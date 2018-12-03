@@ -3,7 +3,7 @@ import requester from '../utils/requester';
 const API_URL = '/api';
 
 class GroupService {
-  static getJoinedGroups() {
+  static getGroups() {
     return requester.getAuthorized(`/groups/user`)
       .then(response => Promise.resolve(response.data.groups));
   }

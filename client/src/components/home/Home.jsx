@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux';
 import GroupsList from '../group/GroupsList';
 import CreateGroupModal from '../group/CreateGroupModal';
 import { Redirect } from 'react-router-dom';
-import { getJoinedGroups, createGroup } from '../../actions/groupActions.js';
-import { Button } from 'reactstrap';
+import { getGroups, createGroup } from '../../actions/groupActions.js';
+import { Button, Container } from 'reactstrap';
 
 class Home extends Component {
   constructor(props, context) {
@@ -26,7 +26,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    this.props.getJoinedGroups();
+    this.props.getGroups();
   }
 
   createGroup(group) {
@@ -42,23 +42,25 @@ class Home extends Component {
       return <Redirect to={`/groups/${this.props.createdGroup.name}`} />
     }
 
-    return (<div>
+    return (<Container>
       <Button type="submit" size="xl" color="primary" onClick={this.toggleModal} > Create group</Button>
       {this.state.isCreateGroupModalOpen && <CreateGroupModal closeModal={this.toggleModal} createGroup={this.createGroup} />}
-      <GroupsList groups={this.props.joinedGroups} />
-    </div>);
+      <hr />
+      <h5>Your groups</h5>
+      <GroupsList groups={this.props.groups} />
+    </Container>);
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    joinedGroups: state.group.groups || [],
+    groups: state.group.groups || [],
     createdGroup: state.group.group
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ getJoinedGroups, createGroup }, dispatch)
+  return bindActionCreators({ getGroups, createGroup }, dispatch)
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
