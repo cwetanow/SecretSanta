@@ -12,242 +12,290 @@ using SecretSanta.Models;
 
 namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 {
-    [TestFixture]
-    public class CreateGroupTests
-    {
-        [Test]
-        public async Task TestCreateGroup_PassEmptyName_ShouldReturnBadRequest()
-        {
-            // Arrange
-            var mockedService = new Mock<IGroupService>();
-            var mockedFactory = new Mock<IDtoFactory>();
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+	[TestFixture]
+	public class CreateGroupTests
+	{
+		[Test]
+		public async Task TestCreateGroup_PassEmptyName_ShouldReturnBadRequest()
+		{
+			// Arrange
+			var mockedService = new Mock<IGroupService>();
+			var mockedFactory = new Mock<IDtoFactory>();
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var mockedMembershipService = new Mock<IMembershipService>();
 
-            var dto = new CreateGroupDto();
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
 
-            // Act
-            var result = await controller.CreateGroup(dto);
+			var dto = new CreateGroupDto();
 
-            // Assert
-            Assert.IsInstanceOf<BadRequestObjectResult>(result);
-        }
+			// Act
+			var result = await controller.CreateGroup(dto);
 
-        [Test]
-        public async Task TestCreateGroup_PassEmptyName_ShouldSetCorrectErrorMessage()
-        {
-            // Arrange
-            var mockedService = new Mock<IGroupService>();
-            var mockedFactory = new Mock<IDtoFactory>();
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			// Assert
+			Assert.IsInstanceOf<BadRequestObjectResult>(result);
+		}
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+		[Test]
+		public async Task TestCreateGroup_PassEmptyName_ShouldSetCorrectErrorMessage()
+		{
+			// Arrange
+			var mockedService = new Mock<IGroupService>();
+			var mockedFactory = new Mock<IDtoFactory>();
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
 
-            var dto = new CreateGroupDto();
+			var mockedMembershipService = new Mock<IMembershipService>();
 
-            // Act
-            var result = await controller.CreateGroup(dto) as BadRequestObjectResult;
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
 
-            // Assert
-            Assert.AreSame(Constants.GroupNameCannotBeNull, result.Value);
-        }
+			var dto = new CreateGroupDto();
 
-        [TestCase("group")]
-        [TestCase("new group name")]
-        public async Task TestCreateGroup_PassName_ShouldCallAuthenticationProviderGetCurrentUserAsync(string groupName)
-        {
-            // Arrange
-            var mockedService = new Mock<IGroupService>();
-            var mockedFactory = new Mock<IDtoFactory>();
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(new User());
+			// Act
+			var result = await controller.CreateGroup(dto) as BadRequestObjectResult;
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			// Assert
+			Assert.AreSame(Constants.GroupNameCannotBeNull, result.Value);
+		}
 
-            var dto = new CreateGroupDto { GroupName = groupName };
+		[TestCase("group")]
+		[TestCase("new group name")]
+		public async Task TestCreateGroup_PassName_ShouldCallAuthenticationProviderGetCurrentUserAsync(string groupName)
+		{
+			// Arrange
+			var mockedService = new Mock<IGroupService>();
+			var mockedFactory = new Mock<IDtoFactory>();
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(new User());
 
-            // Act
-            var result = await controller.CreateGroup(dto);
+			var mockedMembershipService = new Mock<IMembershipService>();
 
-            // Assert
-            mockedAuthenticationProvider.Verify(p => p.GetCurrentUserAsync(), Times.Once);
-        }
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
 
-        [TestCase("group", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
-        [TestCase("new group name", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
-        public async Task TestCreateGroup_PassName_ShouldCallServiceCreateGroupAsync(string groupName, string userId)
-        {
-            // Arrange
-            var mockedService = new Mock<IGroupService>();
-            var mockedFactory = new Mock<IDtoFactory>();
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(new User { Id = userId });
+			var dto = new CreateGroupDto { GroupName = groupName };
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			// Act
+			var result = await controller.CreateGroup(dto);
 
-            var dto = new CreateGroupDto { GroupName = groupName };
+			// Assert
+			mockedAuthenticationProvider.Verify(p => p.GetCurrentUserAsync(), Times.Once);
+		}
 
-            // Act
-            var result = await controller.CreateGroup(dto);
+		[TestCase("group", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
+		[TestCase("new group name", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
+		public async Task TestCreateGroup_PassName_ShouldCallServiceCreateGroupAsync(string groupName, string userId)
+		{
+			// Arrange
+			var mockedService = new Mock<IGroupService>();
+			var mockedFactory = new Mock<IDtoFactory>();
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(new User { Id = userId });
 
-            // Assert
-            mockedService.Verify(s => s.CreateGroupAsync(groupName, userId), Times.Once);
-        }
+			var mockedMembershipService = new Mock<IMembershipService>();
 
-        [TestCase("group", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
-        [TestCase("new group name", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
-        public async Task TestCreateGroup_ServiceReturnsNull_ShouldReturnBadRequest(string groupName, string userId)
-        {
-            // Arrange
-            var mockedService = new Mock<IGroupService>();
-            var mockedFactory = new Mock<IDtoFactory>();
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(new User { Id = userId });
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var dto = new CreateGroupDto { GroupName = groupName };
 
-            var dto = new CreateGroupDto { GroupName = groupName };
+			// Act
+			var result = await controller.CreateGroup(dto);
 
-            // Act
-            var result = await controller.CreateGroup(dto);
+			// Assert
+			mockedService.Verify(s => s.CreateGroupAsync(groupName, userId), Times.Once);
+		}
 
-            // Assert
-            Assert.IsInstanceOf<BadRequestObjectResult>(result);
-        }
+		[TestCase("group", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
+		[TestCase("new group name", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
+		public async Task TestCreateGroup_ServiceReturnsNull_ShouldReturnBadRequest(string groupName, string userId)
+		{
+			// Arrange
+			var mockedService = new Mock<IGroupService>();
+			var mockedFactory = new Mock<IDtoFactory>();
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(new User { Id = userId });
 
-        [TestCase("group", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
-        [TestCase("new group name", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
-        public async Task TestCreateGroup_ServiceReturnsNull_ShouldSetCorrectErrorMessage(string groupName, string userId)
-        {
-            // Arrange
-            var mockedService = new Mock<IGroupService>();
-            var mockedFactory = new Mock<IDtoFactory>();
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(new User { Id = userId });
+			var mockedMembershipService = new Mock<IMembershipService>();
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
 
-            var dto = new CreateGroupDto { GroupName = groupName };
+			var dto = new CreateGroupDto { GroupName = groupName };
 
-            // Act
-            var result = await controller.CreateGroup(dto) as BadRequestObjectResult;
+			// Act
+			var result = await controller.CreateGroup(dto);
 
-            // Assert
-            Assert.AreSame(Constants.GroupAlreadyExists, result.Value);
-        }
+			// Assert
+			Assert.IsInstanceOf<BadRequestObjectResult>(result);
+		}
 
-        [TestCase("group", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
-        [TestCase("new group name", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
-        public async Task TestCreateGroup_ServiceReturnsGroup_ShouldSetGroupOwner(string groupName, string userId)
-        {
-            // Arrange
-            var group = new Group();
+		[TestCase("group", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
+		[TestCase("new group name", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
+		public async Task TestCreateGroup_ServiceReturnsNull_ShouldSetCorrectErrorMessage(string groupName, string userId)
+		{
+			// Arrange
+			var mockedService = new Mock<IGroupService>();
+			var mockedFactory = new Mock<IDtoFactory>();
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(new User { Id = userId });
 
-            var mockedService = new Mock<IGroupService>();
-            mockedService.Setup(s => s.CreateGroupAsync(It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(group);
+			var mockedMembershipService = new Mock<IMembershipService>();
 
-            var mockedFactory = new Mock<IDtoFactory>();
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
 
-            var user = new User { Id = userId };
+			var dto = new CreateGroupDto { GroupName = groupName };
 
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
+			// Act
+			var result = await controller.CreateGroup(dto) as BadRequestObjectResult;
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			// Assert
+			Assert.AreSame(Constants.GroupAlreadyExists, result.Value);
+		}
 
-            var dto = new CreateGroupDto { GroupName = groupName };
+		[TestCase("group", "d547a40d-c45f-4c43-99de-0bfe9199ff95", 5)]
+		[TestCase("new group name", "99ae8dd3-1067-4141-9675-62e94bb6caaa", 222)]
+		public async Task TestCreateGroup_GroupCreated_ShouldCallMembershipServiceJoinGroup(string groupName, string userId, int groupId)
+		{
+			// Arrange
+			var group = new Group { Id = groupId };
 
-            // Act
-            var result = await controller.CreateGroup(dto);
+			var mockedService = new Mock<IGroupService>();
+			mockedService.Setup(s => s.CreateGroupAsync(It.IsAny<string>(), It.IsAny<string>()))
+				.ReturnsAsync(group);
 
-            // Assert
-            Assert.AreSame(user, group.Owner);
-        }
+			var mockedFactory = new Mock<IDtoFactory>();
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(new User { Id = userId });
 
-        [TestCase("group", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
-        [TestCase("new group name", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
-        public async Task TestCreateGroup_ServiceReturnsGroup_ShouldCallFactoryCreate(string groupName, string userId)
-        {
-            // Arrange
-            var group = new Group();
+			var mockedMembershipService = new Mock<IMembershipService>();
 
-            var mockedService = new Mock<IGroupService>();
-            mockedService.Setup(s => s.CreateGroupAsync(It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(group);
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
 
-            var mockedFactory = new Mock<IDtoFactory>();
+			var dto = new CreateGroupDto { GroupName = groupName };
 
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(new User { Id = userId });
+			// Act
+			await controller.CreateGroup(dto);
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			// Assert
+			mockedMembershipService.Verify(s => s.JoinGroup(groupId, userId), Times.Once);
+		}
 
-            var dto = new CreateGroupDto { GroupName = groupName };
+		[TestCase("group", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
+		[TestCase("new group name", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
+		public async Task TestCreateGroup_ServiceReturnsGroup_ShouldSetGroupOwner(string groupName, string userId)
+		{
+			// Arrange
+			var group = new Group();
 
-            // Act
-            var result = await controller.CreateGroup(dto);
+			var mockedService = new Mock<IGroupService>();
+			mockedService.Setup(s => s.CreateGroupAsync(It.IsAny<string>(), It.IsAny<string>()))
+				.ReturnsAsync(group);
 
-            // Assert
-            mockedFactory.Verify(f => f.CreateGroupDto(group), Times.Once);
-        }
+			var mockedFactory = new Mock<IDtoFactory>();
 
-        [TestCase("group", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
-        [TestCase("new group name", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
-        public async Task TestCreateGroup_ServiceReturnsGroup_ShouldReturnOk(string groupName, string userId)
-        {
-            // Arrange
-            var group = new Group();
+			var user = new User { Id = userId };
 
-            var mockedService = new Mock<IGroupService>();
-            mockedService.Setup(s => s.CreateGroupAsync(It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(group);
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 
-            var mockedFactory = new Mock<IDtoFactory>();
+			var mockedMembershipService = new Mock<IMembershipService>();
 
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(new User { Id = userId });
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var dto = new CreateGroupDto { GroupName = groupName };
 
-            var dto = new CreateGroupDto { GroupName = groupName };
+			// Act
+			var result = await controller.CreateGroup(dto);
 
-            // Act
-            var result = await controller.CreateGroup(dto);
+			// Assert
+			Assert.AreSame(user, group.Owner);
+		}
 
-            // Assert
-            Assert.IsInstanceOf<OkObjectResult>(result);
-        }
+		[TestCase("group", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
+		[TestCase("new group name", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
+		public async Task TestCreateGroup_ServiceReturnsGroup_ShouldCallFactoryCreate(string groupName, string userId)
+		{
+			// Arrange
+			var group = new Group();
 
-        [TestCase("group", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
-        [TestCase("new group name", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
-        public async Task TestCreateGroup_ServiceReturnsGroup_ShouldSetBodyCorrectly(string groupName, string userId)
-        {
-            // Arrange
-            var group = new Group();
+			var mockedService = new Mock<IGroupService>();
+			mockedService.Setup(s => s.CreateGroupAsync(It.IsAny<string>(), It.IsAny<string>()))
+				.ReturnsAsync(group);
 
-            var mockedService = new Mock<IGroupService>();
-            mockedService.Setup(s => s.CreateGroupAsync(It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(group);
+			var mockedFactory = new Mock<IDtoFactory>();
 
-            var expectedDto = new GroupDto();
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(new User { Id = userId });
 
-            var mockedFactory = new Mock<IDtoFactory>();
-            mockedFactory.Setup(f => f.CreateGroupDto(It.IsAny<Group>())).Returns(expectedDto);
+			var mockedMembershipService = new Mock<IMembershipService>();
 
-            var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-            mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(new User { Id = userId });
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var dto = new CreateGroupDto { GroupName = groupName };
 
-            var dto = new CreateGroupDto { GroupName = groupName };
+			// Act
+			var result = await controller.CreateGroup(dto);
 
-            // Act
-            var result = await controller.CreateGroup(dto) as OkObjectResult;
+			// Assert
+			mockedFactory.Verify(f => f.CreateGroupDto(group), Times.Once);
+		}
 
-            // Assert
-            Assert.AreSame(expectedDto, result.Value);
-        }
-    }
+		[TestCase("group", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
+		[TestCase("new group name", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
+		public async Task TestCreateGroup_ServiceReturnsGroup_ShouldReturnOk(string groupName, string userId)
+		{
+			// Arrange
+			var group = new Group();
+
+			var mockedService = new Mock<IGroupService>();
+			mockedService.Setup(s => s.CreateGroupAsync(It.IsAny<string>(), It.IsAny<string>()))
+				.ReturnsAsync(group);
+
+			var mockedFactory = new Mock<IDtoFactory>();
+
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(new User { Id = userId });
+
+			var mockedMembershipService = new Mock<IMembershipService>();
+
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
+
+			var dto = new CreateGroupDto { GroupName = groupName };
+
+			// Act
+			var result = await controller.CreateGroup(dto);
+
+			// Assert
+			Assert.IsInstanceOf<OkObjectResult>(result);
+		}
+
+		[TestCase("group", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
+		[TestCase("new group name", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
+		public async Task TestCreateGroup_ServiceReturnsGroup_ShouldSetBodyCorrectly(string groupName, string userId)
+		{
+			// Arrange
+			var group = new Group();
+
+			var mockedService = new Mock<IGroupService>();
+			mockedService.Setup(s => s.CreateGroupAsync(It.IsAny<string>(), It.IsAny<string>()))
+				.ReturnsAsync(group);
+
+			var expectedDto = new GroupDto();
+
+			var mockedFactory = new Mock<IDtoFactory>();
+			mockedFactory.Setup(f => f.CreateGroupDto(It.IsAny<Group>())).Returns(expectedDto);
+
+			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
+			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(new User { Id = userId });
+
+			var mockedMembershipService = new Mock<IMembershipService>();
+
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
+
+			var dto = new CreateGroupDto { GroupName = groupName };
+
+			// Act
+			var result = await controller.CreateGroup(dto) as OkObjectResult;
+
+			// Assert
+			Assert.AreSame(expectedDto, result.Value);
+		}
+	}
 }

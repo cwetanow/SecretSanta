@@ -16,8 +16,9 @@ namespace SecretSanta.Web.Controllers
 		private readonly IGroupService groupService;
 		private readonly IDtoFactory factory;
 		private readonly IAuthenticationProvider authenticationProvider;
+		private readonly IMembershipService membershipService;
 
-		public GroupController(IGroupService groupService, IDtoFactory factory, IAuthenticationProvider authenticationProvider)
+		public GroupController(IGroupService groupService, IDtoFactory factory, IAuthenticationProvider authenticationProvider, IMembershipService membershipService)
 		{
 			if (groupService == null)
 			{
@@ -37,6 +38,7 @@ namespace SecretSanta.Web.Controllers
 			this.groupService = groupService;
 			this.factory = factory;
 			this.authenticationProvider = authenticationProvider;
+			this.membershipService = membershipService;
 		}
 
 		[HttpPost]
@@ -56,6 +58,8 @@ namespace SecretSanta.Web.Controllers
 			{
 				return this.BadRequest(Constants.GroupAlreadyExists);
 			}
+
+			await this.membershipService.JoinGroup(group.Id, user.Id);
 
 			group.Owner = user;
 

@@ -23,7 +23,9 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 			var mockedFactory = new Mock<IDtoFactory>();
 			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
 
-			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var mockedMembershipService = new Mock<IMembershipService>();
+
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
 
 			var dto = new UserDto { Username = username };
 
@@ -43,7 +45,9 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 			var mockedFactory = new Mock<IDtoFactory>();
 			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
 
-			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var mockedMembershipService = new Mock<IMembershipService>();
+
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
 
 			var dto = new UserDto { Username = username };
 
@@ -63,7 +67,9 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 			var mockedFactory = new Mock<IDtoFactory>();
 			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
 
-			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var mockedMembershipService = new Mock<IMembershipService>();
+
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
 
 			var dto = new UserDto { Username = username };
 
@@ -91,7 +97,9 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
 			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 
-			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var mockedMembershipService = new Mock<IMembershipService>();
+
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
 
 			var dto = new UserDto { Username = username };
 
@@ -119,7 +127,9 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
 			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 
-			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var mockedMembershipService = new Mock<IMembershipService>();
+
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
 
 			var dto = new UserDto { Username = username };
 
@@ -147,7 +157,9 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
 			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 
-			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var mockedMembershipService = new Mock<IMembershipService>();
+
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
 
 			var dto = new UserDto { Username = username };
 
@@ -176,7 +188,9 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 			mockedAuthenticationProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>())).ReturnsAsync(user);
 
-			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var mockedMembershipService = new Mock<IMembershipService>();
+
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
 
 			var dto = new UserDto { Username = username };
 
@@ -205,7 +219,9 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
 			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 			mockedAuthenticationProvider.Setup(p => p.FindByUsernameAsync(It.IsAny<string>())).ReturnsAsync(user);
 
-			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var mockedMembershipService = new Mock<IMembershipService>();
+
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
 
 			var dto = new UserDto { Username = username };
 
