@@ -25,10 +25,12 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
             var mockedFactory = new Mock<IDtoFactory>();
             var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var mockedMembershipService = new Mock<IMembershipService>();
 
-            // Act
-            var result = await controller.GetGroupUsers(null);
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
+
+			// Act
+			var result = await controller.GetGroupUsers(null);
 
             // Assert
             Assert.IsInstanceOf<BadRequestObjectResult>(result);
@@ -43,10 +45,12 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
             var mockedFactory = new Mock<IDtoFactory>();
             var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var mockedMembershipService = new Mock<IMembershipService>();
 
-            // Act
-            var result = await controller.GetGroupUsers(null) as BadRequestObjectResult;
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
+
+			// Act
+			var result = await controller.GetGroupUsers(null) as BadRequestObjectResult;
 
             // Assert
             Assert.AreSame(Constants.GroupNameCannotBeNull, result.Value);
@@ -69,10 +73,12 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
             var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
             mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var mockedMembershipService = new Mock<IMembershipService>();
 
-            // Act
-            await controller.GetGroupUsers(groupName);
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
+
+			// Act
+			await controller.GetGroupUsers(groupName);
 
             // Assert
             mockedAuthenticationProvider.Verify(p => p.GetCurrentUserAsync(), Times.Once);
@@ -95,10 +101,12 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
             var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
             mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var mockedMembershipService = new Mock<IMembershipService>();
 
-            // Act
-            await controller.GetGroupUsers(groupName);
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
+
+			// Act
+			await controller.GetGroupUsers(groupName);
 
             // Assert
             mockedService.Verify(s => s.GetByName(groupName), Times.Once);
@@ -121,10 +129,12 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
             var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
             mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var mockedMembershipService = new Mock<IMembershipService>();
 
-            // Act
-            await controller.GetGroupUsers(groupName);
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
+
+			// Act
+			await controller.GetGroupUsers(groupName);
 
             // Assert
             mockedService.Verify(s => s.GetGroupUsers(groupName), Times.Once);
@@ -149,10 +159,12 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
             var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
             mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var mockedMembershipService = new Mock<IMembershipService>();
 
-            // Act
-            await controller.GetGroupUsers(groupName);
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
+
+			// Act
+			await controller.GetGroupUsers(groupName);
 
             // Assert
             mockedFactory.Verify(f => f.CreateUsersListDto(users), Times.Once);
@@ -177,10 +189,12 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
             var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
             mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var mockedMembershipService = new Mock<IMembershipService>();
 
-            // Act
-            var result = await controller.GetGroupUsers(groupName);
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
+
+			// Act
+			var result = await controller.GetGroupUsers(groupName);
 
             // Assert
             Assert.IsInstanceOf<OkObjectResult>(result);
@@ -208,10 +222,12 @@ namespace SecretSanta.Web.Tests.Controllers.GroupControllerTests
             var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
             mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
 
-            var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object);
+			var mockedMembershipService = new Mock<IMembershipService>();
 
-            // Act
-            var result = await controller.GetGroupUsers(groupName) as OkObjectResult;
+			var controller = new GroupController(mockedService.Object, mockedFactory.Object, mockedAuthenticationProvider.Object, mockedMembershipService.Object);
+
+			// Act
+			var result = await controller.GetGroupUsers(groupName) as OkObjectResult;
 
             // Assert
             Assert.AreSame(dto, result.Value);
