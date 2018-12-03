@@ -23,3 +23,17 @@ export function getUserInvites() {
       });
   }
 }
+
+export function answerInvite(groupName, accept) {
+  return (dispatch) => {
+    return inviteService.answerInvite(groupName, accept)
+      .then(() => {
+        dispatch({
+          type: types.ANSWER_INVITE,
+          groupName
+        })
+
+        dispatch(notificationActions.success({ message: 'Answer successfull' }));
+      });
+  }
+}

@@ -11,6 +11,10 @@ class InviteService {
     return requester.getAuthorized('/invites')
       .then(response => Promise.resolve(response.data.invites));
   }
+
+  static answerInvite(groupName, accept) {
+    return requester.postAuthorized('/groups/members', { groupName, accepted: accept });
+  }
 }
 
 export default InviteService;

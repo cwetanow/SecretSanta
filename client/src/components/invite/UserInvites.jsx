@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getUserInvites } from '../../actions/inviteActions';
+import { getUserInvites, answerInvite } from '../../actions/inviteActions';
 
 import { Container, Button, Row, Col, Card, CardBody, InputGroup, Input } from 'reactstrap'
 import Invite from './Invite'
@@ -18,7 +18,7 @@ class UserInvites extends Component {
   }
 
   answerInvite(accept, groupName) {
-    console.log(accept)
+    this.props.answerInvite(groupName, accept);
   }
 
   render() {
@@ -39,7 +39,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ getUserInvites }, dispatch)
+  return bindActionCreators({ getUserInvites, answerInvite }, dispatch)
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserInvites);

@@ -55,10 +55,8 @@ namespace SecretSanta.Web.Controllers
 			{
 				await this.membershipService.JoinGroup(group.Id, user.Id);
 			}
-			else
-			{
-				await this.inviteService.CancelInvite(group.Id, user.Id);
-			}
+
+			await this.inviteService.RemoveInvite(group.Id, user.Id);
 
 			return this.NoContent();
 		}
