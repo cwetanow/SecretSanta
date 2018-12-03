@@ -1,5 +1,11 @@
 import * as types from '../actions/actionTypes';
 
+const filterInvites = (groupName, invites) => {
+  const filtered = invites.filter(i => i.groupName !== groupName);
+
+  return [...filtered];
+}
+
 export default function inviteReducer(state = {}, action) {
   switch (action.type) {
     case types.INVITE_LIST:
@@ -10,8 +16,8 @@ export default function inviteReducer(state = {}, action) {
 
     case types.ANSWER_INVITE:
       return {
-        invites: [...(state.invites.filter(i => i.groupName !== action.groupName))],
-        ...state
+        ...state,
+        invites: filterInvites(action.groupName, state.invites)
       };
 
     default:
