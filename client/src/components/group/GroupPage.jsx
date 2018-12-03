@@ -5,6 +5,7 @@ import GroupsList from '../group/GroupsList';
 import CreateGroupModal from '../group/CreateGroupModal';
 import { Redirect } from 'react-router-dom';
 import { getGroupUsers, checkGroupOwner } from '../../actions/groupActions.js';
+import { distributeGifts } from '../../actions/giftActions';
 import { Button, Container } from 'reactstrap';
 
 import InviteUsers from '../invite/InviteUsers';
@@ -12,6 +13,8 @@ import InviteUsers from '../invite/InviteUsers';
 class GroupPage extends Component {
   constructor(props, context) {
     super(props, context);
+
+    this.distributeGifts = this.distributeGifts.bind(this);
   }
 
   componentDidMount() {
@@ -19,10 +22,16 @@ class GroupPage extends Component {
     this.props.checkGroupOwner(this.props.groupName);
   }
 
+  distributeGifts() {
+    this.props.distributeGifts(this.props.groupName);
+  }
+
   render() {
     return (
       <Container>
         {this.props.isUserOwner && <InviteUsers groupName={this.props.groupName} />}
+        <hr />
+        {this.props.isUserOwner && <Button type="submit" size="xl" color="primary" onClick={this.distributeGifts} >Distribute gifts</Button>}
       </Container>
     );
   }
@@ -36,7 +45,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ getGroupUsers, checkGroupOwner }, dispatch)
+  return bindActionCreators({ getGroupUsers, checkGroupOwner, distributeGifts }, dispatch)
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupPage);

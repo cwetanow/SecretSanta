@@ -22,3 +22,6 @@ export const CHECK_GROUP_OWNER = 'CHECK_GROUP_OWNER';
 export const INVITE_SENT = 'INVITE_SENT';
 export const INVITE_LIST = 'INVITE_LIST';
 export const ANSWER_INVITE = 'ANSWER_INVITE';
+
+// Gifts
+export const DISTRIBUTE_GIFTS = 'DISTRIBUTE_GIFTS';
