@@ -76,67 +76,6 @@ namespace SecretSanta.Web.Tests.Controllers.GiftControllerTests
 
 		[TestCase(1, "group", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
 		[TestCase(5, "my group", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
-		public async Task TestGetGroupGift_ThereIsGroup_ShouldCallInviteServiceIsUserInvited(int groupId, string groupName, string userId)
-		{
-			// Arrange
-			var mockedService = new Mock<IGiftService>();
-
-			var user = new User { Id = userId };
-
-			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
-
-			var mockedFactory = new Mock<IDtoFactory>();
-
-			var group = new Group { Id = groupId };
-
-			var mockedGroupService = new Mock<IGroupService>();
-			mockedGroupService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
-
-			var mockedInviteService = new Mock<IInviteService>();
-
-			var controller = new GiftController(mockedService.Object, mockedAuthenticationProvider.Object, mockedFactory.Object, mockedGroupService.Object, mockedInviteService.Object);
-
-			// Act
-			var result = await controller.GetGroupGift(groupName);
-
-			// Assert
-			mockedInviteService.Verify(s => s.IsUserInvited(groupId, userId), Times.Once);
-		}
-
-		[TestCase(1, "group", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
-		[TestCase(5, "my group", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
-		public async Task TestGetGroupGift_UserIsNotInvited_ShouldReturnForbidden(int groupId, string groupName, string userId)
-		{
-			// Arrange
-			var mockedService = new Mock<IGiftService>();
-
-			var user = new User { Id = userId };
-
-			var mockedAuthenticationProvider = new Mock<IAuthenticationProvider>();
-			mockedAuthenticationProvider.Setup(p => p.GetCurrentUserAsync()).ReturnsAsync(user);
-
-			var mockedFactory = new Mock<IDtoFactory>();
-
-			var group = new Group { Id = groupId };
-
-			var mockedGroupService = new Mock<IGroupService>();
-			mockedGroupService.Setup(s => s.GetByName(It.IsAny<string>())).Returns(group);
-
-			var mockedInviteService = new Mock<IInviteService>();
-			mockedInviteService.Setup(s => s.IsUserInvited(It.IsAny<int>(), It.IsAny<string>())).Returns(false);
-
-			var controller = new GiftController(mockedService.Object, mockedAuthenticationProvider.Object, mockedFactory.Object, mockedGroupService.Object, mockedInviteService.Object);
-
-			// Act
-			var result = await controller.GetGroupGift(groupName);
-
-			// Assert
-			Assert.IsInstanceOf<ForbidResult>(result);
-		}
-
-		[TestCase(1, "group", "d547a40d-c45f-4c43-99de-0bfe9199ff95")]
-		[TestCase(5, "my group", "99ae8dd3-1067-4141-9675-62e94bb6caaa")]
 		public async Task TestGetGroupGift_UserIsInvited_ShouldCallServiceGetGiftInGroup(int groupId, string groupName, string userId)
 		{
 			// Arrange

@@ -5,9 +5,10 @@ import GroupsList from '../group/GroupsList';
 import CreateGroupModal from '../group/CreateGroupModal';
 import { Redirect } from 'react-router-dom';
 import { getGroupUsers, checkGroupOwner } from '../../actions/groupActions.js';
-import { distributeGifts } from '../../actions/giftActions';
+import { distributeGifts, getGift } from '../../actions/giftActions';
 import { Button, Container } from 'reactstrap';
 
+import Gift from '../gift/Gift'
 import InviteUsers from '../invite/InviteUsers';
 
 class GroupPage extends Component {
@@ -20,6 +21,7 @@ class GroupPage extends Component {
   componentDidMount() {
     this.props.getGroupUsers(this.props.groupName);
     this.props.checkGroupOwner(this.props.groupName);
+    this.props.getGift(this.props.groupName);
   }
 
   distributeGifts() {
@@ -29,9 +31,10 @@ class GroupPage extends Component {
   render() {
     return (
       <Container>
-        {this.props.isUserOwner && <InviteUsers groupName={this.props.groupName} />}
+        {!this.props.hasGift && this.props.isUserOwner && <InviteUsers groupName={this.props.groupName} />}
         <hr />
-        {this.props.isUserOwner && <Button type="submit" size="xl" color="primary" onClick={this.distributeGifts} >Distribute gifts</Button>}
+        {!this.props.hasGift && this.props.isUserOwner && <Button type="submit" size="xl" color="primary" onClick={this.distributeGifts} >Distribute gifts</Button>}
+        {this.props.hasGift && <Gift gift={this.props.gift} />}
       </Container>
     );
   }
@@ -40,12 +43,14 @@ class GroupPage extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     groupName: ownProps.match.params.groupName,
-    isUserOwner: state.group.isUserOwner
+    isUserOwner: state.group.isUserOwner,
+    hasGift: state.gift.groupGift && state.gift.groupGift.hasGift,
+    gift: state.gift.groupGift && state.gift.groupGift.gift
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ getGroupUsers, checkGroupOwner, distributeGifts }, dispatch)
+  return bindActionCreators({ getGroupUsers, checkGroupOwner, distributeGifts, getGift }, dispatch)
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupPage);

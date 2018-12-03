@@ -2,9 +2,9 @@ import * as types from '../actions/actionTypes';
 
 export default function giftReducer(state = {}, action) {
   switch (action.type) {
-    case types.DISTRIBUTE_GIFTS:
+    case types.GET_GIFT:
       return {
-        gifts: action.gifts
+        groupGift: action.gift
       }
 
     default:
