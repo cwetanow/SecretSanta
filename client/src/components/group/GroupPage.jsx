@@ -10,6 +10,7 @@ import { Button, Container, Row, Col, Card, CardBody, CardTitle, CardSubtitle } 
 import { Link } from 'react-router-dom';
 
 import Gift from '../gift/Gift'
+import Chat from '../chat/Chat'
 import InviteUsers from '../invite/InviteUsers';
 
 class GroupPage extends Component {
@@ -60,6 +61,8 @@ class GroupPage extends Component {
         {this.props.hasGift && <Gift gift={this.props.gift} />}
 
         {!this.props.hasGift && this.renderGroupUsers()}
+
+        <Chat isActive={true} room={this.props.groupName} user={this.props.currentUser.displayName} />
       </Container>
     );
   }
@@ -71,7 +74,8 @@ const mapStateToProps = (state, ownProps) => {
     isUserOwner: state.group.isUserOwner,
     hasGift: state.gift.groupGift && state.gift.groupGift.hasGift,
     gift: state.gift.groupGift && state.gift.groupGift.gift,
-    groupUsers: state.group.users || []
+    groupUsers: state.group.users || [],
+    currentUser: state.auth.user
   };
 }
 
