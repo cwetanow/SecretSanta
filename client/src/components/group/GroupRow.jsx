@@ -9,7 +9,7 @@ const GroupRow = ({ group }) => (
       <Card className="mx-4">
         <CardBody className="p-4">
           <CardTitle>
-            <Link to={'/groups/' + group.name}>{group.name} by {group.owner}</Link>
+            <Link to={'/groups/' + group.name}>{group.name} by {group.owner.displayName}</Link>
           </CardTitle>
         </CardBody>
       </Card>
