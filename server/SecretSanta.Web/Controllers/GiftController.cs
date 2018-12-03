@@ -41,13 +41,6 @@ namespace SecretSanta.Web.Controllers
 				return this.NotFound();
 			}
 
-			var isInvited = this.inviteService.IsUserInvited(group.Id, user.Id);
-
-			if (!isInvited)
-			{
-				return this.Forbid();
-			}
-
 			var gift = this.service.GetGiftInGroup(group.Id, user.Id);
 
 			var hasGift = gift != null;
