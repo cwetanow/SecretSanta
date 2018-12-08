@@ -4,7 +4,8 @@ class InviteService {
   static sendInvite(groupName, username) {
     const url = `/invites/${groupName}`;
 
-    return requester.postAuthorized(url, { username });
+    return requester.postAuthorized(url, { username })
+      .then(response => Promise.resolve(response.data));
   }
 
   static getUserInvites() {
