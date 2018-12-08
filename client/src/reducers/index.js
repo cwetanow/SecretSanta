@@ -5,6 +5,7 @@ import groupReducer from './groupReducer';
 import inviteReducer from './inviteReducer';
 import giftReducer from './giftReducer';
 import notificationReducer from './notificationReducer';
+import messageReducer from './messageReducer';
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   user: userReducer,
   invite: inviteReducer,
   group: groupReducer,
+  message: messageReducer,
   gift: giftReducer
 });
 
