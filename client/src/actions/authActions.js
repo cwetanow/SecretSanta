@@ -23,8 +23,8 @@ export function register(user) {
 export function login(user) {
   return (dispatch) => {
     return authService.login(user)
-      .then(response => {
-        authService.setAuth(response.data.token);
+      .then(token => {
+        authService.setAuth(token);
 
         const currentUser = authService.getCurrentUser();
         if (!currentUser) {
