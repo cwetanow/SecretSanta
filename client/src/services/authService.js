@@ -4,11 +4,13 @@ const authKey = 'auth';
 
 class AuthService {
   static register(user) {
-    return requester.post('/users', user);
+    return requester.post('/users', user)
+      .then(response => Promise.resolve(response.data));
   }
 
   static login(user) {
-    return requester.post('/login', user);
+    return requester.post('/login', user)
+      .then(response => Promise.resolve(response.data.token));
   }
 
   static getToken() {

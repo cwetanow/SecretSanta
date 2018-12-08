@@ -23,15 +23,12 @@ export function register(user) {
 export function login(user) {
   return (dispatch) => {
     return authService.login(user)
-      .then(response => {
-        authService.setAuth(response.data.token);
+      .then(token => {
+        authService.setAuth(token);
 
         const currentUser = authService.getCurrentUser();
         if (!currentUser) {
-          return userService.getByUsername(user.username)
-            .then(response => {
-              return Promise.resolve(response.data);
-            });
+          return userService.getByUsername(user.username);
         }
 
         return Promise.resolve(currentUser);
