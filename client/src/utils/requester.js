@@ -14,31 +14,23 @@ const getConfig = () => {
 const API_URL = '/api';
 
 const requester = {
-  apiUrl: API_URL,
   getAuthorized: (url) => {
-    return axios.get(`${requester.apiUrl}${url}`, getConfig());
+    return axios.get(`${API_URL}${url}`, getConfig());
   },
   get: (url) => {
-    return axios.get(`${requester.apiUrl}${url}`);
+    return axios.get(`${API_URL}${url}`);
   },
   postAuthorized: (url, body) => {
-    return axios.post(`${requester.apiUrl}${url}`, body, getConfig());
+    return axios.post(`${API_URL}${url}`, body, getConfig());
   },
   post: (url, body) => {
-    return axios.post(`${requester.apiUrl}${url}`, body);
+    return axios.post(`${API_URL}${url}`, body);
   },
   putAuthorized: (url, body) => {
-    return axios.put(`${requester.apiUrl}${url}`, body, getConfig());
+    return axios.put(`${API_URL}${url}`, body, getConfig());
   },
   deleteAuthorized: (url, body) => {
-    return axios.delete(`${requester.apiUrl}${url}`, { ...getConfig(), data: body });
-  },
-  createNew: () => {
-    const copy = {};
-    Object.keys(requester)
-      .forEach(key => copy[key] = requester[key]);
-
-    return copy;
+    return axios.delete(`${API_URL}${url}`, { ...getConfig(), data: body });
   }
 }
 

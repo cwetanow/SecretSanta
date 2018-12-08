@@ -1,13 +1,11 @@
 import requester from '../utils/requester';
-const requestUtil = requester.createNew();
-requestUtil.apiUrl = '/message';
 
 class MessageService {
-  static getMessages(groupName) {
-    const url = `/message/${groupName}`;
+  static getMessages(room) {
+    const url = `/message/${room}`;
 
-
-    return requestUtil.get(url);
+    return requester.get(url)
+      .then(response => Promise.resolve(response.data));
   }
 }
 
