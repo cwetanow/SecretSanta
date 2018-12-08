@@ -16,7 +16,7 @@ app.use(cors());
 require('./config/db')(config);
 
 const messageRouter = require('./messages')(app);
-app.use('/message', messageRouter);
+app.use('/api/message', messageRouter);
 
 app.server.listen(config.port, () => {
   console.log(`Started on port ${config.port}`);

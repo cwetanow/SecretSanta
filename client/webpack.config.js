@@ -42,6 +42,7 @@ module.exports = {
   plugins: [htmlPlugin],
   devServer: {
     proxy: {
+      '/api/message': { target: 'http://localhost:1235/', secure: false },
       '/api': { target: 'http://localhost:5000/', secure: false },
       changeOrigin: true
     },
