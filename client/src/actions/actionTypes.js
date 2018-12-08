@@ -26,3 +26,6 @@ export const ANSWER_INVITE = 'ANSWER_INVITE';
 // Gifts
 export const DISTRIBUTE_GIFTS = 'DISTRIBUTE_GIFTS';
 export const GET_GIFT = 'GET_GIFT';
+
+// Messages
+export const LOAD_CHAT_MESSAGES = 'LOAD_CHAT_MESSAGES';
