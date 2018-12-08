@@ -3,7 +3,7 @@ import requester from '../utils/requester';
 class UserService {
   static getByUsername(username) {
     return requester.getAuthorized(`/users/${username}`)
-      .then(response => Promise.resolve(response.data.users));
+      .then(response => Promise.resolve(response.data));
   }
 
   static getUsers(pattern = null, sortAscending = true, offset = 0, limit = 10) {
@@ -25,7 +25,8 @@ class UserService {
       url = `${url}limit=${limit}&`
     }
 
-    return requester.getAuthorized(url);
+    return requester.getAuthorized(url)
+      .then(response => Promise.resolve(response.data.users));
   }
 
   static getUsersNotInGroup(groupName, pattern = null) {
