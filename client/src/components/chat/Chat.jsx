@@ -1,16 +1,17 @@
 import React from 'react';
 import { Button, FormGroup, Input, Form, Col, Label, Row, Card, CardBody, CardTitle, CardText, CardSubtitle } from 'reactstrap';
 import { Link } from 'react-router-dom';
-
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { getMessages } from '../../actions/messageActions';
 import socketIOClient from 'socket.io-client'
 
 export class Chat extends React.Component {
   constructor(props, context) {
     super(props, context);
-
     const message = { room: props.room, user: props.user, content: '', time: '' };
 
-    const socket = this.initSockets();
+    const socket = this.initSocket();
 
     this.state = {
       message,
@@ -20,14 +21,22 @@ export class Chat extends React.Component {
 
     this.onContentChange = this.onContentChange.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
+
+    props.getMessages(props.room);
   }
 
-  initSockets() {
+  componentWillReceiveProps(nextProps, ownProps) {
+    if (nextProps.messages) {
+      this.setState({ messages: nextProps.messages });
+    }
+  }
+
+  initSocket() {
     const socket = socketIOClient('http://localhost:1235');
 
     socket.on('chat message', (message) => {
       if (message) {
-        const messages = Object.assign([], this.state.messages);
+        const messages = [...this.state.messages];
         messages.push(message);
 
         this.setState({ messages });
@@ -99,4 +108,15 @@ export class Chat extends React.Component {
   }
 }
 
-export default Chat;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    ...ownProps,
+    messages: state.message.messages
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ getMessages }, dispatch)
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chat);
