@@ -8,15 +8,14 @@ import { Container, Row, Col, Card, CardBody, Button, Input, InputGroup, InputGr
 class Logout extends Component {
   render() {
     this.props.logout();
-
     return (
-      <Redirect to="/" />
+      <Redirect to="/login" />
     );
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ logout }, dispatch)
+  return bindActionCreators({ logout }, dispatch);
 };
 
 export default connect(null, mapDispatchToProps)(Logout);
