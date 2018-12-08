@@ -5,6 +5,7 @@ import configureStore from './store/configureStore';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import App from './components/App';
+import httpErrorHandlerInit from './utils/httpErrorHandler';
 
 import * as authActions from './actions/authActions';
 
@@ -15,6 +16,12 @@ import 'toastr/build/toastr.min.css'
 const store = configureStore();
 
 store.dispatch(authActions.getAuthenticatedUser());
+
+const handleUnauthorized = (err) => {
+  store.dispatch(authActions.logout());
+}
+
+httpErrorHandlerInit(handleUnauthorized);
 
 ReactDOM.render(
   <Provider store={store}>
