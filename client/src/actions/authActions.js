@@ -28,10 +28,7 @@ export function login(user) {
 
         const currentUser = authService.getCurrentUser();
         if (!currentUser) {
-          return userService.getByUsername(user.username)
-            .then(response => {
-              return Promise.resolve(response.data);
-            });
+          return userService.getByUsername(user.username);
         }
 
         return Promise.resolve(currentUser);

@@ -3,6 +3,7 @@ import requester from '../utils/requester';
 class UserService {
   static getByUsername(username) {
     return requester.getAuthorized(`/users/${username}`)
+      .then(response => Promise.resolve(response.data.users));
   }
 
   static getUsers(pattern = null, sortAscending = true, offset = 0, limit = 10) {
