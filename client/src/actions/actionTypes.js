@@ -17,7 +17,7 @@ export const GROUPS_LIST = 'GROUPS_LIST';
 export const CREATE_GROUP = 'CREATE_GROUP';
 export const GROUP_USERS = 'GROUP_USERS';
 export const CHECK_GROUP_OWNER = 'CHECK_GROUP_OWNER';
-export const CLOSE_GROUP = 'CLOSE_GROUP';
+export const IS_GROUP_CLOSED = 'IS_GROUP_CLOSED';
 
 // Invite
 export const INVITE_SENT = 'INVITE_SENT';

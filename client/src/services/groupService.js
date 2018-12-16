@@ -25,7 +25,12 @@ class GroupService {
   }
 
   static closeGroup(groupName) {
-    return requester.postAuthorized(`/groups/${groupName}/close`);
+    return requester.postAuthorized(`/groups/${groupName}/closed`);
+  }
+
+  static isGroupClosed(groupName) {
+    return requester.getAuthorized(`/groups/${groupName}/closed`)
+      .then(response => Promise.resolve(response.data));
   }
 
   static removeUser(groupName, user) {

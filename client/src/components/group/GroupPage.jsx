@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import GroupsList from '../group/GroupsList';
 import CreateGroupModal from '../group/CreateGroupModal';
 import { Redirect } from 'react-router-dom';
-import { getGroupUsers, checkGroupOwner, removeUser, closeGroup } from '../../actions/groupActions.js';
+import { getGroupUsers, checkGroupOwner, removeUser, closeGroup, isGroupClosed } from '../../actions/groupActions.js';
 import { distributeGifts, getGift } from '../../actions/giftActions';
 import { Button, Container, Row, Col, Card, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
 import { Link } from 'react-router-dom';
@@ -26,6 +26,7 @@ class GroupPage extends Component {
     this.props.getGroupUsers(this.props.groupName);
     this.props.checkGroupOwner(this.props.groupName);
     this.props.getGift(this.props.groupName);
+    this.props.isGroupClosed(this.props.groupName);
   }
 
   distributeGifts() {
@@ -90,7 +91,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ getGroupUsers, checkGroupOwner, distributeGifts, getGift, removeUser, closeGroup }, dispatch)
+  return bindActionCreators({ getGroupUsers, checkGroupOwner, distributeGifts, getGift, removeUser, closeGroup, isGroupClosed }, dispatch)
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupPage);
