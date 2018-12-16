@@ -20,6 +20,12 @@ export default function groupReducer(state = {}, action) {
         isUserOwner: action.isUserOwner,
       };
 
+    case types.CLOSE_GROUP:
+      return {
+        ...state,
+        isGroupClosed: true,
+      };
+
     case types.GROUP_USERS:
       return {
         ...state,

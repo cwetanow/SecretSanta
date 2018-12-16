@@ -83,7 +83,8 @@ const mapStateToProps = (state, ownProps) => {
     hasGift: state.gift.groupGift && state.gift.groupGift.hasGift,
     gift: state.gift.groupGift && state.gift.groupGift.gift,
     groupUsers: state.group.users || [],
-    currentUser: state.auth.user
+    currentUser: state.auth.user,
+    isGroupClosed: state.group.isGroupClosed
   };
 }
 
