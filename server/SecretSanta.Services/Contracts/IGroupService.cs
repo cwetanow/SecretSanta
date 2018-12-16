@@ -17,5 +17,7 @@ namespace SecretSanta.Services.Contracts
         Task RemoveUserFromGroup(int groupId, string userId);
 
 		bool IsUserOwner(string groupName, string id);
-	}
+
+	    Task CloseGroup(string groupName);
+    }
 }
