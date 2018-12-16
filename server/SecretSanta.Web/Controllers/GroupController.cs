@@ -145,7 +145,7 @@ namespace SecretSanta.Web.Controllers
 		}
 
 		[HttpPost]
-		[Route("{groupName}/close")]
+		[Route("{groupName}/closed")]
 		public async Task<IActionResult> CloseGroup(string groupName)
 		{
 			if (string.IsNullOrEmpty(groupName))
@@ -164,6 +164,25 @@ namespace SecretSanta.Web.Controllers
 			await this.groupService.CloseGroup(groupName);
 
 			return this.NoContent();
+		}
+
+		[HttpGet]
+		[Route("{groupName}/closed")]
+		public IActionResult IsGroupClosed(string groupName)
+		{
+			if (string.IsNullOrEmpty(groupName))
+			{
+				return this.BadRequest(Constants.GroupNameCannotBeNull);
+			}
+
+			var isGroupClosed = this.groupService.IsGroupClosed(groupName);
+
+			if (!isGroupClosed.HasValue)
+			{
+				return NotFound();
+			}
+
+			return this.Ok(isGroupClosed);
 		}
 	}
 }

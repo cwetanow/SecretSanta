@@ -100,6 +100,13 @@ namespace SecretSanta.Services
 			await this.unitOfWork.CommitAsync();
 		}
 
+		public bool? IsGroupClosed(string groupName)
+		{
+			var group = this.GetByName(groupName);
+
+			return group?.IsClosed;
+		}
+
 		public async Task RemoveUserFromGroup(int groupId, string userId)
 		{
 			var group = this.groupUsersRepository.All
