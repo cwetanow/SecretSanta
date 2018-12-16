@@ -24,6 +24,10 @@ class GroupService {
       .then(response => Promise.resolve(response.data.isUserOwner));
   }
 
+  static closeGroup(groupName) {
+    return requester.postAuthorized(`/groups/${groupName}/close`);
+  }
+
   static removeUser(groupName, user) {
     return requester.deleteAuthorized(`/groups/${groupName}/users`, user);
   }
