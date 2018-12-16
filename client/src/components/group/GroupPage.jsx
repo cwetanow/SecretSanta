@@ -60,17 +60,18 @@ class GroupPage extends Component {
   render() {
     return (
       <Container>
-        {!this.props.hasGift && this.props.isUserOwner && <InviteUsers groupName={this.props.groupName} />}
+        {this.props.isGroupClosed && <h1>This group is closed</h1>}
+        {!this.props.isGroupClosed && !this.props.hasGift && this.props.isUserOwner && <InviteUsers groupName={this.props.groupName} />}
         <hr />
-        {!this.props.hasGift && this.props.isUserOwner && <Button type="submit" size="xl" color="primary" onClick={this.distributeGifts} >Distribute gifts</Button>}
+        {!this.props.isGroupClosed && !this.props.hasGift && this.props.isUserOwner && <Button type="submit" size="xl" color="primary" onClick={this.distributeGifts} >Distribute gifts</Button>}
 
-        {this.props.hasGift && this.props.isUserOwner && <Button type="submit" size="xl" color="primary" onClick={this.closeGroup} >Close group</Button>}
+        {!this.props.isGroupClosed && this.props.hasGift && this.props.isUserOwner && <Button type="submit" size="xl" color="primary" onClick={this.closeGroup} >Close group</Button>}
 
         {this.props.hasGift && <Gift gift={this.props.gift} />}
 
         {!this.props.hasGift && this.renderGroupUsers()}
         <hr />
-        <Chat isActive={true} room={this.props.groupName} user={this.props.currentUser.displayName} />
+        {!this.props.isGroupClosed && <Chat isActive={true} room={this.props.groupName} user={this.props.currentUser.displayName} />}
       </Container>
     );
   }
