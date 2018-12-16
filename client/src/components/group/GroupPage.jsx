@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import GroupsList from '../group/GroupsList';
 import CreateGroupModal from '../group/CreateGroupModal';
 import { Redirect } from 'react-router-dom';
-import { getGroupUsers, checkGroupOwner, removeUser } from '../../actions/groupActions.js';
+import { getGroupUsers, checkGroupOwner, removeUser, closeGroup } from '../../actions/groupActions.js';
 import { distributeGifts, getGift } from '../../actions/giftActions';
 import { Button, Container, Row, Col, Card, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
 import { Link } from 'react-router-dom';
@@ -19,6 +19,7 @@ class GroupPage extends Component {
 
     this.distributeGifts = this.distributeGifts.bind(this);
     this.renderGroupUsers = this.renderGroupUsers.bind(this);
+    this.closeGroup = this.closeGroup.bind(this);
   }
 
   componentDidMount() {
@@ -29,6 +30,10 @@ class GroupPage extends Component {
 
   distributeGifts() {
     this.props.distributeGifts(this.props.groupName);
+  }
+
+  closeGroup() {
+    this.props.closeGroup(this.props.groupName);
   }
 
   renderGroupUsers() {
@@ -58,6 +63,9 @@ class GroupPage extends Component {
         {!this.props.hasGift && this.props.isUserOwner && <InviteUsers groupName={this.props.groupName} />}
         <hr />
         {!this.props.hasGift && this.props.isUserOwner && <Button type="submit" size="xl" color="primary" onClick={this.distributeGifts} >Distribute gifts</Button>}
+
+        {this.props.hasGift && this.props.isUserOwner && <Button type="submit" size="xl" color="primary" onClick={this.closeGroup} >Close group</Button>}
+
         {this.props.hasGift && <Gift gift={this.props.gift} />}
 
         {!this.props.hasGift && this.renderGroupUsers()}
@@ -80,7 +88,7 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ getGroupUsers, checkGroupOwner, distributeGifts, getGift, removeUser }, dispatch)
+  return bindActionCreators({ getGroupUsers, checkGroupOwner, distributeGifts, getGift, removeUser, closeGroup }, dispatch)
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupPage);
