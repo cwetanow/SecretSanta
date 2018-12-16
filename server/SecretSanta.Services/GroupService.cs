@@ -90,6 +90,16 @@ namespace SecretSanta.Services
 			return isOwner;
 		}
 
+		public async Task CloseGroup(string groupName)
+		{
+			var group = this.GetByName(groupName);
+
+			group.IsClosed = true;
+
+			this.repository.Update(group);
+			await this.unitOfWork.CommitAsync();
+		}
+
 		public async Task RemoveUserFromGroup(int groupId, string userId)
 		{
 			var group = this.groupUsersRepository.All
