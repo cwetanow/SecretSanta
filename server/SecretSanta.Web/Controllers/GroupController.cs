@@ -143,5 +143,46 @@ namespace SecretSanta.Web.Controllers
 
 			return this.NoContent();
 		}
+
+		[HttpPost]
+		[Route("{groupName}/closed")]
+		public async Task<IActionResult> CloseGroup(string groupName)
+		{
+			if (string.IsNullOrEmpty(groupName))
+			{
+				return this.BadRequest(Constants.GroupNameCannotBeNull);
+			}
+
+			var user = await this.authenticationProvider.GetCurrentUserAsync();
+
+			var isOwner = this.groupService.IsUserOwner(groupName, user.Id);
+			if (!isOwner)
+			{
+				return Forbid();
+			}
+
+			await this.groupService.CloseGroup(groupName);
+
+			return this.NoContent();
+		}
+
+		[HttpGet]
+		[Route("{groupName}/closed")]
+		public IActionResult IsGroupClosed(string groupName)
+		{
+			if (string.IsNullOrEmpty(groupName))
+			{
+				return this.BadRequest(Constants.GroupNameCannotBeNull);
+			}
+
+			var isGroupClosed = this.groupService.IsGroupClosed(groupName);
+
+			if (!isGroupClosed.HasValue)
+			{
+				return NotFound();
+			}
+
+			return this.Ok(isGroupClosed);
+		}
 	}
 }

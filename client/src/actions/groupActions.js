@@ -69,3 +69,27 @@ export function checkGroupOwner(groupName) {
       });
   }
 }
+
+export function closeGroup(groupName) {
+  return (dispatch) => {
+    return groupService.closeGroup(groupName)
+      .then(() => {
+        dispatch({
+          type: types.IS_GROUP_CLOSED,
+          isGroupClosed: true
+        });
+      });
+  }
+}
+
+export function isGroupClosed(groupName) {
+  return (dispatch) => {
+    return groupService.isGroupClosed(groupName)
+      .then((isGroupClosed) => {
+        dispatch({
+          type: types.IS_GROUP_CLOSED,
+          isGroupClosed
+        });
+      });
+  }
+}
