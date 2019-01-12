@@ -82,7 +82,7 @@ export function closeGroup(groupName) {
   }
 }
 
-export function isGroupClosed(groupName) {
+export function checkIsGroupClosed(groupName) {
   return (dispatch) => {
     return groupService.isGroupClosed(groupName)
       .then((isGroupClosed) => {
