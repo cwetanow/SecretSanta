@@ -43,7 +43,7 @@ module.exports = {
   devServer: {
     proxy: {
       '/api/message': { target: 'http://localhost:1235/', secure: false },
-      '/api': { target: 'http://localhost:5000/', secure: false },
+      '/api': { target: 'http://localhost:17594/', secure: false },
       changeOrigin: true
     },
     historyApiFallback: true
