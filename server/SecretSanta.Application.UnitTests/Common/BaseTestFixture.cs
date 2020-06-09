@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
-using SecretSanta.Data;
+using SecretSanta.Persistence;
 
 namespace SecretSanta.Application.UnitTests.Common
 {
-	public class BaseTestFixture : IDisposable
+	public abstract class BaseTestFixture : IDisposable
 	{
 		protected BaseTestFixture()
 		{
