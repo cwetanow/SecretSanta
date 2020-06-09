@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.Validators;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using SecretSanta.Application.Common.Exceptions;
 using SecretSanta.Application.Common.Interfaces;
 using SecretSanta.Domain.Entities;
@@ -23,9 +24,9 @@ namespace SecretSanta.Application.Users.Commands
 		public class Handler : IRequestHandler<RegisterUserCommand, int>
 		{
 			private readonly IUserService userService;
-			private readonly ISecretSantaDbContext context;
+			private readonly DbContext context;
 
-			public Handler(IUserService userService, ISecretSantaDbContext context)
+			public Handler(IUserService userService, DbContext context)
 			{
 				this.userService = userService;
 				this.context = context;
@@ -41,7 +42,6 @@ namespace SecretSanta.Application.Users.Commands
 				}
 
 				var user = new User(userId, request.Username, request.Email, request.DisplayName);
-
 				context.Add(user);
 
 				await context.SaveChangesAsync(cancellationToken);

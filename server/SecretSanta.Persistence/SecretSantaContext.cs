@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using SecretSanta.Domain.Common;
+using SecretSanta.Domain.Entities;
 
 namespace SecretSanta.Persistence
 {
@@ -9,6 +10,8 @@ namespace SecretSanta.Persistence
 		public SecretSantaContext(DbContextOptions<SecretSantaContext> options)
 			: base(options)
 		{ }
+
+		public DbSet<User> Users { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
