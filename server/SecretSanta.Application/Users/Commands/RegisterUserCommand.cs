@@ -34,6 +34,14 @@ namespace SecretSanta.Application.Users.Commands
 
 			public async Task<int> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
 			{
+				var isExistingUser = await context.Set<User>()
+					.AnyAsync(u => u.Username == request.Username, cancellationToken);
+
+				if (isExistingUser)
+				{
+					throw new BadRequestException($"User {request.Username}");
+				}
+
 				var (result, userId) = await userService.CreateUser(request.Username, request.Email, request.Password);
 
 				if (!result.Success)

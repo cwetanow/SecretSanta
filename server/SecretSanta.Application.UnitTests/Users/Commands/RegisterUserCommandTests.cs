@@ -9,12 +9,42 @@ using SecretSanta.Application.Common.Interfaces;
 using SecretSanta.Application.Common.Models;
 using SecretSanta.Application.UnitTests.Common;
 using SecretSanta.Application.Users.Commands;
+using SecretSanta.Domain.Entities;
 using Xunit;
 
 namespace SecretSanta.Application.UnitTests.Users.Commands
 {
 	public class RegisterUserCommandTests : BaseTestFixture
 	{
+		[Fact]
+		public async Task GivenExistingUser_ThrowsBadRequestExceptionWithMessage()
+		{
+			// Arrange
+			var command = new RegisterUserCommand {
+				Email = "Email",
+				Password = "Password",
+				Username = "Username",
+				DisplayName = "DisplayName"
+			};
+
+			var userId = Guid.NewGuid().ToString();
+
+			var existingUser = new User(userId, command.Username, command.Email, command.DisplayName);
+			Context.Users.Add(existingUser);
+			await Context.SaveChangesAsync();
+
+			var userServiceMock = new Mock<IUserService>();
+
+			var sut = new RegisterUserCommand.Handler(userServiceMock.Object, Context);
+
+			// Act
+			var action = new Func<Task<int>>(() => sut.Handle(command, CancellationToken.None));
+
+			// Assert
+			(await action.Should().ThrowAsync<BadRequestException>())
+				.And.Errors.Should().Contain(err => err.Contains(command.Username));
+		}
+
 		[Fact]
 		public async Task GivenNotSuccessWhenCreatingUser_ThrowsBadRequestException()
 		{
@@ -48,7 +78,8 @@ namespace SecretSanta.Application.UnitTests.Users.Commands
 			var command = new RegisterUserCommand {
 				Email = "Email",
 				Password = "Password",
-				Username = "Username"
+				Username = "Username",
+				DisplayName = "DisplayName"
 			};
 
 			var userId = Guid.NewGuid().ToString();
