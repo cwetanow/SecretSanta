@@ -39,7 +39,7 @@ namespace SecretSanta.Application.Users.Commands
 
 				if (isExistingUser)
 				{
-					throw new BadRequestException($"User {request.Username}");
+					throw new BadRequestException($"User {request.Username} already exists");
 				}
 
 				var (result, userId) = await userService.CreateUser(request.Username, request.Email, request.Password);
