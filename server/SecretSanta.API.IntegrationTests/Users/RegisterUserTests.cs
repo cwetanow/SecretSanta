@@ -16,18 +16,10 @@ using Xunit;
 
 namespace SecretSanta.API.IntegrationTests.Users
 {
-	public class RegisterUserTests : IClassFixture<TestWebApplicationFactory>
+	public class RegisterUserTests : BaseTestFixture
 	{
-		private readonly TestWebApplicationFactory factory;
-		private readonly HttpClient client;
-
-		public RegisterUserTests(TestWebApplicationFactory factory)
-		{
-			this.factory = factory;
-			factory.CleanupDatabase();
-
-			this.client = factory.CreateClient();
-		}
+		public RegisterUserTests(TestWebApplicationFactory factory) : base(factory)
+		{ }
 
 		[Theory]
 		[InlineData("", "displayName", "email", "password")]
@@ -48,7 +40,7 @@ namespace SecretSanta.API.IntegrationTests.Users
 			content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
 			// Act
-			var response = await client.PostAsync("api/users", content);
+			var response = await Client.PostAsync("api/users", content);
 
 			// Assert
 			response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -61,7 +53,7 @@ namespace SecretSanta.API.IntegrationTests.Users
 			// Arrange
 			var user = new User(Guid.NewGuid().ToString(), username, email, displayName);
 
-			var context = this.factory.GetService<SecretSantaContext>();
+			var context = this.Factory.GetService<SecretSantaContext>();
 			context.Users.Add(user);
 			await context.SaveChangesAsync();
 
@@ -76,7 +68,7 @@ namespace SecretSanta.API.IntegrationTests.Users
 			content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
 			// Act
-			var response = await client.PostAsync("api/users", content);
+			var response = await Client.PostAsync("api/users", content);
 
 			// Assert
 			response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -95,9 +87,9 @@ namespace SecretSanta.API.IntegrationTests.Users
 			};
 
 			// Act
-			await client.PostJson<object>("api/users", body);
+			await Client.PostJson<object>("api/users", body);
 
-			var context = this.factory.GetService<ApplicationIdentityDbContext>();
+			var context = this.Factory.GetService<ApplicationIdentityDbContext>();
 			var user = await context.Users.SingleOrDefaultAsync(u => u.UserName == username);
 
 			// Assert
