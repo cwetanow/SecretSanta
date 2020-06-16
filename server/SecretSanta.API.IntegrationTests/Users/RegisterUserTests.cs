@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -96,6 +97,39 @@ namespace SecretSanta.API.IntegrationTests.Users
 			user.Should().NotBeNull();
 			user.UserName.Should().Be(username);
 			user.Email.Should().Be(email);
+		}
+
+		[Theory]
+		[InlineData("username", "displayName", "email@email.com", "!QAZ2wsx")]
+		public async Task GivenCorrectParameters_CreatesUser(string username, string displayName, string email, string password)
+		{
+			// Arrange
+			var body = new RegisterUserCommand {
+				Username = username,
+				DisplayName = displayName,
+				Email = email,
+				Password = password
+			};
+
+			// Act
+			await Client.PostJson<object>("api/users", body);
+
+			var identityContext = this.Factory.GetService<ApplicationIdentityDbContext>();
+			var identityUserId = await identityContext.Users
+				.Where(u => u.UserName == username)
+				.Select(u => u.Id)
+				.SingleOrDefaultAsync();
+
+			var context = this.Factory.GetService<SecretSantaContext>();
+			var user = await context.Users
+				.SingleOrDefaultAsync(u => u.Username == username);
+
+			// Assert
+			user.Should().NotBeNull();
+			user.Username.Should().Be(username);
+			user.Email.Should().Be(email);
+			user.DisplayName.Should().Be(displayName);
+			user.UserId.Should().Be(identityUserId);
 		}
 	}
 }
