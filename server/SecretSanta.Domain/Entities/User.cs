@@ -14,9 +14,9 @@ namespace SecretSanta.Domain.Entities
 			DisplayName = displayName;
 		}
 
-		public string UserId { get; }
-		public string Username { get; }
-		public string Email { get; }
-		public string DisplayName { get; }
+		public string UserId { get; private set; }
+		public string Username { get; private set; }
+		public string Email { get; private set; }
+		public string DisplayName { get; private set; }
 	}
 }
