@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SecretSanta.API.Infrastructure.Middleware;
 using SecretSanta.Application.Common.Extensions;
 using SecretSanta.Identity.Extensions;
 using SecretSanta.Persistence.Extensions;
@@ -26,9 +27,9 @@ namespace SecretSanta.API
 				.AddControllers();
 
 			services
-				.AddPersistence(options => options.UseSqlite("Data Source=./secretsanta.db"))
+				.AddPersistence(options => options.UseSqlite(Configuration.GetConnectionString("SecretSantaDb")))
 				.AddApplication()
-				.AddIdentity(options => options.UseSqlite("Data Source=./identity.db"));
+				.AddIdentity(options => options.UseSqlite(Configuration.GetConnectionString("IdentityDb")));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
