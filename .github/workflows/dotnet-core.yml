@@ -18,8 +18,8 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Install dependencies
-      run: dotnet restore
+      run: dotnet restore server/SecretSanta.sln
     - name: Build
       run: dotnet build --configuration Release --no-restore server/SecretSanta.sln
     - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test --no-restore --verbosity normal server/SecretSanta.sln
