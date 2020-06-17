@@ -22,4 +22,4 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore server/SecretSanta.sln
     - name: Test
-      run: dotnet test --no-restore --verbosity normal server/SecretSanta.sln
+      run: dotnet test --no-restore server/SecretSanta.sln
