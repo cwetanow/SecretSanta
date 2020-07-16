@@ -41,7 +41,7 @@ namespace SecretSanta.Application.Users.Commands
 				}
 
 				var user = await context.Set<User>()
-					.Where(u => u.Username == request.Username.Trim())
+					.Where(u => u.Username == request.Username)
 					.ProjectTo<UserProfileResponse>(mapper.ConfigurationProvider)
 					.SingleOrDefaultAsync(cancellationToken);
 
