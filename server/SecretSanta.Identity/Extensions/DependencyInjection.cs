@@ -19,7 +19,7 @@ namespace SecretSanta.Identity.Extensions
 				.AddEntityFrameworkStores<ApplicationIdentityDbContext>();
 
 			services
-				.AddScoped<IUserService, IdentityUserService>();
+				.AddScoped<IIdentityService, IdentityService>();
 
 			return services;
 		}

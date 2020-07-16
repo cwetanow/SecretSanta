@@ -23,12 +23,12 @@ namespace SecretSanta.Application.Users.Commands
 
 		public class Handler : IRequestHandler<RegisterUserCommand, int>
 		{
-			private readonly IUserService userService;
+			private readonly IIdentityService identityService;
 			private readonly DbContext context;
 
-			public Handler(IUserService userService, DbContext context)
+			public Handler(IIdentityService identityService, DbContext context)
 			{
-				this.userService = userService;
+				this.identityService = identityService;
 				this.context = context;
 			}
 
@@ -42,7 +42,7 @@ namespace SecretSanta.Application.Users.Commands
 					throw new BadRequestException($"User {request.Username} already exists");
 				}
 
-				var (result, userId) = await userService.CreateUser(request.Username, request.Email, request.Password);
+				var (result, userId) = await identityService.CreateUser(request.Username, request.Email, request.Password);
 
 				if (!result.Success)
 				{

@@ -33,7 +33,7 @@ namespace SecretSanta.Application.UnitTests.Users.Commands
 			Context.Users.Add(existingUser);
 			await Context.SaveChangesAsync();
 
-			var userServiceMock = new Mock<IUserService>();
+			var userServiceMock = new Mock<IIdentityService>();
 
 			var sut = new RegisterUserCommand.Handler(userServiceMock.Object, Context);
 
@@ -57,7 +57,7 @@ namespace SecretSanta.Application.UnitTests.Users.Commands
 
 			var errors = new[] { "error", "other error" };
 
-			var userServiceMock = new Mock<IUserService>();
+			var userServiceMock = new Mock<IIdentityService>();
 			userServiceMock.Setup(s => s.CreateUser(command.Username, command.Email, command.Password))
 				.ReturnsAsync((Result.CreateFailure(errors), string.Empty));
 
@@ -84,7 +84,7 @@ namespace SecretSanta.Application.UnitTests.Users.Commands
 
 			var userId = Guid.NewGuid().ToString();
 
-			var userServiceMock = new Mock<IUserService>();
+			var userServiceMock = new Mock<IIdentityService>();
 			userServiceMock.Setup(s => s.CreateUser(command.Username, command.Email, command.Password))
 				.ReturnsAsync((Result.CreateSuccess(), userId));
 
