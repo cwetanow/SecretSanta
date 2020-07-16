@@ -26,7 +26,7 @@ namespace SecretSanta.Identity.Extensions
 			return services;
 		}
 
-		public static IServiceCollection AddJwtAuthentication(this IServiceCollection services,
+		public static IServiceCollection AddJwtTokenAuthentication(this IServiceCollection services,
 			Action<JwtAuthConfiguration> configureAction)
 		{
 			services
