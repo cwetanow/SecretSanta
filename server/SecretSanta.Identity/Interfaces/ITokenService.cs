@@ -2,6 +2,6 @@
 {
 	public interface ITokenService
 	{
-		string EncodeToken(string username, int applicationUserId, string displayName);
+		string EncodeToken(string username, int userId, string displayName);
 	}
 }

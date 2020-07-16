@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SecretSanta.Application.Common.Interfaces;
+using SecretSanta.Identity.Configuration;
+using SecretSanta.Identity.Interfaces;
 
 namespace SecretSanta.Identity.Extensions
 {
@@ -20,6 +22,16 @@ namespace SecretSanta.Identity.Extensions
 
 			services
 				.AddScoped<IIdentityService, IdentityService>();
+
+			return services;
+		}
+
+		public static IServiceCollection AddJwtAuthentication(this IServiceCollection services,
+			Action<JwtAuthConfiguration> configureAction)
+		{
+			services
+				.AddTransient<ITokenService, JwtTokenService>()
+				.Configure(configureAction);
 
 			return services;
 		}
