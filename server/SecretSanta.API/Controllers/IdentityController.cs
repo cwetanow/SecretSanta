@@ -29,7 +29,7 @@ namespace SecretSanta.API.Controllers
 		public async Task<LoginResponse> LoginUser([FromBody]AuthenticateUserCommand request)
 		{
 			var user = await Mediator.Send(request);
-			
+
 			var token = tokenService.EncodeToken(user.Username, user.Id, user.DisplayName);
 
 			return new LoginResponse(token);
