@@ -4,6 +4,8 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using AutoBogus;
+using Bogus;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -75,60 +77,58 @@ namespace SecretSanta.API.IntegrationTests.Users
 			response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
 		}
 
-		[Theory]
-		[InlineData("username", "displayName", "email@email.com", "!QAZ2wsx")]
-		public async Task GivenCorrectParameters_CreatesIdentityUser(string username, string displayName, string email, string password)
+		[Fact]
+		public async Task GivenCorrectParameters_CreatesIdentityUser()
 		{
 			// Arrange
-			var body = new RegisterUserCommand {
-				Username = username,
-				DisplayName = displayName,
-				Email = email,
-				Password = password
-			};
+			var body = new Faker<RegisterUserCommand>()
+				.RuleFor(c => c.Username, f => f.Internet.UserName())
+				.RuleFor(c => c.DisplayName, f => f.Person.FullName)
+				.RuleFor(c => c.Email, f => f.Person.Email)
+				.RuleFor(c => c.Password, "^YHN7ujm")
+				.Generate();
 
 			// Act
 			await Client.PostJson<object>("api/users", body);
 
 			var context = this.Factory.GetService<ApplicationIdentityDbContext>();
-			var user = await context.Users.SingleOrDefaultAsync(u => u.UserName == username);
+			var user = await context.Users.SingleOrDefaultAsync(u => u.UserName == body.Username);
 
 			// Assert
 			user.Should().NotBeNull();
-			user.UserName.Should().Be(username);
-			user.Email.Should().Be(email);
+			user.UserName.Should().Be(body.Username);
+			user.Email.Should().Be(body.Email);
 		}
 
-		[Theory]
-		[InlineData("username", "displayName", "email@email.com", "!QAZ2wsx")]
-		public async Task GivenCorrectParameters_CreatesUser(string username, string displayName, string email, string password)
+		[Fact]
+		public async Task GivenCorrectParameters_CreatesUser()
 		{
 			// Arrange
-			var body = new RegisterUserCommand {
-				Username = username,
-				DisplayName = displayName,
-				Email = email,
-				Password = password
-			};
+			var body = new Faker<RegisterUserCommand>()
+				.RuleFor(c => c.Username, f => f.Internet.UserName())
+				.RuleFor(c => c.DisplayName, f => f.Person.FullName)
+				.RuleFor(c => c.Email, f => f.Person.Email)
+				.RuleFor(c => c.Password, "^YHN7ujm")
+				.Generate();
 
 			// Act
-			await Client.PostJson<object>("api/users", body);
+			var userId = await Client.PostJson<int>("api/users", body);
 
 			var identityContext = this.Factory.GetService<ApplicationIdentityDbContext>();
 			var identityUserId = await identityContext.Users
-				.Where(u => u.UserName == username)
+				.Where(u => u.UserName == body.Username)
 				.Select(u => u.Id)
 				.SingleOrDefaultAsync();
 
 			var context = this.Factory.GetService<SecretSantaContext>();
 			var user = await context.Users
-				.SingleOrDefaultAsync(u => u.Username == username);
+				.SingleOrDefaultAsync(u => u.Id == userId);
 
 			// Assert
 			user.Should().NotBeNull();
-			user.Username.Should().Be(username);
-			user.Email.Should().Be(email);
-			user.DisplayName.Should().Be(displayName);
+			user.Username.Should().Be(body.Username);
+			user.Email.Should().Be(body.Email);
+			user.DisplayName.Should().Be(body.DisplayName);
 			user.UserId.Should().Be(identityUserId);
 		}
 	}
