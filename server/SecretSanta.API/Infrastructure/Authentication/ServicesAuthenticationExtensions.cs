@@ -15,8 +15,7 @@ namespace SecretSanta.API.Infrastructure.Authentication
 				.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
 					options => {
 						options.TokenValidationParameters = new TokenValidationParameters {
-							IssuerSigningKey =
-								new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfiguration.SecretKey)),
+							IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfiguration.SecretKey)),
 							ValidAudience = jwtConfiguration.Audience,
 							ValidIssuer = jwtConfiguration.Issuer,
 							RequireExpirationTime = true,

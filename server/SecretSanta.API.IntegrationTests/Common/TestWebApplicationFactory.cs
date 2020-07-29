@@ -43,7 +43,9 @@ namespace SecretSanta.API.IntegrationTests.Common
 		private void ConfigureTestServices(IServiceCollection services)
 		{
 			var dbContextDescriptors = services
-				.Where(d => d.ServiceType == typeof(DbContextOptions<>));
+				.Where(d => d.ServiceType == typeof(DbContextOptions<SecretSantaContext>) ||
+							d.ServiceType == typeof(DbContextOptions<ApplicationIdentityDbContext>))
+				.ToList();
 
 			foreach (var descriptor in dbContextDescriptors)
 			{
