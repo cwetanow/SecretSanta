@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +17,9 @@ namespace SecretSanta.Application.Common.Extensions
 
 			services
 				.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+			services
+				.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 			return services;
 		}

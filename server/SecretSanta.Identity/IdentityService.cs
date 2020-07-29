@@ -6,11 +6,11 @@ using SecretSanta.Identity.Extensions;
 
 namespace SecretSanta.Identity
 {
-	public class IdentityUserService : IUserService
+	public class IdentityService : IIdentityService
 	{
 		private readonly UserManager<ApplicationUser> userManager;
 
-		public IdentityUserService(UserManager<ApplicationUser> userManager)
+		public IdentityService(UserManager<ApplicationUser> userManager)
 		{
 			this.userManager = userManager;
 		}
@@ -22,6 +22,20 @@ namespace SecretSanta.Identity
 			var result = await userManager.CreateAsync(user, password);
 
 			return (result.ToApplicationResult(), user.Id);
+		}
+
+		public async Task<Result> AuthenticateUser(string username, string password)
+		{
+			var user = await userManager.FindByNameAsync(username);
+
+			if (user is null)
+			{
+				return Result.CreateFailure();
+			}
+
+			var success = await userManager.CheckPasswordAsync(user, password);
+
+			return success ? Result.CreateSuccess() : Result.CreateFailure();
 		}
 	}
 }
