@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Bogus;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -41,20 +42,23 @@ namespace SecretSanta.API.IntegrationTests.Common
 
 		public async Task<HttpClient> CreateAuthenticatedClientAsync()
 		{
-			var password = "^YHN7ujm";
-
 			var scope = this.Services.CreateScope();
 
+			var reqisterRequest = new Faker<RegisterUserCommand>()
+				.RuleFor(c => c.Username, f => f.Internet.UserName())
+				.RuleFor(c => c.DisplayName, f => f.Person.FullName)
+				.RuleFor(c => c.Email, f => f.Person.Email)
+				.RuleFor(c => c.Password, "^YHN7ujm")
+				.Generate();
+
 			var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-			await mediator.Send(new RegisterUserCommand {
-				Email = AuthenticatedUser.Email,
-				Password = password,
-				Username = AuthenticatedUser.UserName,
-				DisplayName = "display name"
-			});
+			await mediator.Send(reqisterRequest);
 
+			var authRequest = new AuthenticateUserCommand {
+				Password = reqisterRequest.Password,
+				Username = reqisterRequest.Username
+			};
 
-			var authRequest = new AuthenticateUserCommand { Password = password, Username = AuthenticatedUser.UserName };
 			var client = CreateClient();
 			var response = await client.PostJson<LoginResponse>("api/login", authRequest);
 
@@ -62,8 +66,6 @@ namespace SecretSanta.API.IntegrationTests.Common
 
 			return client;
 		}
-
-		public ApplicationUser AuthenticatedUser = new ApplicationUser("testuser", "testuser@secret.santa");
 
 		protected override void ConfigureWebHost(IWebHostBuilder builder)
 		{
