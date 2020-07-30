@@ -1,13 +1,11 @@
 ﻿using System;
-using SecretSanta.Domain.Common;
 
 namespace SecretSanta.Application.Common.Exceptions
 {
-	public class EntityNotFoundException<TEntity> : Exception
-		where TEntity : Entity
+	public class EntityNotFoundException : Exception
 	{
-		public EntityNotFoundException(object key)
-			: base($"Entity \"{typeof(TEntity).Name}\" ({key}) was not found.")
+		public EntityNotFoundException(object key, Type type)
+			: base($"Entity \"{type.Name}\" ({key}) was not found.")
 		{ }
 	}
 }
