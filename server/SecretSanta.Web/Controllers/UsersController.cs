@@ -30,17 +30,6 @@ namespace SecretSanta.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get([FromQuery]int offset = 0, [FromQuery]int limit = 10,
-            [FromQuery]bool sortAscending = true, [FromQuery]string searchPattern = null)
-        {
-            var result = this.userService.GetUsers(offset, limit, sortAscending, searchPattern);
-
-            var dto = this.dtoFactory.CreateUsersListDto(result);
-
-            return this.Ok(dto);
-        }
-
-        [HttpGet]
         [Route("{username}")]
         public IActionResult GetByUsername(string username)
         {

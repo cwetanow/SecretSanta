@@ -4,7 +4,6 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using AutoBogus;
 using Bogus;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +16,7 @@ using SecretSanta.Identity;
 using SecretSanta.Persistence;
 using Xunit;
 
-namespace SecretSanta.API.IntegrationTests.Users
+namespace SecretSanta.API.IntegrationTests.Identity
 {
 	public class RegisterUserTests : BaseTestFixture
 	{

@@ -9,7 +9,7 @@ using SecretSanta.API.IntegrationTests.Common.Extensions;
 using SecretSanta.Application.Users.Commands;
 using Xunit;
 
-namespace SecretSanta.API.IntegrationTests.Users
+namespace SecretSanta.API.IntegrationTests.Identity
 {
 	public class LoginUserTests : BaseTestFixture
 	{

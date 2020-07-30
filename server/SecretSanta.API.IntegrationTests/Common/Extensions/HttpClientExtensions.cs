@@ -13,8 +13,15 @@ namespace SecretSanta.API.IntegrationTests.Common.Extensions
 
 			content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-			// Act
 			var response = await client.PostAsync(url, content);
+
+			var responseContent = await response.Content.ReadAsStringAsync();
+			return JsonConvert.DeserializeObject<TResponse>(responseContent);
+		}
+
+		public static async Task<TResponse> GetJsonAsync<TResponse>(this HttpClient client, string url)
+		{
+			var response = await client.GetAsync(url);
 
 			var responseContent = await response.Content.ReadAsStringAsync();
 			return JsonConvert.DeserializeObject<TResponse>(responseContent);
