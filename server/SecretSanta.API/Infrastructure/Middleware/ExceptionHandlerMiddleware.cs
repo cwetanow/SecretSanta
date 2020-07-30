@@ -39,7 +39,7 @@ namespace SecretSanta.API.Infrastructure.Middleware
 				code = HttpStatusCode.BadRequest;
 				result = JsonConvert.SerializeObject(validationException.Failures);
 			}
-			else if (exception.GetType().IsAssignableFrom(typeof(EntityNotFoundException<>)))
+			else if (exception is EntityNotFoundException entityNotFoundException)
 			{
 				code = HttpStatusCode.NotFound;
 			}

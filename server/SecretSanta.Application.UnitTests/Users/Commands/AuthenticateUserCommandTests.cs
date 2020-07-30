@@ -53,7 +53,7 @@ namespace SecretSanta.Application.UnitTests.Users.Commands
 			var action = new Func<Task<UserProfileResponse>>(() => sut.Handle(command, CancellationToken.None));
 
 			// Assert
-			await action.Should().ThrowAsync<EntityNotFoundException<User>>();
+			await action.Should().ThrowAsync<EntityNotFoundException>();
 		}
 
 		[Fact]

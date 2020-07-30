@@ -47,7 +47,7 @@ namespace SecretSanta.Application.Users.Commands
 
 				if (user is null)
 				{
-					throw new EntityNotFoundException<User>(request.Username);
+					throw new EntityNotFoundException(request.Username, typeof(User));
 				}
 
 				return user;

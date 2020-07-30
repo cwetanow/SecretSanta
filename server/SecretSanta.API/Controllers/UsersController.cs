@@ -14,5 +14,9 @@ namespace SecretSanta.API.Controllers
 
 		[HttpGet]
 		public Task<UserListResponse> GetUsers([FromQuery] UserListQuery query) => Mediator.Send(query);
+
+		[HttpGet("{username}")]
+		public Task<UserProfileResponse> GetUserByUsername(string username) =>
+			Mediator.Send(new UserByUsernameQuery { Username = username });
 	}
 }
